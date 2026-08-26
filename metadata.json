@@ -1,0 +1,8 @@
+{
+  "name": "TaskLink",
+  "description": "A two-sided marketplace app matching clients with service providers, built with a modern Apple-glass theme.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
