@@ -4,6 +4,7 @@ import React, { ReactNode, useState, useRef, useEffect } from 'react';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { GoogleLocationPicker } from './components/GoogleLocationPicker';
 import { GoogleMapView } from './components/GoogleMapView';
+import { StripePaymentForm } from './components/StripePaymentForm';
 import { requestNotificationPermission, onForegroundMessage, saveFcmTokenToBackend, isFirebaseConfigured } from './services/firebase';
 
 // Reusable Glass Card Component
@@ -151,7 +152,7 @@ export default function App() {
       database: '100% Online',
       api: '99.9% Uptime',
       payment_gateway: 'Connected',
-      server_url: 'http://tasklink.test',
+      server_url: 'your backend URL',
       version: 'v1.2.0-Prod',
     }
   });
@@ -181,7 +182,7 @@ export default function App() {
         const token = localStorage.getItem('tasklink_token');
         if (!token) return;
         try {
-          const res = await fetch('http://tasklink.test/api/tasks', {
+          const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/tasks`, {
             headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
           });
           if (res.ok) {
@@ -256,7 +257,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const response = await fetch('http://tasklink.test/api/tasks', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/tasks`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -275,7 +276,7 @@ export default function App() {
 
   const fetchTopProviders = async () => {
     try {
-      const response = await fetch('http://tasklink.test/api/providers/top', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/providers/top`, {
         headers: {
           'Accept': 'application/json',
         },
@@ -293,7 +294,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const response = await fetch('http://tasklink.test/api/provider/dashboard', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/dashboard`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -338,7 +339,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const response = await fetch('http://tasklink.test/api/provider/notifications', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/notifications`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -359,7 +360,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/provider/tasks/${taskId}/accept`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/tasks/${taskId}/accept`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
       });
@@ -380,7 +381,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      await fetch(`http://tasklink.test/api/provider/tasks/${taskId}/decline`, {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/tasks/${taskId}/decline`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
       });
@@ -395,7 +396,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/provider/tasks/${taskId}/start`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/tasks/${taskId}/start`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
       });
@@ -419,7 +420,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/provider/tasks/${taskId}/complete`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/tasks/${taskId}/complete`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
       });
@@ -446,7 +447,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/tasks/${taskId}/cancel`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/tasks/${taskId}/cancel`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
       });
@@ -469,7 +470,7 @@ export default function App() {
     if (!token) return;
     try {
       setSupervisorIsLoading(true);
-      const res = await fetch('http://tasklink.test/api/supervisor/tasks', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks`, {
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -487,7 +488,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/supervisor/tasks/${taskId}/site-visit`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks/${taskId}/site-visit`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -514,7 +515,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/supervisor/tasks/${taskId}/quality-check`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks/${taskId}/quality-check`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -541,7 +542,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/supervisor/tasks/${taskId}/escalate`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks/${taskId}/escalate`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -602,10 +603,10 @@ export default function App() {
     try {
       setHrIsLoading(true);
       const [appRes, labRes] = await Promise.all([
-        fetch('http://tasklink.test/api/hr/applicants', {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/hr/applicants`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         }),
-        fetch('http://tasklink.test/api/hr/laborers', {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/hr/laborers`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         })
       ]);
@@ -628,7 +629,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/hr/applicants/${applicantId}/approve`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/hr/applicants/${applicantId}/approve`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
       });
@@ -646,7 +647,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/hr/applicants/${applicantId}/reject`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/hr/applicants/${applicantId}/reject`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
       });
@@ -666,16 +667,16 @@ export default function App() {
     try {
       setAdminIsLoading(true);
       const [overviewRes, usersRes, disputesRes, messagesRes] = await Promise.all([
-        fetch('http://tasklink.test/api/admin/overview', {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/overview`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         }),
-        fetch('http://tasklink.test/api/admin/users', {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/users`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         }),
-        fetch('http://tasklink.test/api/admin/disputes', {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/disputes`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         }),
-        fetch('http://tasklink.test/api/admin/contact-messages', {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/contact-messages`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         })
       ]);
@@ -707,7 +708,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/admin/contact-messages/${id}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/contact-messages/${id}/status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -729,7 +730,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/admin/contact-messages/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/contact-messages/${id}`, {
         method: 'DELETE',
         headers: {
           'Accept': 'application/json',
@@ -749,7 +750,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/admin/disputes/${taskId}/resolve`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/disputes/${taskId}/resolve`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -775,7 +776,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`http://tasklink.test/api/admin/users/${userId}/suspend`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/users/${userId}/suspend`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -800,7 +801,7 @@ export default function App() {
     fetchTopProviders();
     const token = localStorage.getItem('tasklink_token');
     if (token) {
-      fetch('http://tasklink.test/api/user', {
+      fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -856,7 +857,7 @@ export default function App() {
               location: user.address || '',
               bio: user.bio || '',
                 hourlyRate: user.provider_profile?.hourly_rate || 1500,
-                avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `http://tasklink.test/storage/${user.avatar}`) : ''),
+                avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
             });
             setIs2FAActive(!!user.two_factor_enabled);
             setSettingsEmail(user.email || '');
@@ -886,7 +887,7 @@ export default function App() {
       // Heartbeat ping every 40 seconds to keep last_seen_at active
       const interval = setInterval(async () => {
         try {
-          await fetch('http://tasklink.test/api/provider/heartbeat', {
+          await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/heartbeat`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -901,7 +902,7 @@ export default function App() {
       // Take provider offline if browser window/tab is closed
       const handleBeforeUnload = () => {
         try {
-          fetch('http://tasklink.test/api/provider/offline', {
+          fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/offline`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -927,7 +928,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (token) {
       try {
-        await fetch('http://tasklink.test/api/logout', {
+        await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/logout`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -1032,7 +1033,7 @@ export default function App() {
         const token = localStorage.getItem('tasklink_token');
         if (!token) return;
         try {
-          const res = await fetch('http://tasklink.test/api/provider/dashboard', {
+          const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/dashboard`, {
             headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
           });
           if (res.ok) {
@@ -1112,7 +1113,7 @@ export default function App() {
       let response: Response;
 
       if (role === 'client') {
-        response = await fetch('http://tasklink.test/api/register', {
+        response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -1139,7 +1140,7 @@ export default function App() {
         if (signupCvFile) formData.append('cv_file', signupCvFile);
         if (signupAvatarFile) formData.append('avatar', signupAvatarFile);
 
-        response = await fetch('http://tasklink.test/api/register', {
+        response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/register`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -1182,7 +1183,7 @@ export default function App() {
         location: user.address || signupAddress || '',
         bio: user.bio || '',
                 hourlyRate: user.provider_profile?.hourly_rate || 1500,
-                avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `http://tasklink.test/storage/${user.avatar}`) : ''),
+                avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
       });
 
       // Clear fields
@@ -1199,7 +1200,7 @@ export default function App() {
 
     } catch (err) {
       console.error('Signup error:', err);
-      setSignupError('Could not connect to backend server at http://tasklink.test.');
+      setSignupError('Could not connect to backend server at your backend URL.');
     } finally {
       setSignupLoading(false);
     }
@@ -1226,7 +1227,7 @@ export default function App() {
         payload.two_factor_code = login2FaCode;
       }
 
-      const response = await fetch('http://tasklink.test/api/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1292,7 +1293,7 @@ export default function App() {
         location: user.address || '',
         bio: user.bio || '',
                 hourlyRate: user.provider_profile?.hourly_rate || 1500,
-                avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `http://tasklink.test/storage/${user.avatar}`) : ''),
+                avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
       });
       setIs2FAActive(!!user.two_factor_enabled);
       setSettingsEmail(user.email || '');
@@ -1305,7 +1306,7 @@ export default function App() {
 
     } catch (error) {
       console.error('Login error:', error);
-      setLoginError('Could not connect to backend server at http://tasklink.test. Please check your local server.');
+      setLoginError('Could not connect to backend server at your backend URL. Please check your local server.');
     }
   };
 
@@ -1363,7 +1364,7 @@ export default function App() {
           const formData = new FormData();
           formData.append('avatar', file);
 
-          const response = await fetch('http://tasklink.test/api/user/avatar', {
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/avatar`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -1375,7 +1376,7 @@ export default function App() {
           if (response.ok) {
             const data = await response.json();
             const updatedUser = data.user;
-            const newAvatar = data.avatar_url || (updatedUser.avatar ? (updatedUser.avatar.startsWith('http') ? updatedUser.avatar : `http://tasklink.test/storage/${updatedUser.avatar}`) : preview);
+            const newAvatar = data.avatar_url || (updatedUser.avatar ? (updatedUser.avatar.startsWith('http') ? updatedUser.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${updatedUser.avatar}`) : preview);
             setProfileData(prev => ({
               ...prev,
               avatar: newAvatar,
@@ -1415,7 +1416,7 @@ export default function App() {
             formData.append('avatar', profileAvatarFile);
           }
 
-          const response = await fetch('http://tasklink.test/api/user/profile', {
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/profile`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -1427,7 +1428,7 @@ export default function App() {
           if (response.ok) {
             const data = await response.json();
             const updatedUser = data.user;
-            const avatarUrl = data.avatar_url || updatedUser.avatar_url || (updatedUser.avatar ? (updatedUser.avatar.startsWith('http') ? updatedUser.avatar : `http://tasklink.test/storage/${updatedUser.avatar}`) : profileData.avatar);
+            const avatarUrl = data.avatar_url || updatedUser.avatar_url || (updatedUser.avatar ? (updatedUser.avatar.startsWith('http') ? updatedUser.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${updatedUser.avatar}`) : profileData.avatar);
             setProfileData({
               firstName: updatedUser.name ? updatedUser.name.split(' ')[0] : '',
               lastName: updatedUser.name ? updatedUser.name.split(' ').slice(1).join(' ') : '',
@@ -1490,7 +1491,7 @@ export default function App() {
     setTwoFaErrorMessage('');
     setTwoFaCode('');
     try {
-      const res = await fetch('http://tasklink.test/api/user/2fa/setup', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/2fa/setup`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -1533,7 +1534,7 @@ export default function App() {
     setTwoFaErrorMessage('');
 
     try {
-      const res = await fetch('http://tasklink.test/api/user/2fa/activate', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/2fa/activate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1586,7 +1587,7 @@ export default function App() {
 
     setIsDisabling2FA(true);
     try {
-      const res = await fetch('http://tasklink.test/api/user/2fa/disable', {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/2fa/disable`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -1632,7 +1633,7 @@ export default function App() {
         payload.two_factor_code = deactivate2FaCode;
       }
 
-      const response = await fetch('http://tasklink.test/api/user/account', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/account`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -1946,7 +1947,7 @@ export default function App() {
                     const token = localStorage.getItem('tasklink_token');
                     if (token) {
                       try {
-                        await fetch('http://tasklink.test/api/provider/status', {
+                        await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/status`, {
                           method: 'POST',
                           headers: {
                             'Content-Type': 'application/json',
@@ -2618,7 +2619,7 @@ export default function App() {
                         }
                         setIsSubmittingContact(true);
                         try {
-                          const res = await fetch('http://tasklink.test/api/contact', {
+                          const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/contact`, {
                             method: 'POST',
                             headers: {
                               'Content-Type': 'application/json',
@@ -5349,29 +5350,69 @@ export default function App() {
         {currentPage === 'paymentGateway' && paymentContext && (() => {
           const budgetAmount = parseFloat(taskBudget) || (paymentContext.type === 'directHire' ? (paymentContext.provider?.hourlyRate || 3500) : 3500);
 
-          const getCardBrandFromNumber = (num: string): 'visa' | 'mastercard' | 'amex' | 'discover' => {
-            const clean = num.replace(/\D/g, '');
-            if (clean.startsWith('4')) return 'visa';
-            if (/^(5[1-5]|2[2-7])/.test(clean)) return 'mastercard';
-            if (/^(34|37)/.test(clean)) return 'amex';
-            if (/^(6011|65)/.test(clean)) return 'discover';
-            return 'visa';
-          };
+          const handlePaymentSuccess = async (paymentIntentId: string) => {
+            const token = localStorage.getItem('tasklink_token');
+            if (token) {
+              try {
+                const payload: any = {
+                  title: taskTitle || (paymentContext.type === 'directHire' ? `Direct Hire with ${paymentContext.provider?.name}` : 'Home Service Task'),
+                  category: taskCategory || 'cleaning',
+                  description: taskDescription || 'Customer requested service booking.',
+                  location: taskLocation || 'Colombo',
+                  latitude: taskLatitude,
+                  longitude: taskLongitude,
+                  task_date: taskDate || getTodayDateString(),
+                  task_time: taskTime || (getMinTimeForToday() || '09:00'),
+                  budget: budgetAmount,
+                  is_negotiable: isNegotiable,
+                  payment_intent_id: paymentIntentId,
+                };
 
-          const handleCardNumberInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-            const val = e.target.value.replace(/\D/g, '').substring(0, 16);
-            const parts = val.match(/.{1,4}/g) || [];
-            const formatted = parts.join(' ');
-            setSimCardNumber(formatted);
-            setSimCardBrand(getCardBrandFromNumber(val));
-          };
+                if (paymentContext.type === 'directHire' && paymentContext.provider?.id) {
+                  payload.provider_id = paymentContext.provider.id;
+                }
 
-          const handleExpiryInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-            let val = e.target.value.replace(/\D/g, '').substring(0, 4);
-            if (val.length >= 3) {
-              val = val.substring(0, 2) + '/' + val.substring(2);
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || `${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}`}/tasks`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                  },
+                  body: JSON.stringify(payload),
+                });
+
+                if (response.ok) {
+                  const data = await response.json();
+                  showToast('Payment Authorized & Escrow Reserved', 'Funds safely held in escrow. Task booking confirmed!', 'success');
+                  await fetchCustomerTasks();
+                  setTrackingTask({
+                    id: 'TASK-' + (data.task?.id || Math.floor(Math.random() * 10000)),
+                    rawId: data.task?.id,
+                    title: data.task?.title || payload.title,
+                    provider: paymentContext.provider,
+                    status: data.task?.status === 'assigned' ? 'In Progress' : 'Booked',
+                    date: data.task?.task_date || new Date().toLocaleDateString(),
+                  });
+                  setMilestoneIndex(data.task?.status === 'assigned' ? 1 : 0);
+                  setCurrentPage('taskTracking');
+                  setTaskTitle('');
+                  setTaskDescription('');
+                  setTaskLocation('');
+                  setTaskBudget('');
+                  setIsNegotiable(false);
+                  setTaskPhotos([]);
+                  setTaskDate(getTodayDateString());
+                  setTaskTime(getMinTimeForToday() || '09:00');
+                } else {
+                  const err = await response.json();
+                  showToast('Authorization Failed', err.message || 'Task creation failed.', 'error');
+                }
+              } catch (err) {
+                console.error('Failed to post task to database:', err);
+                showToast('Connection Error', 'Failed to reach server. Please try again.', 'error');
+              }
             }
-            setSimCardExpiry(val);
           };
 
           return (
@@ -5387,329 +5428,22 @@ export default function App() {
               {/* Header */}
               <div className="text-center">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 font-bold text-xs mb-3 shadow-sm">
-                  <Lock className="w-3.5 h-3.5 text-indigo-600" /> Secure Escrow Payment Gateway (Sandbox Simulation)
+                  <Lock className="w-3.5 h-3.5 text-indigo-600" /> Secure Escrow Payment Gateway
                 </div>
                 <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Authorize Task Booking</h1>
                 <p className="text-sm text-slate-500 mt-1 max-w-md mx-auto">
-                  Enter any test card or select a dummy preset below. Funds will be held securely in escrow until supervisor quality check approval.
+                  Enter your card details below. Funds will be held securely in escrow until supervisor quality check approval.
                 </p>
               </div>
 
-              {/* 3D Virtual Credit Card Preview */}
-              <div className="flex justify-center">
-                <div className={`relative w-full max-w-md h-56 rounded-3xl p-6 transition-all duration-500 shadow-2xl flex flex-col justify-between select-none overflow-hidden ${
-                  simCardBrand === 'mastercard'
-                    ? 'bg-gradient-to-br from-slate-950 via-neutral-900 to-rose-950 text-white shadow-rose-950/40 border border-rose-900/40'
-                    : simCardBrand === 'amex'
-                    ? 'bg-gradient-to-br from-slate-950 via-teal-950 to-emerald-950 text-white shadow-emerald-950/40 border border-teal-900/40'
-                    : simCardBrand === 'discover'
-                    ? 'bg-gradient-to-br from-slate-950 via-amber-950 to-orange-950 text-white shadow-orange-950/40 border border-amber-900/40'
-                    : 'bg-gradient-to-br from-slate-950 via-indigo-950 to-blue-900 text-white shadow-indigo-950/40 border border-indigo-800/40'
-                }`}>
-                  {/* Decorative background light circles */}
-                  <div className="absolute -top-12 -right-12 w-44 h-44 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-                  <div className="absolute -bottom-12 -left-12 w-44 h-44 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none" />
-
-                  {/* Card Top Row: Chip + Contactless + Brand */}
-                  <div className="flex items-center justify-between relative z-10">
-                    <div className="flex items-center gap-3">
-                      {/* EMV Chip */}
-                      <div className="w-12 h-9 rounded-lg bg-gradient-to-br from-amber-200 via-amber-400 to-yellow-500 p-1 border border-yellow-200/80 shadow-md relative flex items-center justify-center">
-                        <div className="w-full h-full border border-amber-700/30 rounded grid grid-cols-2 grid-rows-2"></div>
-                      </div>
-                      {/* Contactless Icon */}
-                      <div className="text-white/70">
-                        <svg className="w-6 h-6 rotate-90" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                          <path d="M5 12.55a11 11 0 0 1 14.08 0" strokeLinecap="round" />
-                          <path d="M8.5 15.5a6 6 0 0 1 7 0" strokeLinecap="round" />
-                          <path d="M12 18.5a1 1 0 0 1 0 0" strokeLinecap="round" />
-                        </svg>
-                      </div>
-                    </div>
-
-                    {/* Dynamic Card Brand Badge */}
-                    <div className="flex items-center">
-                      {simCardBrand === 'visa' && (
-                        <span className="text-2xl font-black italic tracking-tighter text-white drop-shadow-md">
-                          VISA
-                        </span>
-                      )}
-                      {simCardBrand === 'mastercard' && (
-                        <div className="flex items-center -space-x-3">
-                          <div className="w-8 h-8 rounded-full bg-red-500/90 shadow-sm"></div>
-                          <div className="w-8 h-8 rounded-full bg-amber-400/90 shadow-sm"></div>
-                        </div>
-                      )}
-                      {simCardBrand === 'amex' && (
-                        <span className="text-xs font-black uppercase tracking-widest px-2.5 py-1 bg-white/20 backdrop-blur-md rounded-md border border-white/30 text-white drop-shadow-sm">
-                          AMEX
-                        </span>
-                      )}
-                      {simCardBrand === 'discover' && (
-                        <div className="flex items-center gap-1 font-black text-sm tracking-wider text-orange-400">
-                          DISC<span className="w-3.5 h-3.5 rounded-full bg-orange-500 inline-block"></span>VER
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Card Number */}
-                  <div className="relative z-10 my-1">
-                    <p className="font-mono text-xl md:text-2xl tracking-[0.2em] text-white drop-shadow font-semibold">
-                      {simCardNumber || '•••• •••• •••• ••••'}
-                    </p>
-                  </div>
-
-                  {/* Card Bottom Row: Holder + Expiry */}
-                  <div className="flex items-end justify-between relative z-10">
-                    <div>
-                      <span className="text-[9px] uppercase tracking-widest text-slate-400 font-bold block">Cardholder</span>
-                      <p className="font-mono text-sm tracking-wider font-bold uppercase truncate max-w-[200px] text-white drop-shadow">
-                        {simCardHolder || 'YOUR NAME'}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-[9px] uppercase tracking-widest text-slate-400 font-bold block">Expires</span>
-                      <p className="font-mono text-sm tracking-wider font-bold text-white drop-shadow">
-                        {simCardExpiry || 'MM/YY'}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick Fill Dummy Card Presets */}
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                <span className="text-xs font-bold text-slate-500 mr-1">Dummy Presets:</span>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSimCardNumber('4532 8921 4482 1098');
-                    setSimCardHolder('KAMAL PERERA');
-                    setSimCardExpiry('08/29');
-                    setSimCardCvv('482');
-                    setSimCardBrand('visa');
-                  }}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border ${simCardBrand === 'visa' ? 'bg-indigo-600 text-white border-indigo-600 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
-                >
-                  <CreditCard className="w-3.5 h-3.5" /> Visa (4532)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSimCardNumber('5412 7533 8901 9924');
-                    setSimCardHolder('DINESH SILVA');
-                    setSimCardExpiry('11/28');
-                    setSimCardCvv('715');
-                    setSimCardBrand('mastercard');
-                  }}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border ${simCardBrand === 'mastercard' ? 'bg-rose-600 text-white border-rose-600 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
-                >
-                  <CreditCard className="w-3.5 h-3.5" /> Mastercard (5412)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSimCardNumber('3782 8224 6310 0051');
-                    setSimCardHolder('ANUSHA DE SILVA');
-                    setSimCardExpiry('04/30');
-                    setSimCardCvv('2901');
-                    setSimCardBrand('amex');
-                  }}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer border ${simCardBrand === 'amex' ? 'bg-teal-600 text-white border-teal-600 shadow-sm' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}`}
-                >
-                  <CreditCard className="w-3.5 h-3.5" /> AMEX (3782)
-                </button>
-              </div>
-
-              {/* Card Details Interactive Form */}
-              <GlassCard className="p-6 md:p-8 space-y-6 bg-white/70">
-                <div className="space-y-4">
-                  {/* Cardholder Name */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Cardholder Name</label>
-                    <input
-                      type="text"
-                      value={simCardHolder}
-                      onChange={(e) => setSimCardHolder(e.target.value.toUpperCase())}
-                      placeholder="e.g. KAMAL PERERA"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-                    />
-                  </div>
-
-                  {/* Card Number */}
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center justify-between">
-                      <span>Card Number</span>
-                      <span className="text-[11px] font-bold text-indigo-600 uppercase">{simCardBrand}</span>
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={simCardNumber}
-                        onChange={handleCardNumberInput}
-                        placeholder="4532 8921 4482 1098"
-                        maxLength={19}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 pr-10"
-                      />
-                      <CreditCard className="w-5 h-5 text-slate-400 absolute right-3.5 top-3.5" />
-                    </div>
-                  </div>
-
-                  {/* Expiry and CVV */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Expiry Date</label>
-                      <input
-                        type="text"
-                        value={simCardExpiry}
-                        onChange={handleExpiryInput}
-                        placeholder="MM/YY"
-                        maxLength={5}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-center"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2 flex items-center justify-between">
-                        <span>CVV / CVC</span>
-                        <Lock className="w-3 h-3 text-slate-400" />
-                      </label>
-                      <input
-                        type="password"
-                        value={simCardCvv}
-                        onChange={(e) => setSimCardCvv(e.target.value.replace(/\D/g, '').substring(0, 4))}
-                        placeholder="482"
-                        maxLength={4}
-                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-center"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Escrow & Financial Summary Box */}
-                <div className="p-5 bg-gradient-to-br from-indigo-50/70 to-slate-50 border border-indigo-100 rounded-2xl space-y-3">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-600 font-medium">Task / Service Estimate:</span>
-                    <span className="font-bold text-slate-900">LKR {budgetAmount.toLocaleString()}</span>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-slate-600 font-medium">Pre-authorization Hold:</span>
-                    <span className="font-bold text-emerald-600">LKR {budgetAmount.toLocaleString()}</span>
-                  </div>
-                  <div className="pt-3 border-t border-indigo-200/60 flex items-center justify-between">
-                    <div>
-                      <span className="text-xs font-bold text-slate-900 block">Total Escrow Hold</span>
-                      <span className="text-[11px] text-slate-500">Released only upon Supervisor Quality Sign-off</span>
-                    </div>
-                    <span className="text-2xl font-black text-indigo-900 tracking-tight">LKR {budgetAmount.toLocaleString()}</span>
-                  </div>
-                </div>
-
-                {/* Submit & Cancel Actions */}
-                <div className="space-y-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      if (isSubmittingTask) return;
-                      
-                      const schedCheck = validateTaskSchedule(taskDate, taskTime);
-                      if (!schedCheck.isValid) {
-                        showToast('Invalid Schedule', schedCheck.message || 'Please choose a valid date and time.', 'warning');
-                        return;
-                      }
-
-                      setIsSubmittingTask(true);
-                      
-                      const token = localStorage.getItem('tasklink_token');
-                      if (token) {
-                        try {
-                          const payload: any = {
-                            title: taskTitle || (paymentContext.type === 'directHire' ? `Direct Hire with ${paymentContext.provider?.name}` : 'Home Service Task'),
-                            category: taskCategory || 'cleaning',
-                            description: taskDescription || 'Customer requested service booking.',
-                            location: taskLocation || 'Colombo',
-                            latitude: taskLatitude,
-                            longitude: taskLongitude,
-                            task_date: taskDate || getTodayDateString(),
-                            task_time: taskTime || (getMinTimeForToday() || '09:00'),
-                            budget: budgetAmount,
-                            is_negotiable: isNegotiable,
-                          };
-
-                          if (paymentContext.type === 'directHire' && paymentContext.provider?.id) {
-                            payload.provider_id = paymentContext.provider.id;
-                          }
-
-                          const response = await fetch('http://tasklink.test/api/tasks', {
-                            method: 'POST',
-                            headers: {
-                              'Content-Type': 'application/json',
-                              'Accept': 'application/json',
-                              'Authorization': `Bearer ${token}`,
-                            },
-                            body: JSON.stringify(payload),
-                          });
-
-                          if (response.ok) {
-                            const data = await response.json();
-                            showToast('Payment Authorized & Escrow Reserved', 'Funds safely held in escrow. Task booking confirmed!', 'success');
-                            await fetchCustomerTasks();
-                            setTrackingTask({
-                              id: 'TASK-' + (data.task?.id || Math.floor(Math.random() * 10000)),
-                              rawId: data.task?.id,
-                              title: data.task?.title || payload.title,
-                              provider: paymentContext.provider,
-                              status: data.task?.status === 'assigned' ? 'In Progress' : 'Booked',
-                              date: data.task?.task_date || new Date().toLocaleDateString(),
-                            });
-                            setMilestoneIndex(data.task?.status === 'assigned' ? 1 : 0);
-                            setCurrentPage('taskTracking');
-                            setTaskTitle('');
-                            setTaskDescription('');
-                            setTaskLocation('');
-                            setTaskBudget('');
-                            setIsNegotiable(false);
-                            setTaskPhotos([]);
-                            setTaskDate(getTodayDateString());
-                            setTaskTime(getMinTimeForToday() || '09:00');
-                            setIsSubmittingTask(false);
-                            return;
-                          } else {
-                            const err = await response.json();
-                            showToast('Authorization Failed', err.message || 'Payment processing failed. Please check card details.', 'error');
-                            setIsSubmittingTask(false);
-                            return;
-                          }
-                        } catch (err) {
-                          console.error('Failed to post task to database:', err);
-                          showToast('Connection Error', 'Failed to reach payment service. Please try again.', 'error');
-                          setIsSubmittingTask(false);
-                        }
-                      }
-                      setIsSubmittingTask(false);
-                    }}
-                    disabled={isSubmittingTask}
-                    className={`w-full py-4 text-white font-bold text-base rounded-2xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/30 cursor-pointer ${isSubmittingTask ? 'bg-slate-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-xl'}`}
-                  >
-                    {isSubmittingTask ? (
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    ) : (
-                      <Shield className="w-5 h-5" />
-                    )}
-                    {isSubmittingTask ? 'Authorizing Payment...' : `Authorize & Reserve LKR ${budgetAmount.toLocaleString()}`}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setCurrentPage(paymentContext.type === 'directHire' ? 'directHireBooking' : 'postTask');
-                    }}
-                    className="w-full py-3 text-slate-500 hover:text-slate-700 font-semibold transition-colors cursor-pointer text-sm"
-                  >
-                    Cancel & Go Back
-                  </button>
-                </div>
-              </GlassCard>
+              <StripePaymentForm 
+                budgetAmount={budgetAmount} 
+                onSuccess={handlePaymentSuccess} 
+                onCancel={() => {
+                  setCurrentPage(paymentContext.type === 'directHire' ? 'directHireBooking' : 'postTask');
+                }}
+                isSubmittingTask={isSubmittingTask}
+              />
 
               {/* Security Trust Badges */}
               <div className="flex items-center justify-center gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest pb-8">
@@ -8593,7 +8327,7 @@ export default function App() {
                   const taskId = trackingTask?.rawId || (typeof trackingTask?.id === 'string' ? parseInt(trackingTask.id.replace('TASK-', '')) : trackingTask?.id);
                   if (token && taskId) {
                     try {
-                      await fetch(`http://tasklink.test/api/tasks/${taskId}/review`, {
+                      await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/tasks/${taskId}/review`, {
                         method: 'POST',
                         headers: {
                           'Content-Type': 'application/json',
