@@ -31,7 +31,7 @@ export default function App() {
   const [selectedProviderForHire, setSelectedProviderForHire] = useState<any>(null);
   const [currentUserRole, setCurrentUserRole] = useState<'client' | 'provider' | 'supervisor' | 'hr' | 'finance' | 'admin' | null>(null);
   const [providerVerificationStatus, setProviderVerificationStatus] = useState<'pending' | 'active' | 'rejected' | null>(null);
-  
+
   // Modern Toast Notification System State
   const [activeToast, setActiveToast] = useState<{ id: number; title: string; message?: string; type: 'success' | 'error' | 'info' | 'warning' } | null>(null);
 
@@ -48,14 +48,14 @@ export default function App() {
       return () => clearTimeout(timer);
     }
   }, [activeToast]);
-  
-  const [paymentContext, setPaymentContext] = useState<{type: 'directHire' | 'broadcast', provider?: any} | null>(null);
+
+  const [paymentContext, setPaymentContext] = useState<{ type: 'directHire' | 'broadcast', provider?: any } | null>(null);
   const [trackingTask, setTrackingTask] = useState<any>(null);
   const [activeWorkspaceJob, setActiveWorkspaceJob] = useState<any>(null);
   const [providerMilestoneIndex, setProviderMilestoneIndex] = useState(3);
   const [isReportIssueModalOpen, setIsReportIssueModalOpen] = useState(false);
   const [issueDescription, setIssueDescription] = useState('');
-  
+
   // Supervisor States
   const [supervisorActiveTab, setSupervisorActiveTab] = useState<'assigned' | 'completed' | 'escalated'>('assigned');
   const [supervisorSelectedJob, setSupervisorSelectedJob] = useState<any>(null);
@@ -65,7 +65,7 @@ export default function App() {
   const [supervisorEscalateDescription, setSupervisorEscalateDescription] = useState('');
   const [supervisorTasks, setSupervisorTasks] = useState<{ assigned: any[]; completed: any[]; escalated: any[] }>({ assigned: [], completed: [], escalated: [] });
   const [supervisorIsLoading, setSupervisorIsLoading] = useState(false);
-  
+
   // HR States
   const [hrActiveTab, setHrActiveTab] = useState<'onboarding' | 'directory' | 'analytics'>('onboarding');
   const [hrSearchQuery, setHrSearchQuery] = useState('');
@@ -82,7 +82,7 @@ export default function App() {
   const [isHrLogModalOpen, setIsHrLogModalOpen] = useState(false);
   const [isHrProfileMenuOpen, setIsHrProfileMenuOpen] = useState(false);
 
-  
+
   // Finance States
   const [financeActiveTab, setFinanceActiveTab] = useState<'ledger' | 'reconciliation' | 'analytics'>('ledger');
   const [financeSelectedDateRange, setFinanceSelectedDateRange] = useState('This Month');
@@ -190,13 +190,13 @@ export default function App() {
             const rawId = trackingTask.rawId || (typeof trackingTask.id === 'string' ? parseInt(trackingTask.id.replace('TASK-', '')) : trackingTask.id);
             const liveTask = (data.tasks || []).find((t: any) => t.id === rawId);
             if (liveTask) {
-              const displayStatus = liveTask.status === 'completed' 
-                ? 'Completed' 
+              const displayStatus = liveTask.status === 'completed'
+                ? 'Completed'
                 : liveTask.status === 'in_review'
-                ? 'Quality Check Pending'
-                : liveTask.status === 'in_progress' || liveTask.status === 'assigned'
-                ? 'In Progress' 
-                : 'Booked';
+                  ? 'Quality Check Pending'
+                  : liveTask.status === 'in_progress' || liveTask.status === 'assigned'
+                    ? 'In Progress'
+                    : 'Booked';
 
               setTrackingTask((prev: any) => ({
                 ...prev,
@@ -490,10 +490,10 @@ export default function App() {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks/${taskId}/site-visit`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json', 
-          'Authorization': `Bearer ${token}` 
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ notes: supervisorAssessmentNotes })
       });
@@ -517,10 +517,10 @@ export default function App() {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks/${taskId}/quality-check`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json', 
-          'Authorization': `Bearer ${token}` 
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ notes: supervisorAssessmentNotes })
       });
@@ -544,10 +544,10 @@ export default function App() {
     try {
       const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks/${taskId}/escalate`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          'Accept': 'application/json', 
-          'Authorization': `Bearer ${token}` 
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ reason: supervisorEscalateDescription })
       });
@@ -856,8 +856,8 @@ export default function App() {
               dob: user.dob || '',
               location: user.address || '',
               bio: user.bio || '',
-                hourlyRate: user.provider_profile?.hourly_rate || 1500,
-                avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
+              hourlyRate: user.provider_profile?.hourly_rate || 1500,
+              avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
             });
             setIs2FAActive(!!user.two_factor_enabled);
             setSettingsEmail(user.email || '');
@@ -1047,10 +1047,10 @@ export default function App() {
                 customerPhone: matchingJob.customer?.phone || prev?.customerPhone,
                 exactAddress: matchingJob.location || prev?.exactAddress,
               }));
-              const newMilestone = matchingJob.status === 'completed' ? 5 
-                : matchingJob.status === 'in_review' ? 4 
-                : matchingJob.status === 'in_progress' ? 3 
-                : 1;
+              const newMilestone = matchingJob.status === 'completed' ? 5
+                : matchingJob.status === 'in_review' ? 4
+                  : matchingJob.status === 'in_progress' ? 3
+                    : 1;
               setProviderMilestoneIndex(newMilestone);
             }
           }
@@ -1182,8 +1182,8 @@ export default function App() {
         dob: user.dob || '',
         location: user.address || signupAddress || '',
         bio: user.bio || '',
-                hourlyRate: user.provider_profile?.hourly_rate || 1500,
-                avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
+        hourlyRate: user.provider_profile?.hourly_rate || 1500,
+        avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
       });
 
       // Clear fields
@@ -1216,7 +1216,7 @@ export default function App() {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginError(null);
-    
+
     try {
       const payload: any = {
         email: loginEmail,
@@ -1251,10 +1251,10 @@ export default function App() {
 
       // Store token
       localStorage.setItem('tasklink_token', data.access_token);
-      
+
       const user = data.user;
       const role = user.role; // 'customer', 'provider', 'admin', 'hr', 'finance', 'supervisor'
-      
+
       // Map DB roles to frontend states
       if (role === 'admin') {
         setCurrentUserRole('admin');
@@ -1283,7 +1283,7 @@ export default function App() {
         setCurrentUserRole('client');
         setCurrentPage('customerDashboard');
       }
-      
+
       setProfileData({
         firstName: user.name ? user.name.split(' ')[0] : '',
         lastName: user.name ? user.name.split(' ').slice(1).join(' ') : '',
@@ -1292,13 +1292,13 @@ export default function App() {
         dob: user.dob || '',
         location: user.address || '',
         bio: user.bio || '',
-                hourlyRate: user.provider_profile?.hourly_rate || 1500,
-                avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
+        hourlyRate: user.provider_profile?.hourly_rate || 1500,
+        avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
       });
       setIs2FAActive(!!user.two_factor_enabled);
       setSettingsEmail(user.email || '');
       setIsProviderOnline(user.is_online || false);
-      
+
       setLoginEmail('');
       setLoginPassword('');
       setLogin2FaCode('');
@@ -1317,12 +1317,12 @@ export default function App() {
   const handleResetSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setResetStatus('idle');
-    
+
     if (!resetEmail.trim()) {
       setResetStatus('error');
       return;
     }
-    
+
     // Simple frontend logic check for demonstration
     if (resetEmail.includes('@') && resetEmail.endsWith('.com')) {
       setResetStatus('success');
@@ -1346,8 +1346,8 @@ export default function App() {
     dob: '',
     location: '',
     bio: '',
-          hourlyRate: '',
-          avatar: '',
+    hourlyRate: '',
+    avatar: '',
   });
 
   const handleProfileAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1437,8 +1437,8 @@ export default function App() {
               dob: updatedUser.dob || '',
               location: updatedUser.address || '',
               bio: updatedUser.bio || '',
-                hourlyRate: updatedUser.provider_profile?.hourly_rate || 1500,
-                avatar: avatarUrl || '',
+              hourlyRate: updatedUser.provider_profile?.hourly_rate || 1500,
+              avatar: avatarUrl || '',
             });
             setProfileAvatarFile(null);
             setProfileAvatarPreview(null);
@@ -1662,8 +1662,8 @@ export default function App() {
         dob: '',
         location: '',
         bio: '',
-          hourlyRate: '',
-          avatar: '',
+        hourlyRate: '',
+        avatar: '',
       });
       setIsDeactivateModalOpen(false);
       setDeactivatePassword('');
@@ -1883,7 +1883,7 @@ export default function App() {
       const filesArray = Array.from(e.target.files) as File[];
       const remainingSlots = 5 - taskPhotos.length;
       const filesToAdd = filesArray.slice(0, remainingSlots);
-      
+
       const newPhotos = filesToAdd.map(file => URL.createObjectURL(file));
       setTaskPhotos(prev => [...prev, ...newPhotos]);
     }
@@ -1916,305 +1916,305 @@ export default function App() {
 
       {/* Navigation */}
       {(currentPage !== 'hrDashboard' && currentPage !== 'financeDashboard' && currentPage !== 'adminDashboard') && (
-      <nav className={`fixed top-0 w-full z-50 px-6 ${(currentUserRole === 'supervisor' || currentPage === 'supervisorDashboard') ? 'py-2' : 'py-4'}`}>
-        <GlassCard className={`max-w-7xl mx-auto px-6 overflow-visible ${(currentUserRole === 'supervisor' || currentPage === 'supervisorDashboard') ? 'rounded-[2rem] py-3 flex flex-col gap-3' : 'py-3 flex items-center justify-between rounded-full'} bg-white/50`}>
-          <div className="flex items-center justify-between w-full">
-            <div 
-              className="flex items-center gap-2 cursor-pointer group shrink-0"
-              onClick={() => setCurrentPage('home')}
-            >
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
-                <Zap className="w-4 h-4 text-white" />
+        <nav className={`fixed top-0 w-full z-50 px-6 ${(currentUserRole === 'supervisor' || currentPage === 'supervisorDashboard') ? 'py-2' : 'py-4'}`}>
+          <GlassCard className={`max-w-7xl mx-auto px-6 overflow-visible ${(currentUserRole === 'supervisor' || currentPage === 'supervisorDashboard') ? 'rounded-[2rem] py-3 flex flex-col gap-3' : 'py-3 flex items-center justify-between rounded-full'} bg-white/50`}>
+            <div className="flex items-center justify-between w-full">
+              <div
+                className="flex items-center gap-2 cursor-pointer group shrink-0"
+                onClick={() => setCurrentPage('home')}
+              >
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
+                  <Zap className="w-4 h-4 text-white" />
+                </div>
+                <span className="hidden sm:block font-semibold text-xl tracking-tight text-slate-800">Online Labours</span>
+                {(currentUserRole === 'supervisor' || currentPage === 'supervisorDashboard' || currentPage === 'supervisorActiveWorkspace') && (
+                  <div className="flex items-center ml-1">
+                    <span className="text-sm font-bold text-slate-900 leading-tight hidden sm:block mr-2">{profileData.firstName} {profileData.lastName}</span>
+                    <span className="text-[10px] font-bold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded items-center gap-1 uppercase flex whitespace-nowrap">
+                      <Shield className="w-3 h-3" /> {currentUserRole === 'admin' ? 'ADMIN OVERRIDE' : 'SV-4592'}
+                    </span>
+                  </div>
+                )}
               </div>
-              <span className="hidden sm:block font-semibold text-xl tracking-tight text-slate-800">Online Labours</span>
-              {(currentUserRole === 'supervisor' || currentPage === 'supervisorDashboard' || currentPage === 'supervisorActiveWorkspace') && (
-                <div className="flex items-center ml-1">
-                  <span className="text-sm font-bold text-slate-900 leading-tight hidden sm:block mr-2">{profileData.firstName} {profileData.lastName}</span>
-                  <span className="text-[10px] font-bold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded items-center gap-1 uppercase flex whitespace-nowrap">
-                    <Shield className="w-3 h-3" /> {currentUserRole === 'admin' ? 'ADMIN OVERRIDE' : 'SV-4592'}
-                  </span>
+
+              {currentUserRole !== null ? (
+                <div className="flex items-center gap-4 relative">
+                  {currentUserRole === 'provider' && providerVerificationStatus === 'active' && (
+                    <button
+                      onClick={async () => {
+                        const newStatus = !isProviderOnline;
+                        setIsProviderOnline(newStatus);
+                        const token = localStorage.getItem('tasklink_token');
+                        if (token) {
+                          try {
+                            await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/status`, {
+                              method: 'POST',
+                              headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                              },
+                              body: JSON.stringify({ is_online: newStatus })
+                            });
+                          } catch (err) {
+                            console.error('Failed to update online status:', err);
+                          }
+                        }
+                      }}
+                      className={`flex text-sm font-semibold items-center gap-2 px-3 py-1.5 rounded-full transition-all border shadow-sm cursor-pointer ${isProviderOnline ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
+                    >
+                      <div className={`w-2.5 h-2.5 rounded-full ${isProviderOnline ? 'bg-green-500 animate-pulse' : 'bg-slate-300'}`}></div>
+                      <span className="hidden sm:inline">{isProviderOnline ? 'Go Offline' : 'Go Online'}</span>
+                      <span className="sm:hidden">{isProviderOnline ? 'Online' : 'Offline'}</span>
+                    </button>
+                  )}
+
+                  <div className="hidden md:flex items-center gap-4 relative">
+                    {currentUserRole === 'client' && (
+                      <button
+                        onClick={() => setIsPostTaskOptionsOpen(true)}
+                        className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 flex items-center gap-2 px-4 py-2 rounded-xl transition-all"
+                      >
+                        <PlusCircle className="w-4 h-4" />
+                        Post a Task
+                      </button>
+                    )}
+                    <div
+                      onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                      className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 overflow-hidden border-2 border-white shadow-sm flex items-center justify-center cursor-pointer hover:shadow-md transition-shadow"
+                    >
+                      {profileData.avatar ? (
+                        <img src={profileData.avatar} alt="Profile Avatar" className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-indigo-600 font-bold text-sm">{profileData.firstName ? profileData.firstName[0].toUpperCase() : 'U'}</span>
+                      )}
+                    </div>
+
+                    <AnimatePresence>
+                      {isProfileMenuOpen && (
+                        <>
+                          <div
+                            className="fixed inset-0 z-40"
+                            onClick={() => setIsProfileMenuOpen(false)}
+                          />
+                          <motion.div
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute top-14 right-0 w-64 z-50 shadow-2xl"
+                          >
+                            <div className="p-4 flex flex-col items-center shadow-xl border border-slate-200 bg-white rounded-3xl">
+                              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 border-4 border-white shadow-sm flex items-center justify-center mb-3 overflow-hidden">
+                                {profileData.avatar ? (
+                                  <img src={profileData.avatar} alt="Profile Avatar" className="w-full h-full object-cover" />
+                                ) : (
+                                  <span className="text-indigo-600 font-bold text-2xl">{profileData.firstName ? profileData.firstName[0].toUpperCase() : 'U'}</span>
+                                )}
+                              </div>
+                              <h2 className="text-base font-bold text-slate-900 mx-auto text-center">{profileData.firstName} {profileData.lastName}</h2>
+                              <p className="text-xs text-slate-500 mb-4 mx-auto text-center">{profileData.email}</p>
+
+                              <div className="flex flex-col gap-1 w-full">
+                                {(currentUserRole !== 'provider' || providerVerificationStatus === 'active') && (
+                                  <>
+                                    <button
+                                      onClick={() => {
+                                        navigateToDashboard();
+                                        setIsProfileMenuOpen(false);
+                                      }}
+                                      className="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 font-medium transition-colors text-sm w-full text-left"
+                                    >
+                                      <LayoutDashboard className="w-4 h-4" />
+                                      Dashboard
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        setCurrentPage('userProfile');
+                                        setIsProfileMenuOpen(false);
+                                      }}
+                                      className="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 font-medium transition-colors text-sm w-full text-left"
+                                    >
+                                      <User className="w-4 h-4" />
+                                      User Profile
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        setCurrentPage('settings');
+                                        setIsProfileMenuOpen(false);
+                                      }}
+                                      className="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors text-sm w-full text-left"
+                                    >
+                                      <Settings className="w-4 h-4" />
+                                      Settings
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+
+                              <div className="mt-3 pt-3 border-t border-slate-200 w-full mb-1">
+                                <button
+                                  onClick={() => handleUserLogout()}
+                                  className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-xl font-medium transition-colors cursor-pointer"
+                                >
+                                  <LogOut className="w-4 h-4" />
+                                  Log out
+                                </button>
+                              </div>
+                            </div>
+                          </motion.div>
+                        </>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+              ) : (
+                <div className="hidden md:flex items-center gap-2">
+                  <button
+                    onClick={() => setCurrentPage('login')}
+                    className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 px-4 py-2 rounded-xl transition-all"
+                  >
+                    Log in
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage('signup')}
+                    className="text-sm font-semibold text-white bg-slate-900 hover:bg-indigo-600 px-5 py-2.5 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/20 active:scale-95 ml-2"
+                  >
+                    Sign up
+                  </button>
                 </div>
               )}
-            </div>
 
-            {currentUserRole !== null ? (
-              <div className="flex items-center gap-4 relative">
-                {currentUserRole === 'provider' && providerVerificationStatus === 'active' && (
-                <button
-                  onClick={async () => {
-                    const newStatus = !isProviderOnline;
-                    setIsProviderOnline(newStatus);
-                    const token = localStorage.getItem('tasklink_token');
-                    if (token) {
-                      try {
-                        await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/status`, {
-                          method: 'POST',
-                          headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                          },
-                          body: JSON.stringify({ is_online: newStatus })
-                        });
-                      } catch (err) {
-                        console.error('Failed to update online status:', err);
-                      }
-                    }
-                  }}
-                  className={`flex text-sm font-semibold items-center gap-2 px-3 py-1.5 rounded-full transition-all border shadow-sm cursor-pointer ${isProviderOnline ? 'bg-green-50 text-green-700 border-green-200 hover:bg-green-100' : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'}`}
-                >
-                  <div className={`w-2.5 h-2.5 rounded-full ${isProviderOnline ? 'bg-green-500 animate-pulse' : 'bg-slate-300'}`}></div>
-                  <span className="hidden sm:inline">{isProviderOnline ? 'Go Offline' : 'Go Online'}</span>
-                  <span className="sm:hidden">{isProviderOnline ? 'Online' : 'Offline'}</span>
-                </button>
-              )}
-            
-              <div className="hidden md:flex items-center gap-4 relative">
-              {currentUserRole === 'client' && (
-                <button 
-                  onClick={() => setIsPostTaskOptionsOpen(true)}
-                  className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 flex items-center gap-2 px-4 py-2 rounded-xl transition-all"
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  Post a Task
-                </button>
-              )}
-              <div 
-                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-                className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 overflow-hidden border-2 border-white shadow-sm flex items-center justify-center cursor-pointer hover:shadow-md transition-shadow"
+              <button
+                className="md:hidden p-2 text-slate-600 hover:text-indigo-600 transition-colors"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               >
-                {profileData.avatar ? (
-                  <img src={profileData.avatar} alt="Profile Avatar" className="w-full h-full object-cover" />
-                ) : (
-                  <span className="text-indigo-600 font-bold text-sm">{profileData.firstName ? profileData.firstName[0].toUpperCase() : 'U'}</span>
-                )}
-              </div>
-
-              <AnimatePresence>
-                {isProfileMenuOpen && (
-                  <>
-                    <div 
-                      className="fixed inset-0 z-40" 
-                      onClick={() => setIsProfileMenuOpen(false)}
-                    />
-                    <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute top-14 right-0 w-64 z-50 shadow-2xl"
-                    >
-                      <div className="p-4 flex flex-col items-center shadow-xl border border-slate-200 bg-white rounded-3xl">
-                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 border-4 border-white shadow-sm flex items-center justify-center mb-3 overflow-hidden">
-                          {profileData.avatar ? (
-                            <img src={profileData.avatar} alt="Profile Avatar" className="w-full h-full object-cover" />
-                          ) : (
-                            <span className="text-indigo-600 font-bold text-2xl">{profileData.firstName ? profileData.firstName[0].toUpperCase() : 'U'}</span>
-                          )}
-                        </div>
-                        <h2 className="text-base font-bold text-slate-900 mx-auto text-center">{profileData.firstName} {profileData.lastName}</h2>
-                        <p className="text-xs text-slate-500 mb-4 mx-auto text-center">{profileData.email}</p>
-                      
-                      <div className="flex flex-col gap-1 w-full">
-                        {(currentUserRole !== 'provider' || providerVerificationStatus === 'active') && (
-                          <>
-                            <button 
-                              onClick={() => {
-                                navigateToDashboard();
-                                setIsProfileMenuOpen(false);
-                              }}
-                              className="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 font-medium transition-colors text-sm w-full text-left"
-                            >
-                              <LayoutDashboard className="w-4 h-4" />
-                              Dashboard
-                            </button>
-                            <button 
-                              onClick={() => {
-                                setCurrentPage('userProfile');
-                                setIsProfileMenuOpen(false);
-                              }}
-                              className="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 font-medium transition-colors text-sm w-full text-left"
-                            >
-                              <User className="w-4 h-4" />
-                              User Profile
-                            </button>
-                            <button 
-                              onClick={() => {
-                                setCurrentPage('settings');
-                                setIsProfileMenuOpen(false);
-                              }}
-                              className="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium transition-colors text-sm w-full text-left"
-                            >
-                              <Settings className="w-4 h-4" />
-                              Settings
-                            </button>
-                          </>
-                        )}
-                      </div>
-                      
-                      <div className="mt-3 pt-3 border-t border-slate-200 w-full mb-1">
-                        <button 
-                          onClick={() => handleUserLogout()}
-                          className="flex items-center justify-center gap-2 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-xl font-medium transition-colors cursor-pointer"
-                        >
-                          <LogOut className="w-4 h-4" />
-                          Log out
-                        </button>
-                      </div>
-                    </div>
-                  </motion.div>
-                  </>
-                )}
-              </AnimatePresence>
-            </div>
-            </div>
-          ) : (
-            <div className="hidden md:flex items-center gap-2">
-              <button 
-                onClick={() => setCurrentPage('login')}
-                className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 px-4 py-2 rounded-xl transition-all"
-              >
-                Log in
-              </button>
-              <button 
-                onClick={() => setCurrentPage('signup')}
-                className="text-sm font-semibold text-white bg-slate-900 hover:bg-indigo-600 px-5 py-2.5 rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-indigo-500/20 active:scale-95 ml-2"
-              >
-                Sign up
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
-          )}
 
-          <button 
-            className="md:hidden p-2 text-slate-600 hover:text-indigo-600 transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
-          </div>
+            {currentPage === 'supervisorDashboard' && (
+              <div className="w-full flex items-center justify-between gap-2 overflow-x-auto no-scrollbar pb-1 pt-2 border-t border-slate-200/50">
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    onClick={() => setSupervisorActiveTab('assigned')}
+                    className={`px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer ${supervisorActiveTab === 'assigned' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                  >
+                    Assigned Trips
+                  </button>
+                  <button
+                    onClick={() => setSupervisorActiveTab('completed')}
+                    className={`px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer ${supervisorActiveTab === 'completed' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                  >
+                    Completed Audits
+                  </button>
+                  <button
+                    onClick={() => setSupervisorActiveTab('escalated')}
+                    className={`px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer ${supervisorActiveTab === 'escalated' ? 'bg-red-600 text-white shadow-md shadow-red-600/20' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                  >
+                    Escalated Disputes
+                  </button>
+                </div>
 
-          {currentPage === 'supervisorDashboard' && (
-            <div className="w-full flex items-center justify-between gap-2 overflow-x-auto no-scrollbar pb-1 pt-2 border-t border-slate-200/50">
-              <div className="flex items-center gap-2 shrink-0">
-                <button 
-                  onClick={() => setSupervisorActiveTab('assigned')}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer ${supervisorActiveTab === 'assigned' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                >
-                  Assigned Trips
-                </button>
-                <button 
-                  onClick={() => setSupervisorActiveTab('completed')}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer ${supervisorActiveTab === 'completed' ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/20' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                >
-                  Completed Audits
-                </button>
-                <button 
-                  onClick={() => setSupervisorActiveTab('escalated')}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-colors cursor-pointer ${supervisorActiveTab === 'escalated' ? 'bg-red-600 text-white shadow-md shadow-red-600/20' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
-                >
-                  Escalated Disputes
-                </button>
+                {currentUserRole === 'admin' && (
+                  <button
+                    onClick={() => setCurrentPage('adminDashboard')}
+                    className="ml-auto px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-900 hover:bg-indigo-600 text-white flex items-center gap-1.5 transition-all shadow-sm shrink-0 cursor-pointer"
+                  >
+                    <Shield className="w-3.5 h-3.5 text-indigo-400" />
+                    Back to Admin Terminal
+                  </button>
+                )}
               </div>
+            )}
 
-              {currentUserRole === 'admin' && (
-                <button
-                  onClick={() => setCurrentPage('adminDashboard')}
-                  className="ml-auto px-3.5 py-1.5 rounded-full text-xs font-bold bg-slate-900 hover:bg-indigo-600 text-white flex items-center gap-1.5 transition-all shadow-sm shrink-0 cursor-pointer"
-                >
-                  <Shield className="w-3.5 h-3.5 text-indigo-400" />
-                  Back to Admin Terminal
-                </button>
-              )}
-            </div>
-          )}
+          </GlassCard>
 
-        </GlassCard>
-
-        {/* Mobile Menu Dropdown */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, y: -20, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -20, scale: 0.95 }}
-              transition={{ duration: 0.2 }}
-              className="md:hidden absolute top-20 left-6 right-6 z-40"
-            >
-              <div className="p-4 flex flex-col gap-2 rounded-3xl shadow-xl border border-slate-200 bg-white">
-                {currentUserRole !== null ? (
-                  <>
-                    <button 
-                      onClick={() => {
-                        navigateToDashboard();
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 w-full py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2"
-                    >
-                      <LayoutDashboard className="w-4 h-4" /> Dashboard
-                    </button>
-                    <button 
-                      onClick={() => {
-                        setCurrentPage('userProfile');
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 w-full py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2"
-                    >
-                      <User className="w-4 h-4" /> User Profile
-                    </button>
-                    {currentUserRole === 'client' && (
-                      <button 
+          {/* Mobile Menu Dropdown */}
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                transition={{ duration: 0.2 }}
+                className="md:hidden absolute top-20 left-6 right-6 z-40"
+              >
+                <div className="p-4 flex flex-col gap-2 rounded-3xl shadow-xl border border-slate-200 bg-white">
+                  {currentUserRole !== null ? (
+                    <>
+                      <button
                         onClick={() => {
-                          setIsPostTaskOptionsOpen(true);
+                          navigateToDashboard();
                           setIsMobileMenuOpen(false);
                         }}
                         className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 w-full py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2"
                       >
-                        <PlusCircle className="w-4 h-4" /> Post a Task
+                        <LayoutDashboard className="w-4 h-4" /> Dashboard
                       </button>
-                    )}
-                    <button 
-                      onClick={() => {
-                        setCurrentPage('settings');
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 w-full py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2"
-                    >
-                      <Settings className="w-4 h-4" /> Settings
-                    </button>
-                    <button 
-                      onClick={() => handleUserLogout()}
-                      className="text-sm font-medium text-red-600 hover:bg-red-50 w-full py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
-                    >
-                      <LogOut className="w-4 h-4" /> Log out
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button 
-                      onClick={() => {
-                        setCurrentPage('login');
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 w-full py-3 rounded-xl transition-all text-center"
-                    >
-                      Log in
-                    </button>
-                    <button 
-                      onClick={() => {
-                        setCurrentPage('signup');
-                        setIsMobileMenuOpen(false);
-                      }}
-                      className="text-sm font-semibold text-white bg-slate-900 hover:bg-indigo-600 w-full py-3 rounded-xl transition-all duration-300 hover:shadow-lg shadow-indigo-500/20 active:scale-95 text-center"
-                    >
-                      Sign up
-                    </button>
-                  </>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </nav>
+                      <button
+                        onClick={() => {
+                          setCurrentPage('userProfile');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 w-full py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2"
+                      >
+                        <User className="w-4 h-4" /> User Profile
+                      </button>
+                      {currentUserRole === 'client' && (
+                        <button
+                          onClick={() => {
+                            setIsPostTaskOptionsOpen(true);
+                            setIsMobileMenuOpen(false);
+                          }}
+                          className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 w-full py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2"
+                        >
+                          <PlusCircle className="w-4 h-4" /> Post a Task
+                        </button>
+                      )}
+                      <button
+                        onClick={() => {
+                          setCurrentPage('settings');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 w-full py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2"
+                      >
+                        <Settings className="w-4 h-4" /> Settings
+                      </button>
+                      <button
+                        onClick={() => handleUserLogout()}
+                        className="text-sm font-medium text-red-600 hover:bg-red-50 w-full py-3 rounded-xl transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <LogOut className="w-4 h-4" /> Log out
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          setCurrentPage('login');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-sm font-medium text-slate-700 hover:text-indigo-600 hover:bg-slate-100/50 w-full py-3 rounded-xl transition-all text-center"
+                      >
+                        Log in
+                      </button>
+                      <button
+                        onClick={() => {
+                          setCurrentPage('signup');
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="text-sm font-semibold text-white bg-slate-900 hover:bg-indigo-600 w-full py-3 rounded-xl transition-all duration-300 hover:shadow-lg shadow-indigo-500/20 active:scale-95 text-center"
+                      >
+                        Sign up
+                      </button>
+                    </>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </nav>
       )}
 
       {/* Main Content Area */}
@@ -2260,8 +2260,8 @@ export default function App() {
                       { id: 2, title: '3. Quality Check', desc: 'Supervisor inspects site', icon: <ShieldCheck className="w-5 h-5" />, colorClass: 'border-emerald-500', bgClass: 'bg-emerald-100 text-emerald-600' },
                       { id: 3, title: '4. Job Done', desc: 'Funds released securely', icon: <CheckCircle2 className="w-5 h-5" />, colorClass: 'border-indigo-500', bgClass: 'bg-indigo-100 text-indigo-600' },
                     ].map((step) => (
-                      <div 
-                        key={step.id} 
+                      <div
+                        key={step.id}
                         onClick={() => setActiveSlide(step.id)}
                         className={`cursor-pointer rounded-2xl p-4 transition-all duration-300 flex flex-col items-center text-center ${activeSlide === step.id ? 'bg-white shadow-lg scale-[1.02] border-b-4 ' + step.colorClass : 'hover:bg-white/60 opacity-60 hover:opacity-100'}`}
                       >
@@ -2278,86 +2278,86 @@ export default function App() {
                   <div className="w-full min-h-[360px] bg-slate-900 rounded-3xl overflow-hidden relative shadow-inner border border-slate-800 flex items-center justify-center p-6 md:p-10">
                     {/* Decorative Background */}
                     <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.2) 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
-                    
+
                     <AnimatePresence mode="wait">
                       {activeSlide === 0 && (
                         <motion.div key="slide0" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full max-w-md flex flex-col items-center relative z-10">
-                           <div className="bg-white w-full rounded-2xl p-6 shadow-2xl">
-                             <div className="flex items-center gap-4 mb-6">
-                               <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center border-4 border-blue-50 shadow-inner"><Search className="w-6 h-6 text-blue-600" /></div>
-                               <div><h4 className="text-xl font-bold text-slate-800">Plumbing Repair</h4><p className="text-slate-500 text-sm">Fix leaking kitchen sink</p></div>
-                             </div>
-                             <div className="space-y-4 mb-6">
-                               <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-blue-500 w-1/3 animate-pulse"></div></div>
-                               <div className="h-3 w-3/4 bg-slate-100 rounded-full"></div>
-                             </div>
-                             <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center justify-between">
-                               <div className="flex items-center gap-2 text-emerald-800 font-bold"><ShieldCheck className="w-5 h-5 text-emerald-600" /> Escrow Locked</div>
-                               <span className="font-bold text-emerald-600 text-lg">LKR 4,500</span>
-                             </div>
-                           </div>
-                           <p className="mt-6 text-slate-300 text-center text-sm md:text-base font-medium px-4">Customers post their requirements. Escrow ensures funds are locked securely before any work begins.</p>
+                          <div className="bg-white w-full rounded-2xl p-6 shadow-2xl">
+                            <div className="flex items-center gap-4 mb-6">
+                              <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center border-4 border-blue-50 shadow-inner"><Search className="w-6 h-6 text-blue-600" /></div>
+                              <div><h4 className="text-xl font-bold text-slate-800">Plumbing Repair</h4><p className="text-slate-500 text-sm">Fix leaking kitchen sink</p></div>
+                            </div>
+                            <div className="space-y-4 mb-6">
+                              <div className="h-3 w-full bg-slate-100 rounded-full overflow-hidden"><div className="h-full bg-blue-500 w-1/3 animate-pulse"></div></div>
+                              <div className="h-3 w-3/4 bg-slate-100 rounded-full"></div>
+                            </div>
+                            <div className="p-4 bg-emerald-50 rounded-xl border border-emerald-200 flex items-center justify-between">
+                              <div className="flex items-center gap-2 text-emerald-800 font-bold"><ShieldCheck className="w-5 h-5 text-emerald-600" /> Escrow Locked</div>
+                              <span className="font-bold text-emerald-600 text-lg">LKR 4,500</span>
+                            </div>
+                          </div>
+                          <p className="mt-6 text-slate-300 text-center text-sm md:text-base font-medium px-4">Customers post their requirements. Escrow ensures funds are locked securely before any work begins.</p>
                         </motion.div>
                       )}
-                      
+
                       {activeSlide === 1 && (
                         <motion.div key="slide1" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full max-w-md flex flex-col items-center relative z-10">
-                           <div className="bg-white w-full rounded-2xl p-6 shadow-2xl">
-                             <div className="flex items-center justify-between mb-6">
-                               <div className="flex items-center gap-3">
-                                 <div className="w-14 h-14 bg-gradient-to-tr from-purple-100 to-pink-100 rounded-full flex items-center justify-center border-4 border-white shadow-md relative">
-                                   <User className="w-6 h-6 text-purple-600" />
-                                   <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
-                                 </div>
-                                 <div><h4 className="text-xl font-bold text-slate-800">Saman K.</h4><div className="flex items-center text-amber-500 text-xs mt-1"><Star className="w-3 h-3 fill-current mr-1" /> 4.9 <span className="text-slate-400 ml-1">(124 jobs)</span></div></div>
-                               </div>
-                               <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full animate-pulse border border-purple-200">In Progress</span>
-                             </div>
-                             <div className="h-32 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center relative overflow-hidden">
-                               <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-                               <div className="flex items-center gap-6 relative z-10">
-                                 <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center z-10"><MapPin className="w-6 h-6 text-rose-500" /></div>
-                                 <div className="w-24 border-t-4 border-dashed border-slate-300 relative">
-                                   <motion.div animate={{ x: [0, 90] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute -top-3 -left-2 w-6 h-6 bg-purple-500 rounded-full shadow-lg flex items-center justify-center">
-                                     <Briefcase className="w-3 h-3 text-white" />
-                                   </motion.div>
-                                 </div>
-                                 <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center z-10"><Settings className="w-6 h-6 text-slate-400 animate-[spin_3s_linear_infinite]" /></div>
-                               </div>
-                             </div>
-                           </div>
-                           <p className="mt-6 text-slate-300 text-center text-sm md:text-base font-medium px-4">A verified local professional accepts the job and gets to work immediately, tracking progress in real-time.</p>
+                          <div className="bg-white w-full rounded-2xl p-6 shadow-2xl">
+                            <div className="flex items-center justify-between mb-6">
+                              <div className="flex items-center gap-3">
+                                <div className="w-14 h-14 bg-gradient-to-tr from-purple-100 to-pink-100 rounded-full flex items-center justify-center border-4 border-white shadow-md relative">
+                                  <User className="w-6 h-6 text-purple-600" />
+                                  <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+                                </div>
+                                <div><h4 className="text-xl font-bold text-slate-800">Saman K.</h4><div className="flex items-center text-amber-500 text-xs mt-1"><Star className="w-3 h-3 fill-current mr-1" /> 4.9 <span className="text-slate-400 ml-1">(124 jobs)</span></div></div>
+                              </div>
+                              <span className="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full animate-pulse border border-purple-200">In Progress</span>
+                            </div>
+                            <div className="h-32 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center relative overflow-hidden">
+                              <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                              <div className="flex items-center gap-6 relative z-10">
+                                <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center z-10"><MapPin className="w-6 h-6 text-rose-500" /></div>
+                                <div className="w-24 border-t-4 border-dashed border-slate-300 relative">
+                                  <motion.div animate={{ x: [0, 90] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute -top-3 -left-2 w-6 h-6 bg-purple-500 rounded-full shadow-lg flex items-center justify-center">
+                                    <Briefcase className="w-3 h-3 text-white" />
+                                  </motion.div>
+                                </div>
+                                <div className="w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center z-10"><Settings className="w-6 h-6 text-slate-400 animate-[spin_3s_linear_infinite]" /></div>
+                              </div>
+                            </div>
+                          </div>
+                          <p className="mt-6 text-slate-300 text-center text-sm md:text-base font-medium px-4">A verified local professional accepts the job and gets to work immediately, tracking progress in real-time.</p>
                         </motion.div>
                       )}
 
                       {activeSlide === 2 && (
                         <motion.div key="slide2" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }} className="w-full max-w-md flex flex-col items-center relative z-10">
-                           <div className="bg-white w-full rounded-2xl p-6 shadow-2xl border-t-8 border-emerald-500">
-                             <div className="flex items-center justify-between mb-8">
-                               <div className="flex items-center gap-3">
-                                 <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600"><ShieldCheck className="w-6 h-6" /></div>
-                                 <div><h4 className="font-bold text-slate-800">Quality Inspection</h4><p className="text-xs text-slate-500">Supervisor: Charlie S.</p></div>
-                               </div>
-                               <div className="flex gap-1">
-                                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce"></div>
-                                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                                 <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                               </div>
-                             </div>
-                             <div className="space-y-4">
-                               <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                 <CheckCircle2 className="w-5 h-5 text-emerald-500" /> <span className="text-sm font-semibold text-slate-700">Plumbing materials verified</span>
-                               </div>
-                               <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
-                                 <CheckCircle2 className="w-5 h-5 text-emerald-500" /> <span className="text-sm font-semibold text-slate-700">No leakage observed</span>
-                               </div>
-                               <div className="flex items-center gap-3 p-3 bg-indigo-50 border border-indigo-100 rounded-lg shadow-sm">
-                                 <div className="w-6 h-6 bg-indigo-100 rounded-full flex items-center justify-center"><Camera className="w-3 h-3 text-indigo-600" /></div>
-                                 <span className="text-sm font-bold text-indigo-900">Upload Site Photos</span>
-                               </div>
-                             </div>
-                           </div>
-                           <p className="mt-6 text-slate-300 text-center text-sm md:text-base font-medium px-4">Before payment is released, a Field Supervisor thoroughly inspects the work to ensure top-notch quality.</p>
+                          <div className="bg-white w-full rounded-2xl p-6 shadow-2xl border-t-8 border-emerald-500">
+                            <div className="flex items-center justify-between mb-8">
+                              <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600"><ShieldCheck className="w-6 h-6" /></div>
+                                <div><h4 className="font-bold text-slate-800">Quality Inspection</h4><p className="text-xs text-slate-500">Supervisor: Charlie S.</p></div>
+                              </div>
+                              <div className="flex gap-1">
+                                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce"></div>
+                                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                                <div className="w-2 h-2 rounded-full bg-emerald-500 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                              </div>
+                            </div>
+                            <div className="space-y-4">
+                              <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <CheckCircle2 className="w-5 h-5 text-emerald-500" /> <span className="text-sm font-semibold text-slate-700">Plumbing materials verified</span>
+                              </div>
+                              <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                                <CheckCircle2 className="w-5 h-5 text-emerald-500" /> <span className="text-sm font-semibold text-slate-700">No leakage observed</span>
+                              </div>
+                              <div className="flex items-center gap-3 p-3 bg-indigo-50 border border-indigo-100 rounded-lg shadow-sm">
+                                <div className="w-6 h-6 bg-indigo-100 rounded-full flex items-center justify-center"><Camera className="w-3 h-3 text-indigo-600" /></div>
+                                <span className="text-sm font-bold text-indigo-900">Upload Site Photos</span>
+                              </div>
+                            </div>
+                          </div>
+                          <p className="mt-6 text-slate-300 text-center text-sm md:text-base font-medium px-4">Before payment is released, a Field Supervisor thoroughly inspects the work to ensure top-notch quality.</p>
                         </motion.div>
                       )}
 
@@ -2398,7 +2398,7 @@ export default function App() {
                 transition={{ duration: 0.7 }}
               >
                 <p className="text-center text-sm font-medium text-slate-500 uppercase tracking-widest mb-10">Why millions trust TaskLink</p>
-                
+
                 <div className="grid md:grid-cols-3 gap-8">
                   <GlassCard className="p-6 flex items-start gap-4">
                     <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
@@ -2409,7 +2409,7 @@ export default function App() {
                       <p className="text-sm text-slate-600">Every provider passes rigorous background checks and quality standards before joining.</p>
                     </div>
                   </GlassCard>
-                  
+
                   <GlassCard className="p-6 flex items-start gap-4">
                     <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
                       <Star className="w-5 h-5 text-slate-700" />
@@ -2453,7 +2453,7 @@ export default function App() {
                 Back to Home
               </button>
             </div>
-            
+
             <GlassCard className="p-8 md:p-12 bg-white/60">
               <div className="flex flex-col items-center text-center mb-12">
                 <div className="w-16 h-16 rounded-2xl bg-indigo-100 flex items-center justify-center mb-6">
@@ -2464,7 +2464,7 @@ export default function App() {
                   We are on a mission to revolutionize how everyday tasks are managed and completed by connecting skilled professionals with those who need them most.
                 </p>
               </div>
-              
+
               <div className="space-y-8">
                 <div>
                   <h2 className="text-2xl font-bold text-slate-900 mb-3">Our Vision</h2>
@@ -2472,7 +2472,7 @@ export default function App() {
                     At TaskLink, we envision a world where getting things done is seamless, transparent, and efficient. We believe in empowering independent workers and small businesses by providing them with a robust platform to showcase their skills, find meaningful work, and build lasting relationships with clients.
                   </p>
                 </div>
-                
+
                 <div>
                   <h2 className="text-2xl font-bold text-slate-900 mb-3">Why Choose Us?</h2>
                   <ul className="space-y-3">
@@ -2752,25 +2752,25 @@ export default function App() {
             className="relative z-10 max-w-xl mx-auto px-6 pt-32 pb-24 flex justify-center w-full min-h-screen"
           >
             <GlassCard className="w-full p-8 md:p-10 h-fit bg-white/50">
-              <button 
+              <button
                 onClick={() => setCurrentPage('home')}
                 className="flex items-center text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors mb-8 group"
               >
                 <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
                 Back to home
               </button>
-              
+
               <h1 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">Create an account</h1>
               <p className="text-slate-600 mb-8 text-sm">Join TaskLink today. It takes less than a minute.</p>
 
               <div className="flex bg-slate-200/50 p-1.5 rounded-2xl mb-8">
-                <button 
+                <button
                   onClick={() => setRole('client')}
                   className={`flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all ${role === 'client' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                 >
                   I'm a Client
                 </button>
-                <button 
+                <button
                   onClick={() => setRole('provider')}
                   className={`flex-1 py-2.5 text-sm font-semibold rounded-xl transition-all ${role === 'provider' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                 >
@@ -2781,8 +2781,8 @@ export default function App() {
               <form className="space-y-5" onSubmit={handleSignupSubmit}>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">Full Name</label>
-                  <input 
-                    type="text" 
+                  <input
+                    type="text"
                     required
                     value={signupName}
                     onChange={(e) => {
@@ -2796,8 +2796,8 @@ export default function App() {
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
-                  <input 
-                    type="email" 
+                  <input
+                    type="email"
                     required
                     value={signupEmail}
                     onChange={(e) => {
@@ -2811,8 +2811,8 @@ export default function App() {
 
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
-                  <input 
-                    type="password" 
+                  <input
+                    type="password"
                     required
                     minLength={8}
                     value={signupPassword}
@@ -2828,8 +2828,8 @@ export default function App() {
                 {role === 'client' && (
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1.5">Mobile Number (Optional)</label>
-                    <input 
-                      type="tel" 
+                    <input
+                      type="tel"
                       value={signupPhone}
                       onChange={(e) => setSignupPhone(e.target.value)}
                       placeholder="+94 7X XXX XXXX"
@@ -2851,8 +2851,8 @@ export default function App() {
                         <div className="space-y-4">
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1.5">Mobile Number</label>
-                            <input 
-                              type="tel" 
+                            <input
+                              type="tel"
                               required={role === 'provider'}
                               value={signupPhone}
                               onChange={(e) => setSignupPhone(e.target.value)}
@@ -2862,7 +2862,7 @@ export default function App() {
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1.5">Permanent Address</label>
-                            <textarea 
+                            <textarea
                               rows={2}
                               value={signupAddress}
                               onChange={(e) => setSignupAddress(e.target.value)}
@@ -2872,11 +2872,11 @@ export default function App() {
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1.5">Profile Avatar</label>
-                            <input 
-                              type="file" 
-                              ref={avatarInputRef} 
-                              className="hidden" 
-                              accept="image/*" 
+                            <input
+                              type="file"
+                              ref={avatarInputRef}
+                              className="hidden"
+                              accept="image/*"
                               onChange={(e) => {
                                 if (e.target.files && e.target.files[0]) {
                                   setSignupAvatarFile(e.target.files[0]);
@@ -2891,8 +2891,8 @@ export default function App() {
                                   <User className="w-8 h-8" />
                                 )}
                               </div>
-                              <button 
-                                type="button" 
+                              <button
+                                type="button"
                                 onClick={() => avatarInputRef.current?.click()}
                                 className="px-4 py-2 bg-white text-sm font-semibold border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors shadow-sm"
                               >
@@ -2908,7 +2908,7 @@ export default function App() {
                         <div className="space-y-4">
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1.5">Trade Category</label>
-                            <select 
+                            <select
                               value={signupTrade}
                               onChange={(e) => setSignupTrade(e.target.value)}
                               className="w-full px-4 py-3 bg-white/70 border border-white/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:bg-white text-slate-900 shadow-sm transition-all"
@@ -2925,8 +2925,8 @@ export default function App() {
                           </div>
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1.5">Years of Experience</label>
-                            <input 
-                              type="number" 
+                            <input
+                              type="number"
                               min="0"
                               value={signupExperience}
                               onChange={(e) => setSignupExperience(e.target.value)}
@@ -2942,8 +2942,8 @@ export default function App() {
                         <div className="space-y-4">
                           <div>
                             <label className="block text-sm font-medium text-slate-700 mb-1.5">National Identity Card (NIC) Number</label>
-                            <input 
-                              type="text" 
+                            <input
+                              type="text"
                               required={role === 'provider'}
                               value={signupNic}
                               onChange={(e) => setSignupNic(e.target.value)}
@@ -2957,18 +2957,18 @@ export default function App() {
                               <span>NIC / Passport Photo</span>
                               <span className="text-indigo-600 font-medium normal-case">Required*</span>
                             </label>
-                            <input 
-                              type="file" 
-                              ref={idInputRef} 
-                              className="hidden" 
-                              accept="image/*" 
+                            <input
+                              type="file"
+                              ref={idInputRef}
+                              className="hidden"
+                              accept="image/*"
                               onChange={(e) => {
                                 if (e.target.files && e.target.files[0]) {
                                   setSignupIdFile(e.target.files[0]);
                                 }
                               }}
                             />
-                            <div 
+                            <div
                               onClick={() => idInputRef.current?.click()}
                               className="w-full px-4 py-6 border-2 border-dashed border-indigo-200 hover:border-indigo-400 rounded-2xl bg-indigo-50/30 hover:bg-indigo-50/50 flex flex-col items-center justify-center cursor-pointer transition-all group"
                             >
@@ -2988,18 +2988,18 @@ export default function App() {
                               <span>Curriculum Vitae (CV)</span>
                               <span className="text-indigo-600 font-medium normal-case">Required*</span>
                             </label>
-                            <input 
-                              type="file" 
-                              ref={permitInputRef} 
-                              className="hidden" 
-                              accept=".pdf,.doc,.docx" 
+                            <input
+                              type="file"
+                              ref={permitInputRef}
+                              className="hidden"
+                              accept=".pdf,.doc,.docx"
                               onChange={(e) => {
                                 if (e.target.files && e.target.files[0]) {
                                   setSignupCvFile(e.target.files[0]);
                                 }
                               }}
                             />
-                            <div 
+                            <div
                               onClick={() => permitInputRef.current?.click()}
                               className="w-full px-4 py-6 border-2 border-dashed border-indigo-200 hover:border-indigo-400 rounded-2xl bg-indigo-50/30 hover:bg-indigo-50/50 flex flex-col items-center justify-center cursor-pointer transition-all group"
                             >
@@ -3033,8 +3033,8 @@ export default function App() {
                 </AnimatePresence>
 
                 <div className="pt-4">
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     disabled={signupLoading}
                     className="w-full text-base font-semibold text-white bg-slate-900 hover:bg-indigo-600 py-3.5 rounded-2xl transition-all duration-300 hover:shadow-xl shadow-indigo-500/20 active:scale-[0.98] disabled:opacity-50"
                   >
@@ -3060,20 +3060,20 @@ export default function App() {
             className="relative z-10 max-w-xl mx-auto px-6 pt-32 pb-24 flex justify-center w-full min-h-screen"
           >
             <GlassCard className="w-full p-8 md:p-10 h-fit bg-white/50">
-              <button 
+              <button
                 onClick={() => setCurrentPage('home')}
                 className="flex items-center text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors mb-8 group"
               >
                 <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
                 Back to home
               </button>
-              
+
               <h1 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">
                 {isLogin2FaRequired ? 'Two-Factor Verification' : 'Welcome back'}
               </h1>
               <p className="text-slate-600 mb-8 text-sm">
-                {isLogin2FaRequired 
-                  ? 'Enter the 6-digit verification code from your authenticator app.' 
+                {isLogin2FaRequired
+                  ? 'Enter the 6-digit verification code from your authenticator app.'
                   : 'Log in to TaskLink to continue.'}
               </p>
 
@@ -3082,17 +3082,16 @@ export default function App() {
                   <>
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
-                      <input 
-                        type="email" 
+                      <input
+                        type="email"
                         value={loginEmail}
                         onChange={(e) => {
                           setLoginEmail(e.target.value);
                           setLoginError(null);
                         }}
-                        placeholder="admin@tasklink.com"
-                        className={`w-full px-4 py-3 bg-white/70 border rounded-2xl focus:outline-none focus:ring-2 focus:bg-white text-slate-900 shadow-sm transition-all placeholder:text-slate-400 ${
-                          loginError ? 'border-red-300 focus:ring-red-500/50' : 'border-white/50 focus:ring-indigo-500/50'
-                        }`}
+                        placeholder="user@example.com"
+                        className={`w-full px-4 py-3 bg-white/70 border rounded-2xl focus:outline-none focus:ring-2 focus:bg-white text-slate-900 shadow-sm transition-all placeholder:text-slate-400 ${loginError ? 'border-red-300 focus:ring-red-500/50' : 'border-white/50 focus:ring-indigo-500/50'
+                          }`}
                       />
                     </div>
                     <div>
@@ -3100,17 +3099,16 @@ export default function App() {
                         <label className="block text-sm font-medium text-slate-700">Password</label>
                         <span onClick={() => setCurrentPage('forgotPassword')} className="text-sm font-medium text-indigo-600 hover:text-indigo-700 cursor-pointer">Forgot password?</span>
                       </div>
-                      <input 
-                        type="password" 
+                      <input
+                        type="password"
                         value={loginPassword}
                         onChange={(e) => {
                           setLoginPassword(e.target.value);
                           setLoginError(null);
                         }}
                         placeholder="••••••••"
-                        className={`w-full px-4 py-3 bg-white/70 border rounded-2xl focus:outline-none focus:ring-2 focus:bg-white text-slate-900 shadow-sm transition-all placeholder:text-slate-400 ${
-                          loginError ? 'border-red-300 focus:ring-red-500/50' : 'border-white/50 focus:ring-indigo-500/50'
-                        }`}
+                        className={`w-full px-4 py-3 bg-white/70 border rounded-2xl focus:outline-none focus:ring-2 focus:bg-white text-slate-900 shadow-sm transition-all placeholder:text-slate-400 ${loginError ? 'border-red-300 focus:ring-red-500/50' : 'border-white/50 focus:ring-indigo-500/50'
+                          }`}
                       />
                     </div>
                   </>
@@ -3129,7 +3127,7 @@ export default function App() {
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5 text-center">
                         6-Digit Authenticator Code
                       </label>
-                      <input 
+                      <input
                         type="text"
                         maxLength={6}
                         autoFocus
@@ -3139,9 +3137,8 @@ export default function App() {
                           setLoginError(null);
                         }}
                         placeholder="000000"
-                        className={`w-full px-4 py-3.5 bg-white border rounded-2xl focus:outline-none focus:ring-2 text-slate-900 text-center tracking-[0.5em] font-mono text-xl shadow-inner transition-all ${
-                          loginError ? 'border-red-300 focus:ring-red-500/50' : 'border-slate-200 focus:ring-indigo-500/50'
-                        }`}
+                        className={`w-full px-4 py-3.5 bg-white border rounded-2xl focus:outline-none focus:ring-2 text-slate-900 text-center tracking-[0.5em] font-mono text-xl shadow-inner transition-all ${loginError ? 'border-red-300 focus:ring-red-500/50' : 'border-slate-200 focus:ring-indigo-500/50'
+                          }`}
                       />
                     </div>
                     <button
@@ -3173,8 +3170,8 @@ export default function App() {
                 </AnimatePresence>
 
                 <div className="pt-4">
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     disabled={isLogin2FaRequired && login2FaCode.length !== 6}
                     className="w-full text-base font-semibold text-white bg-slate-900 hover:bg-indigo-600 py-3.5 rounded-2xl transition-all duration-300 hover:shadow-xl shadow-indigo-500/20 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
                   >
@@ -3200,35 +3197,34 @@ export default function App() {
             className="relative z-10 max-w-xl mx-auto px-6 pt-32 pb-24 flex justify-center w-full min-h-screen"
           >
             <GlassCard className="w-full p-8 md:p-10 h-fit bg-white/50">
-              <button 
+              <button
                 onClick={() => setCurrentPage('login')}
                 className="flex items-center text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors mb-8 group"
               >
                 <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
                 Back to login
               </button>
-              
+
               <h1 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">Reset password</h1>
               <p className="text-slate-600 mb-8 text-sm">Enter your email address and we'll send you a link to reset your password.</p>
 
               <form className="space-y-5" onSubmit={handleResetSubmit}>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
-                  <input 
-                    type="email" 
+                  <input
+                    type="email"
                     placeholder="you@example.com"
                     value={resetEmail}
                     onChange={(e) => {
                       setResetEmail(e.target.value);
                       setResetStatus('idle');
                     }}
-                    className={`w-full px-4 py-3 bg-white/70 border rounded-2xl focus:outline-none focus:ring-2 focus:bg-white text-slate-900 shadow-sm transition-all placeholder:text-slate-400 ${
-                      resetStatus === 'error' 
-                        ? 'border-red-300 focus:ring-red-500/50' 
+                    className={`w-full px-4 py-3 bg-white/70 border rounded-2xl focus:outline-none focus:ring-2 focus:bg-white text-slate-900 shadow-sm transition-all placeholder:text-slate-400 ${resetStatus === 'error'
+                        ? 'border-red-300 focus:ring-red-500/50'
                         : resetStatus === 'success'
-                        ? 'border-emerald-300 focus:ring-emerald-500/50'
-                        : 'border-white/50 focus:ring-indigo-500/50'
-                    }`}
+                          ? 'border-emerald-300 focus:ring-emerald-500/50'
+                          : 'border-white/50 focus:ring-indigo-500/50'
+                      }`}
                   />
                 </div>
 
@@ -3288,8 +3284,8 @@ export default function App() {
                     <h1 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">Welcome back, {profileData.firstName}! 👋</h1>
                     <p className="text-slate-600">Here's what's happening with your tasks today.</p>
                   </div>
-                  
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <GlassCard className="p-5 flex flex-col pt-6 pb-6">
                       <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center mb-3 text-blue-600">
                         <Clock className="w-5 h-5" />
@@ -3304,7 +3300,7 @@ export default function App() {
                       <h3 className="text-3xl font-bold text-slate-900 mb-1">{customerCompletedCount}</h3>
                       <p className="text-sm font-medium text-slate-500">Completed tasks</p>
                     </GlassCard>
-                    <GlassCard 
+                    <GlassCard
                       onClick={() => setIsPostTaskOptionsOpen(true)}
                       className="p-5 flex flex-col pt-6 pb-6 cursor-pointer hover:bg-white/60 transition-colors group"
                     >
@@ -3327,7 +3323,7 @@ export default function App() {
                         {customerTasks.length} Total
                       </span>
                     </div>
-                    
+
                     <div className="flex flex-col gap-3 flex-1">
                       {customerTasks.length === 0 ? (
                         <div className="flex flex-col items-center justify-center text-center p-6 border-2 border-dashed border-slate-200/60 rounded-2xl">
@@ -3342,8 +3338,8 @@ export default function App() {
                         </div>
                       ) : (
                         customerTasks.slice(0, 4).map((task) => (
-                          <div 
-                            key={task.id} 
+                          <div
+                            key={task.id}
                             onClick={() => {
                               setTrackingTask({
                                 id: 'TASK-' + task.id,
@@ -3364,15 +3360,14 @@ export default function App() {
                             className="p-3.5 bg-white/70 hover:bg-white rounded-xl border border-slate-200/80 hover:border-indigo-200 transition-all cursor-pointer shadow-sm hover:shadow group flex items-center justify-between gap-3"
                           >
                             <div className="flex items-center gap-3 min-w-0">
-                              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${
-                                task.status === 'completed' 
-                                  ? 'bg-emerald-100 text-emerald-700' 
+                              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 ${task.status === 'completed'
+                                  ? 'bg-emerald-100 text-emerald-700'
                                   : task.status === 'cancelled'
-                                  ? 'bg-red-100 text-red-700'
-                                  : task.status === 'in_progress' 
-                                  ? 'bg-indigo-100 text-indigo-700' 
-                                  : 'bg-blue-100 text-blue-700'
-                              }`}>
+                                    ? 'bg-red-100 text-red-700'
+                                    : task.status === 'in_progress'
+                                      ? 'bg-indigo-100 text-indigo-700'
+                                      : 'bg-blue-100 text-blue-700'
+                                }`}>
                                 {task.status === 'completed' ? <CheckCircle2 className="w-4 h-4" /> : task.status === 'cancelled' ? <XCircle className="w-4 h-4" /> : <Clock className="w-4 h-4" />}
                               </div>
                               <div className="min-w-0">
@@ -3388,15 +3383,14 @@ export default function App() {
                             </div>
                             <div className="text-right shrink-0">
                               <p className="text-xs font-bold text-slate-900">LKR {parseFloat(task.budget).toLocaleString()}</p>
-                              <span className={`inline-block mt-1 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${
-                                task.status === 'completed'
+                              <span className={`inline-block mt-1 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${task.status === 'completed'
                                   ? 'bg-emerald-50 text-emerald-700 border border-emerald-200/60'
                                   : task.status === 'cancelled'
-                                  ? 'bg-red-50 text-red-700 border border-red-200/60'
-                                  : task.status === 'in_progress'
-                                  ? 'bg-indigo-50 text-indigo-700 border border-indigo-200/60'
-                                  : 'bg-blue-50 text-blue-700 border border-blue-200/60'
-                              }`}>
+                                    ? 'bg-red-50 text-red-700 border border-red-200/60'
+                                    : task.status === 'in_progress'
+                                      ? 'bg-indigo-50 text-indigo-700 border border-indigo-200/60'
+                                      : 'bg-blue-50 text-blue-700 border border-blue-200/60'
+                                }`}>
                                 {task.status}
                               </span>
                             </div>
@@ -3427,7 +3421,7 @@ export default function App() {
                         </div>
                       ) : (
                         topProvidersList.map((provider) => (
-                          <div 
+                          <div
                             key={provider.id}
                             onClick={() => {
                               setSelectedProviderForHire({
@@ -3483,7 +3477,7 @@ export default function App() {
             className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-12 min-h-screen"
           >
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              
+
               {/* Header spans all 3 columns */}
               <div className="lg:col-span-3">
                 <div className="mb-4 text-center lg:text-left">
@@ -3529,7 +3523,7 @@ export default function App() {
                       <h2 className="text-lg font-bold text-slate-900">Available Tasks Near You</h2>
                       <button className="text-sm font-medium text-indigo-600 hover:text-indigo-700">Find work</button>
                     </div>
-                    
+
                     <div className="flex flex-col gap-4 overflow-y-auto flex-1 min-h-0 pr-2 pb-2 -mr-2">
                       {providerJobFeed.length === 0 ? (
                         <div className="text-center text-slate-500 py-8 text-sm">No tasks currently available in your area.</div>
@@ -3545,7 +3539,7 @@ export default function App() {
                                 </span>
                               </div>
                             </div>
-                            
+
                             <div className="flex items-center gap-2 mb-3">
                               <span className="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-600 rounded-md">{job.category}</span>
                               <div className="flex items-center gap-1 text-xs text-slate-500 font-medium">
@@ -3554,7 +3548,7 @@ export default function App() {
                             </div>
 
                             <p className="text-sm text-slate-600 mb-3 line-clamp-3">{job.description}</p>
-                            
+
                             {job.voiceNote && (
                               <div className="mb-4 bg-indigo-50/50 p-3 rounded-xl border border-indigo-100">
                                 <div className="flex items-center gap-2 mb-1.5">
@@ -3576,13 +3570,13 @@ export default function App() {
                             )}
 
                             <div className="grid grid-cols-2 gap-3 mt-auto">
-                              <button 
+                              <button
                                 onClick={() => handleDeclineTask(job.id)}
                                 className="py-2.5 px-4 text-sm font-semibold text-slate-600 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
                               >
                                 Decline
                               </button>
-                              <button 
+                              <button
                                 onClick={() => handleAcceptTask(job.id)}
                                 className="py-2.5 px-4 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-sm hover:shadow transition-all"
                               >
@@ -3607,8 +3601,8 @@ export default function App() {
                         <div className="text-center text-slate-500 py-8 text-sm">No active jobs. Accept a task to get started!</div>
                       ) : (
                         providerDashboardData.active_jobs.map((job: any) => (
-                          <div 
-                            key={job.id} 
+                          <div
+                            key={job.id}
                             onClick={() => {
                               setActiveWorkspaceJob({
                                 ...job,
@@ -3696,20 +3690,19 @@ export default function App() {
           >
             <GlassCard className="w-full p-8 md:p-10 h-fit bg-white/50">
               <div className="flex items-center justify-between mb-8">
-                <button 
+                <button
                   onClick={navigateToDashboard}
                   className="flex items-center text-sm font-medium text-slate-500 hover:text-slate-800 transition-colors group"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
                   Back to dashboard
                 </button>
-                <button 
+                <button
                   onClick={handleSaveProfile}
-                  className={`flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all ${
-                    isEditingProfile 
-                      ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-500/20' 
+                  className={`flex items-center gap-2 text-sm font-semibold px-4 py-2 rounded-xl transition-all ${isEditingProfile
+                      ? 'bg-indigo-600 text-white hover:bg-indigo-700 shadow-md shadow-indigo-500/20'
                       : 'bg-white text-slate-700 border border-slate-200 hover:border-slate-300 shadow-sm'
-                  }`}
+                    }`}
                 >
                   {isEditingProfile ? (
                     <>
@@ -3722,24 +3715,23 @@ export default function App() {
                   )}
                 </button>
               </div>
-              
+
               <div className="flex flex-col md:flex-row gap-8 mb-8">
                 <div className="shrink-0 flex flex-col items-center">
-                  <div 
+                  <div
                     onClick={() => {
                       if (isEditingProfile && profileAvatarInputRef.current) {
                         profileAvatarInputRef.current.click();
                       }
                     }}
-                    className={`w-24 h-24 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 border-4 border-white shadow-md flex items-center justify-center relative overflow-hidden group transition-all ${
-                      isEditingProfile ? 'cursor-pointer ring-4 ring-indigo-500/20 hover:ring-indigo-500/40 hover:scale-105' : ''
-                    }`}
+                    className={`w-24 h-24 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 border-4 border-white shadow-md flex items-center justify-center relative overflow-hidden group transition-all ${isEditingProfile ? 'cursor-pointer ring-4 ring-indigo-500/20 hover:ring-indigo-500/40 hover:scale-105' : ''
+                      }`}
                   >
                     {profileAvatarPreview || profileData.avatar ? (
-                      <img 
-                        src={profileAvatarPreview || profileData.avatar} 
-                        alt="Profile Avatar" 
-                        className="w-full h-full object-cover" 
+                      <img
+                        src={profileAvatarPreview || profileData.avatar}
+                        alt="Profile Avatar"
+                        className="w-full h-full object-cover"
                       />
                     ) : (
                       <span className="text-indigo-600 font-bold text-4xl">{profileData.firstName[0] || 'A'}</span>
@@ -3774,17 +3766,17 @@ export default function App() {
                     </button>
                   )}
                 </div>
-                
+
                 <div className="flex-1 space-y-6">
                   {/* Basic Info */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">First Name</label>
                       {isEditingProfile ? (
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={profileData.firstName}
-                          onChange={(e) => setProfileData({...profileData, firstName: e.target.value})}
+                          onChange={(e) => setProfileData({ ...profileData, firstName: e.target.value })}
                           className="w-full px-4 py-2.5 bg-white/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 transition-all font-medium"
                         />
                       ) : (
@@ -3796,10 +3788,10 @@ export default function App() {
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">Last Name</label>
                       {isEditingProfile ? (
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           value={profileData.lastName}
-                          onChange={(e) => setProfileData({...profileData, lastName: e.target.value})}
+                          onChange={(e) => setProfileData({ ...profileData, lastName: e.target.value })}
                           className="w-full px-4 py-2.5 bg-white/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 transition-all font-medium"
                         />
                       ) : (
@@ -3815,10 +3807,10 @@ export default function App() {
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">Email address</label>
                       {isEditingProfile ? (
-                        <input 
-                          type="email" 
+                        <input
+                          type="email"
                           value={profileData.email}
-                          onChange={(e) => setProfileData({...profileData, email: e.target.value})}
+                          onChange={(e) => setProfileData({ ...profileData, email: e.target.value })}
                           className="w-full px-4 py-2.5 bg-white/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 transition-all text-sm"
                         />
                       ) : (
@@ -3830,10 +3822,10 @@ export default function App() {
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">Phone Number</label>
                       {isEditingProfile ? (
-                        <input 
-                          type="tel" 
+                        <input
+                          type="tel"
                           value={profileData.phone}
-                          onChange={(e) => setProfileData({...profileData, phone: e.target.value})}
+                          onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
                           className="w-full px-4 py-2.5 bg-white/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 transition-all text-sm"
                         />
                       ) : (
@@ -3851,10 +3843,10 @@ export default function App() {
                       <div className="relative">
                         {!isEditingProfile && <Calendar className="absolute left-3 top-3 w-4 h-4 text-slate-400" />}
                         {isEditingProfile ? (
-                          <input 
-                            type="date" 
+                          <input
+                            type="date"
                             value={profileData.dob}
-                            onChange={(e) => setProfileData({...profileData, dob: e.target.value})}
+                            onChange={(e) => setProfileData({ ...profileData, dob: e.target.value })}
                             className="w-full px-4 py-2.5 bg-white/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 transition-all text-sm text-[15px]"
                           />
                         ) : (
@@ -3869,11 +3861,11 @@ export default function App() {
                       <div className="relative">
                         {!isEditingProfile && <MapPin className="absolute left-3 top-3 w-4 h-4 text-slate-400" />}
                         {isEditingProfile ? (
-                          <input 
-                            type="text" 
+                          <input
+                            type="text"
                             placeholder="City, Country"
                             value={profileData.location}
-                            onChange={(e) => setProfileData({...profileData, location: e.target.value})}
+                            onChange={(e) => setProfileData({ ...profileData, location: e.target.value })}
                             className="w-full px-4 py-2.5 bg-white/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 transition-all text-sm"
                           />
                         ) : (
@@ -3889,9 +3881,9 @@ export default function App() {
                   <div>
                     <label className="block text-sm font-medium text-slate-700 mb-1.5">Bio</label>
                     {isEditingProfile ? (
-                      <textarea 
+                      <textarea
                         value={profileData.bio}
-                        onChange={(e) => setProfileData({...profileData, bio: e.target.value})}
+                        onChange={(e) => setProfileData({ ...profileData, bio: e.target.value })}
                         rows={4}
                         className="w-full px-4 py-3 bg-white/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 transition-all text-sm resize-none"
                       />
@@ -3906,10 +3898,10 @@ export default function App() {
                     <div className="mt-6 pt-6 border-t border-slate-100">
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">Hourly Rate (LKR)</label>
                       {isEditingProfile ? (
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           value={profileData.hourlyRate}
-                          onChange={(e) => setProfileData({...profileData, hourlyRate: e.target.value})}
+                          onChange={(e) => setProfileData({ ...profileData, hourlyRate: e.target.value })}
                           className="w-full px-4 py-2.5 bg-white/70 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 transition-all text-sm"
                         />
                       ) : (
@@ -3937,7 +3929,7 @@ export default function App() {
             <GlassCard className="w-full p-8 md:p-10 h-fit bg-white/50">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200">
                 <div className="flex items-center gap-4">
-                  <button 
+                  <button
                     onClick={navigateToDashboard}
                     className="p-2 -ml-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
                   >
@@ -3946,7 +3938,7 @@ export default function App() {
                   <h1 className="text-2xl font-bold text-slate-900">Settings</h1>
                 </div>
               </div>
-              
+
               <div className="space-y-8">
                 {/* 2FA Section */}
                 <div>
@@ -3966,13 +3958,12 @@ export default function App() {
                         <p className="text-sm text-slate-600 mt-1">Add an extra layer of security to your account.</p>
                       </div>
                     </div>
-                    <button 
+                    <button
                       onClick={() => is2FAActive ? setIsDisable2FAModalOpen(true) : handleOpen2FASetup()}
-                      className={`whitespace-nowrap px-4 py-2 ${
-                        is2FAActive 
-                          ? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200' 
+                      className={`whitespace-nowrap px-4 py-2 ${is2FAActive
+                          ? 'bg-red-50 text-red-600 hover:bg-red-100 border border-red-200'
                           : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm hover:shadow-md'
-                      } text-sm font-medium rounded-xl transition-all self-start sm:self-auto cursor-pointer`}
+                        } text-sm font-medium rounded-xl transition-all self-start sm:self-auto cursor-pointer`}
                     >
                       {is2FAActive ? 'Disable' : 'Set up 2FA'}
                     </button>
@@ -3999,17 +3990,17 @@ export default function App() {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="pt-5 border-t border-slate-200">
                       <div className="flex flex-col sm:flex-row gap-3">
-                        <input 
-                          type="email" 
+                        <input
+                          type="email"
                           value={newEmailInput}
                           onChange={(e) => setNewEmailInput(e.target.value)}
-                          placeholder="New email address" 
+                          placeholder="New email address"
                           className="flex-1 px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 text-sm font-medium"
                         />
-                        <button 
+                        <button
                           onClick={() => {
                             if (newEmailInput) {
                               setSettingsEmail(newEmailInput);
@@ -4035,26 +4026,26 @@ export default function App() {
 
                 {/* Danger Zone */}
                 {['client', 'provider'].includes(currentUserRole || '') && (
-                <div className="pt-4">
-                  <h2 className="text-sm font-bold text-red-600 mb-4 uppercase tracking-wider">Danger Zone</h2>
-                  <div className="bg-red-50/50 border border-red-100 rounded-2xl p-5 flex flex-col sm:flex-row gap-4 sm:items-center justify-between">
-                    <div className="flex items-start sm:items-center gap-4">
-                      <div className="mt-1 sm:mt-0 p-2.5 bg-red-100 text-red-700 rounded-xl shrink-0">
-                        <AlertTriangle className="w-5 h-5" />
+                  <div className="pt-4">
+                    <h2 className="text-sm font-bold text-red-600 mb-4 uppercase tracking-wider">Danger Zone</h2>
+                    <div className="bg-red-50/50 border border-red-100 rounded-2xl p-5 flex flex-col sm:flex-row gap-4 sm:items-center justify-between">
+                      <div className="flex items-start sm:items-center gap-4">
+                        <div className="mt-1 sm:mt-0 p-2.5 bg-red-100 text-red-700 rounded-xl shrink-0">
+                          <AlertTriangle className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-red-900">Deactivate Account</h3>
+                          <p className="text-sm text-red-700/80 mt-1">Once you deactivate your account, there is no going back.</p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="font-semibold text-red-900">Deactivate Account</h3>
-                        <p className="text-sm text-red-700/80 mt-1">Once you deactivate your account, there is no going back.</p>
-                      </div>
+                      <button
+                        onClick={() => setIsDeactivateModalOpen(true)}
+                        className="whitespace-nowrap px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm self-start sm:self-auto"
+                      >
+                        Deactivate
+                      </button>
                     </div>
-                    <button 
-                      onClick={() => setIsDeactivateModalOpen(true)}
-                      className="whitespace-nowrap px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-xl transition-colors shadow-sm self-start sm:self-auto"
-                    >
-                      Deactivate
-                    </button>
                   </div>
-                </div>
                 )}
               </div>
             </GlassCard>
@@ -4080,12 +4071,12 @@ export default function App() {
                             <p className="text-xs text-slate-500">Authenticator App (TOTP)</p>
                           </div>
                         </div>
-                        <button 
+                        <button
                           onClick={() => {
                             setIs2FASetupModalOpen(false);
                             setTwoFaSetupStatus('idle');
                             setTwoFaErrorMessage('');
-                          }} 
+                          }}
                           className="text-slate-400 hover:text-slate-600 bg-slate-50 hover:bg-slate-100 p-2 rounded-full transition-colors"
                         >
                           <X className="w-4 h-4" />
@@ -4097,11 +4088,10 @@ export default function App() {
                         <button
                           type="button"
                           onClick={() => setTwoFaTab('qr')}
-                          className={`flex-1 py-2 text-xs font-bold rounded-lg flex items-center justify-center gap-2 transition-all ${
-                            twoFaTab === 'qr'
+                          className={`flex-1 py-2 text-xs font-bold rounded-lg flex items-center justify-center gap-2 transition-all ${twoFaTab === 'qr'
                               ? 'bg-white text-indigo-600 shadow-sm'
                               : 'text-slate-600 hover:text-slate-900'
-                          }`}
+                            }`}
                         >
                           <QrCode className="w-3.5 h-3.5" />
                           Scan QR Code
@@ -4109,11 +4099,10 @@ export default function App() {
                         <button
                           type="button"
                           onClick={() => setTwoFaTab('key')}
-                          className={`flex-1 py-2 text-xs font-bold rounded-lg flex items-center justify-center gap-2 transition-all ${
-                            twoFaTab === 'key'
+                          className={`flex-1 py-2 text-xs font-bold rounded-lg flex items-center justify-center gap-2 transition-all ${twoFaTab === 'key'
                               ? 'bg-white text-indigo-600 shadow-sm'
                               : 'text-slate-600 hover:text-slate-900'
-                          }`}
+                            }`}
                         >
                           <Key className="w-3.5 h-3.5" />
                           Manual Key
@@ -4124,16 +4113,16 @@ export default function App() {
                         {twoFaTab === 'qr' ? (
                           <div className="w-full flex flex-col items-center">
                             <div className="w-48 h-48 bg-white border-2 border-indigo-100 rounded-2xl mb-3 flex items-center justify-center p-3 shadow-inner relative group">
-                              <img 
-                                src={twoFaQrUrl || `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(`otpauth://totp/TaskLink:${profileData.email || 'user@tasklink.com'}?secret=${twoFaSecret}&issuer=TaskLink`)}`} 
-                                alt="2FA QR Code" 
-                                className="w-full h-full object-contain filter contrast-125" 
+                              <img
+                                src={twoFaQrUrl || `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(`otpauth://totp/TaskLink:${profileData.email || 'user@tasklink.com'}?secret=${twoFaSecret}&issuer=TaskLink`)}`}
+                                alt="2FA QR Code"
+                                className="w-full h-full object-contain filter contrast-125"
                               />
                             </div>
                             <div className="flex items-center justify-between w-full px-2 mb-4">
                               <span className="text-[11px] text-slate-500">Scan with Google Authenticator or Authy</span>
-                              <button 
-                                type="button" 
+                              <button
+                                type="button"
                                 onClick={fetchTwoFactorSetup}
                                 className="text-[11px] text-indigo-600 hover:text-indigo-800 font-semibold flex items-center gap-1 cursor-pointer"
                               >
@@ -4153,11 +4142,10 @@ export default function App() {
                               <button
                                 type="button"
                                 onClick={handleCopyKey}
-                                className={`p-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${
-                                  isCopiedKey
+                                className={`p-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1 transition-all cursor-pointer ${isCopiedKey
                                     ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                                     : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border-slate-200'
-                                }`}
+                                  }`}
                               >
                                 {isCopiedKey ? (
                                   <>
@@ -4184,7 +4172,7 @@ export default function App() {
                             <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5 text-center">
                               Enter 6-digit Code from Authenticator
                             </label>
-                            <input 
+                            <input
                               type="text"
                               maxLength={6}
                               value={twoFaCode}
@@ -4208,9 +4196,9 @@ export default function App() {
                               <span>{twoFaErrorMessage}</span>
                             </motion.div>
                           )}
-                          
+
                           {twoFaSetupStatus === 'success' && (
-                            <motion.div 
+                            <motion.div
                               initial={{ opacity: 0, y: -5 }}
                               animate={{ opacity: 1, y: 0 }}
                               className="flex items-center justify-center gap-2 text-xs text-emerald-700 bg-emerald-50 p-3 rounded-xl border border-emerald-200 font-bold"
@@ -4220,7 +4208,7 @@ export default function App() {
                             </motion.div>
                           )}
 
-                          <button 
+                          <button
                             type="button"
                             onClick={handleActivate2FA}
                             disabled={twoFaCode.length !== 6 || twoFaSetupStatus === 'loading' || twoFaSetupStatus === 'success'}
@@ -4294,11 +4282,11 @@ export default function App() {
                       <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mb-5 mx-auto">
                         <AlertTriangle className="w-6 h-6 text-red-600" />
                       </div>
-                      
+
                       <h3 className="text-xl font-bold text-slate-900 text-center mb-2">
                         Deactivate Account?
                       </h3>
-                      
+
                       <p className="text-sm text-slate-600 text-center mb-6 leading-relaxed">
                         Are you absolutely sure you want to deactivate your account? This action cannot be undone. All your data, tasks, and history will be permanently deleted across all databases.
                       </p>
@@ -4309,11 +4297,11 @@ export default function App() {
                           <span>{deactivateError}</span>
                         </div>
                       )}
-                      
+
                       <div className="space-y-5">
                         <div>
                           <label className="block text-sm font-semibold text-slate-700 mb-2">Confirm Password</label>
-                          <input 
+                          <input
                             type="password"
                             value={deactivatePassword}
                             onChange={(e) => {
@@ -4325,13 +4313,13 @@ export default function App() {
                           />
                         </div>
                         {is2FAActive && (
-                          <motion.div 
-                            initial={{ opacity: 0, height: 0 }} 
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             className="relative"
                           >
                             <label className="block text-sm font-semibold text-slate-700 mb-2">2FA Code</label>
-                            <input 
+                            <input
                               type="text"
                               maxLength={6}
                               value={deactivate2FaCode}
@@ -4341,20 +4329,19 @@ export default function App() {
                             />
                           </motion.div>
                         )}
-                        
+
                         <div className="flex flex-col gap-3 pt-4">
-                          <button 
+                          <button
                             onClick={handleDeactivateAccount}
                             disabled={!deactivatePassword || isDeactivating || (is2FAActive && deactivate2FaCode.length !== 6)}
-                            className={`w-full py-3.5 font-semibold rounded-xl text-white transition-all shadow-sm ${
-                              deactivatePassword && !isDeactivating && (!is2FAActive || deactivate2FaCode.length === 6)
+                            className={`w-full py-3.5 font-semibold rounded-xl text-white transition-all shadow-sm ${deactivatePassword && !isDeactivating && (!is2FAActive || deactivate2FaCode.length === 6)
                                 ? 'bg-red-600 hover:bg-red-700 hover:shadow-md cursor-pointer'
                                 : 'bg-red-300 cursor-not-allowed'
-                            }`}
+                              }`}
                           >
                             {isDeactivating ? 'Deleting Account...' : 'Yes, delete my account permanently'}
                           </button>
-                          <button 
+                          <button
                             onClick={() => {
                               setIsDeactivateModalOpen(false);
                               setDeactivateError(null);
@@ -4386,7 +4373,7 @@ export default function App() {
             <GlassCard className="w-full p-8 md:p-10 h-fit bg-white/50">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200">
                 <div className="flex items-center gap-4">
-                  <button 
+                  <button
                     onClick={() => setCurrentPage('customerDashboard')}
                     className="p-2 -ml-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
                   >
@@ -4403,8 +4390,8 @@ export default function App() {
                   <div className="grid gap-5">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">Task Title</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={taskTitle}
                         onChange={(e) => setTaskTitle(e.target.value)}
                         placeholder="e.g. Clean my 2-bedroom apartment"
@@ -4542,7 +4529,7 @@ export default function App() {
                           )}
                         </div>
                       ) : (
-                        <textarea 
+                        <textarea
                           value={taskDescription}
                           onChange={(e) => setTaskDescription(e.target.value)}
                           rows={4}
@@ -4557,13 +4544,13 @@ export default function App() {
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">
                         Task Photos <span className="text-slate-400 font-normal">(Optional, up to 5)</span>
                       </label>
-                      
+
                       <div className="flex flex-wrap gap-4">
                         {taskPhotos.map((photo, index) => (
                           <div key={index} className="relative w-24 h-24 rounded-lg overflow-hidden border border-slate-200 group">
                             <img src={photo} alt={`Task ${index + 1}`} className="w-full h-full object-cover" />
-                            <button 
-                              type="button" 
+                            <button
+                              type="button"
                               onClick={() => removePhoto(index)}
                               className="absolute top-1 right-1 p-1 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
                             >
@@ -4571,7 +4558,7 @@ export default function App() {
                             </button>
                           </div>
                         ))}
-                        
+
                         {taskPhotos.length < 5 && (
                           <button
                             type="button"
@@ -4579,18 +4566,18 @@ export default function App() {
                             className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-300 hover:border-indigo-400 hover:bg-indigo-50 flex flex-col items-center justify-center text-slate-500 hover:text-indigo-600 transition-colors"
                           >
                             <ImageIcon className="w-6 h-6 mb-1" />
-                            <span className="text-[10px] font-semibold text-center leading-tight">Add<br/>Photo</span>
+                            <span className="text-[10px] font-semibold text-center leading-tight">Add<br />Photo</span>
                           </button>
                         )}
                       </div>
-                      
-                      <input 
-                        type="file" 
-                        ref={fileInputRef} 
-                        onChange={handlePhotoUpload} 
-                        accept="image/*" 
-                        multiple 
-                        className="hidden" 
+
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handlePhotoUpload}
+                        accept="image/*"
+                        multiple
+                        className="hidden"
                       />
                     </div>
                   </div>
@@ -4612,8 +4599,8 @@ export default function App() {
                       </div>
                       <div className="relative">
                         <Calendar className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
-                        <input 
-                          type="date" 
+                        <input
+                          type="date"
                           min={getTodayDateString()}
                           value={taskDate}
                           onChange={(e) => {
@@ -4642,8 +4629,8 @@ export default function App() {
                       </div>
                       <div className="relative">
                         <Clock className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
-                        <input 
-                          type="time" 
+                        <input
+                          type="time"
                           min={taskDate === getTodayDateString() ? (getMinTimeForToday() || '23:59') : undefined}
                           value={taskTime}
                           onChange={(e) => {
@@ -4678,8 +4665,8 @@ export default function App() {
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">Offered Amount (LKR)</label>
                       <div className="relative">
                         <span className="absolute left-4 top-3 font-semibold text-slate-400">LKR</span>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           value={taskBudget}
                           onChange={(e) => setTaskBudget(e.target.value)}
                           placeholder="0.00"
@@ -4689,12 +4676,12 @@ export default function App() {
                         />
                       </div>
                     </div>
-                    
+
                     <div className="flex flex-col sm:pt-6">
                       <label className="flex items-center gap-3 cursor-pointer p-3 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors">
                         <div className="relative">
-                          <input 
-                            type="checkbox" 
+                          <input
+                            type="checkbox"
                             className="sr-only group"
                             checked={isNegotiable}
                             onChange={(e) => setIsNegotiable(e.target.checked)}
@@ -4727,13 +4714,13 @@ export default function App() {
 
                 {/* Submit Action */}
                 <div className="pt-6 border-t border-slate-200 flex justify-end gap-3">
-                  <button 
+                  <button
                     onClick={() => setCurrentPage('customerDashboard')}
                     className="px-6 py-3 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 font-semibold rounded-xl transition-all cursor-pointer"
                   >
                     Cancel
                   </button>
-                  <button 
+                  <button
                     onClick={() => {
                       if (!taskTitle.trim()) {
                         showToast('Missing Title', 'Please provide a title for your task.', 'warning');
@@ -4773,7 +4760,7 @@ export default function App() {
           >
             <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8">
               <div className="flex items-center gap-4">
-                <button 
+                <button
                   onClick={() => setCurrentPage('customerDashboard')}
                   className="p-2 -ml-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-white/50 transition-colors cursor-pointer"
                 >
@@ -4799,7 +4786,7 @@ export default function App() {
                     {/* Skill Category */}
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Skill Category</label>
-                      <select 
+                      <select
                         value={dhCategory}
                         onChange={(e) => setDhCategory(e.target.value)}
                         className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 text-sm"
@@ -4819,9 +4806,9 @@ export default function App() {
                       <label className="block text-sm font-semibold text-slate-700 mb-2">
                         Distance Range: {dhLocationRadius} km
                       </label>
-                      <input 
-                        type="range" 
-                        min="1" max="50" 
+                      <input
+                        type="range"
+                        min="1" max="50"
                         value={dhLocationRadius}
                         onChange={(e) => setDhLocationRadius(parseInt(e.target.value))}
                         className="w-full accent-indigo-600"
@@ -4851,7 +4838,7 @@ export default function App() {
                     {/* Experience Level */}
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Years of Experience</label>
-                      <select 
+                      <select
                         value={dhMinExperience}
                         onChange={(e) => setDhMinExperience(parseInt(e.target.value))}
                         className="w-full px-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 text-slate-900 text-sm"
@@ -4868,8 +4855,8 @@ export default function App() {
                       <label className="flex items-center justify-between cursor-pointer group">
                         <span className="text-sm font-semibold text-slate-700">Available Now Only</span>
                         <div className="relative">
-                          <input 
-                            type="checkbox" 
+                          <input
+                            type="checkbox"
                             className="sr-only"
                             checked={dhAvailableOnly}
                             onChange={(e) => setDhAvailableOnly(e.target.checked)}
@@ -4916,7 +4903,7 @@ export default function App() {
                                 <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-green-500 border-2 border-white rounded-full"></div>
                               )}
                             </div>
-                            
+
                             <div className="bg-amber-100/80 backdrop-blur-sm text-amber-700 px-2.5 py-1 rounded-lg text-xs font-bold flex items-center gap-1 shadow-sm">
                               <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                               {provider.rating}
@@ -4954,7 +4941,7 @@ export default function App() {
                             <span className="text-xs text-slate-400 font-medium">Hourly Rate</span>
                             <p className="text-base font-bold text-slate-900">LKR {provider.hourlyRate || 1500}/hr</p>
                           </div>
-                          <button 
+                          <button
                             onClick={() => {
                               setSelectedProviderForHire(provider);
                               setCurrentPage('directHireBooking');
@@ -4985,7 +4972,7 @@ export default function App() {
             <GlassCard className="w-full p-8 md:p-10 h-fit bg-white/50">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200">
                 <div className="flex items-center gap-4">
-                  <button 
+                  <button
                     onClick={() => setCurrentPage('directHireList')}
                     className="p-2 -ml-2 rounded-xl text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
                   >
@@ -5013,8 +5000,8 @@ export default function App() {
                   <div className="grid gap-5">
                     <div>
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">Task Title</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         value={taskTitle}
                         onChange={(e) => setTaskTitle(e.target.value)}
                         placeholder={`e.g. Need help with ${selectedProviderForHire.skill.toLowerCase()}`}
@@ -5135,7 +5122,7 @@ export default function App() {
                           )}
                         </div>
                       ) : (
-                        <textarea 
+                        <textarea
                           value={taskDescription}
                           onChange={(e) => setTaskDescription(e.target.value)}
                           rows={4}
@@ -5150,13 +5137,13 @@ export default function App() {
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">
                         Task Photos <span className="text-slate-400 font-normal">(Optional, up to 5)</span>
                       </label>
-                      
+
                       <div className="flex flex-wrap gap-4">
                         {taskPhotos.map((photo, index) => (
                           <div key={index} className="relative w-24 h-24 rounded-lg overflow-hidden border border-slate-200 group">
                             <img src={photo} alt={`Task ${index + 1}`} className="w-full h-full object-cover" />
-                            <button 
-                              type="button" 
+                            <button
+                              type="button"
                               onClick={() => removePhoto(index)}
                               className="absolute top-1 right-1 p-1 bg-black/50 hover:bg-black/70 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
                             >
@@ -5164,7 +5151,7 @@ export default function App() {
                             </button>
                           </div>
                         ))}
-                        
+
                         {taskPhotos.length < 5 && (
                           <button
                             type="button"
@@ -5172,18 +5159,18 @@ export default function App() {
                             className="w-24 h-24 rounded-lg border-2 border-dashed border-slate-300 hover:border-indigo-400 hover:bg-indigo-50 flex flex-col items-center justify-center text-slate-500 hover:text-indigo-600 transition-colors cursor-pointer"
                           >
                             <ImageIcon className="w-6 h-6 mb-1" />
-                            <span className="text-[10px] font-semibold text-center leading-tight">Add<br/>Photo</span>
+                            <span className="text-[10px] font-semibold text-center leading-tight">Add<br />Photo</span>
                           </button>
                         )}
                       </div>
-                      
-                      <input 
-                        type="file" 
-                        ref={fileInputRef} 
-                        onChange={handlePhotoUpload} 
-                        accept="image/*" 
-                        multiple 
-                        className="hidden" 
+
+                      <input
+                        type="file"
+                        ref={fileInputRef}
+                        onChange={handlePhotoUpload}
+                        accept="image/*"
+                        multiple
+                        className="hidden"
                       />
                     </div>
                   </div>
@@ -5205,8 +5192,8 @@ export default function App() {
                       </div>
                       <div className="relative">
                         <Calendar className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
-                        <input 
-                          type="date" 
+                        <input
+                          type="date"
                           min={getTodayDateString()}
                           value={taskDate}
                           onChange={(e) => {
@@ -5235,8 +5222,8 @@ export default function App() {
                       </div>
                       <div className="relative">
                         <Clock className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
-                        <input 
-                          type="time" 
+                        <input
+                          type="time"
                           min={taskDate === getTodayDateString() ? (getMinTimeForToday() || '23:59') : undefined}
                           value={taskTime}
                           onChange={(e) => {
@@ -5271,8 +5258,8 @@ export default function App() {
                       <label className="block text-sm font-medium text-slate-700 mb-1.5">Offered Amount (LKR)</label>
                       <div className="relative">
                         <span className="absolute left-4 top-3 font-semibold text-slate-400">LKR</span>
-                        <input 
-                          type="number" 
+                        <input
+                          type="number"
                           value={taskBudget}
                           onChange={(e) => setTaskBudget(e.target.value)}
                           placeholder="0.00"
@@ -5282,12 +5269,12 @@ export default function App() {
                         />
                       </div>
                     </div>
-                    
+
                     <div className="flex flex-col sm:pt-6">
                       <label className="flex items-center gap-3 cursor-pointer p-3 bg-slate-50 border border-slate-200 rounded-xl hover:bg-slate-100 transition-colors">
                         <div className="relative">
-                          <input 
-                            type="checkbox" 
+                          <input
+                            type="checkbox"
                             className="sr-only group"
                             checked={isNegotiable}
                             onChange={(e) => setIsNegotiable(e.target.checked)}
@@ -5300,7 +5287,7 @@ export default function App() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Pre-Booking Fee Summary */}
                 <div className="p-4 bg-indigo-50 rounded-xl border border-indigo-100">
                   <div className="flex items-start gap-3">
@@ -5320,13 +5307,13 @@ export default function App() {
 
                 {/* Submit Action */}
                 <div className="pt-6 border-t border-slate-200 flex justify-end gap-3">
-                  <button 
+                  <button
                     onClick={() => setCurrentPage('directHireList')}
                     className="px-6 py-3 bg-white border border-slate-200 hover:bg-slate-50 hover:border-slate-300 text-slate-700 font-semibold rounded-xl transition-all cursor-pointer"
                   >
                     Cancel
                   </button>
-                  <button 
+                  <button
                     onClick={() => {
                       const schedCheck = validateTaskSchedule(taskDate, taskTime);
                       if (!schedCheck.isValid) {
@@ -5416,43 +5403,43 @@ export default function App() {
           };
 
           return (
-          <motion.main
-            key="paymentGateway"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.4 }}
-            className="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24 flex flex-col items-center w-full min-h-screen"
-          >
-            <div className="w-full max-w-2xl space-y-8">
-              {/* Header */}
-              <div className="text-center">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 font-bold text-xs mb-3 shadow-sm">
-                  <Lock className="w-3.5 h-3.5 text-indigo-600" /> Secure Escrow Payment Gateway
+            <motion.main
+              key="paymentGateway"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.4 }}
+              className="relative z-10 max-w-4xl mx-auto px-6 pt-32 pb-24 flex flex-col items-center w-full min-h-screen"
+            >
+              <div className="w-full max-w-2xl space-y-8">
+                {/* Header */}
+                <div className="text-center">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 font-bold text-xs mb-3 shadow-sm">
+                    <Lock className="w-3.5 h-3.5 text-indigo-600" /> Secure Escrow Payment Gateway
+                  </div>
+                  <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Authorize Task Booking</h1>
+                  <p className="text-sm text-slate-500 mt-1 max-w-md mx-auto">
+                    Enter your card details below. Funds will be held securely in escrow until supervisor quality check approval.
+                  </p>
                 </div>
-                <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Authorize Task Booking</h1>
-                <p className="text-sm text-slate-500 mt-1 max-w-md mx-auto">
-                  Enter your card details below. Funds will be held securely in escrow until supervisor quality check approval.
-                </p>
-              </div>
 
-              <StripePaymentForm 
-                budgetAmount={budgetAmount} 
-                onSuccess={handlePaymentSuccess} 
-                onCancel={() => {
-                  setCurrentPage(paymentContext.type === 'directHire' ? 'directHireBooking' : 'postTask');
-                }}
-                isSubmittingTask={isSubmittingTask}
-              />
+                <StripePaymentForm
+                  budgetAmount={budgetAmount}
+                  onSuccess={handlePaymentSuccess}
+                  onCancel={() => {
+                    setCurrentPage(paymentContext.type === 'directHire' ? 'directHireBooking' : 'postTask');
+                  }}
+                  isSubmittingTask={isSubmittingTask}
+                />
 
-              {/* Security Trust Badges */}
-              <div className="flex items-center justify-center gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest pb-8">
-                <span className="flex items-center gap-1.5"><Lock className="w-3.5 h-3.5 text-emerald-600" /> PCI-DSS Compliant</span>
-                <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-indigo-600" /> 3D Secure 2.0</span>
-                <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> SSL 256-Bit Encryption</span>
+                {/* Security Trust Badges */}
+                <div className="flex items-center justify-center gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest pb-8">
+                  <span className="flex items-center gap-1.5"><Lock className="w-3.5 h-3.5 text-emerald-600" /> PCI-DSS Compliant</span>
+                  <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-indigo-600" /> 3D Secure 2.0</span>
+                  <span className="flex items-center gap-1.5"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> SSL 256-Bit Encryption</span>
+                </div>
               </div>
-            </div>
-          </motion.main>
+            </motion.main>
           );
         })()}
 
@@ -5467,7 +5454,7 @@ export default function App() {
           >
             <div className="w-full">
               <div className="flex items-center justify-between mb-8">
-                <button 
+                <button
                   onClick={navigateToDashboard}
                   className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors font-semibold cursor-pointer"
                 >
@@ -5475,7 +5462,7 @@ export default function App() {
                 </button>
                 <div className="flex items-center gap-3">
                   {milestoneIndex < 3 && trackingTask.status !== 'cancelled' && (
-                    <button 
+                    <button
                       onClick={() => {
                         const rawId = trackingTask.rawId || (typeof trackingTask.id === 'string' ? parseInt(trackingTask.id.replace('TASK-', '')) : trackingTask.id);
                         if (rawId) handleCancelTask(rawId);
@@ -5485,18 +5472,17 @@ export default function App() {
                       <XCircle className="w-3.5 h-3.5" /> Cancel Task
                     </button>
                   )}
-                  <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold ${
-                    trackingTask.status === 'cancelled' 
-                      ? 'bg-red-50 text-red-700' 
-                      : milestoneIndex === 5 
-                      ? 'bg-emerald-50 text-emerald-700' 
-                      : milestoneIndex === 4
-                      ? 'bg-purple-50 text-purple-700'
-                      : milestoneIndex < 3
-                      ? 'bg-amber-50 text-amber-700'
-                      : 'bg-indigo-50 text-indigo-700'
-                  }`}>
-                     <Clock className="w-4 h-4" /> {trackingTask.status === 'cancelled' ? 'Cancelled' : milestoneIndex === 5 ? 'Completed' : milestoneIndex === 4 ? 'Waiting for Supervisor Quality Inspection' : milestoneIndex < 3 ? 'Supervisor Approval Pending' : 'In Progress'}
+                  <div className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold ${trackingTask.status === 'cancelled'
+                      ? 'bg-red-50 text-red-700'
+                      : milestoneIndex === 5
+                        ? 'bg-emerald-50 text-emerald-700'
+                        : milestoneIndex === 4
+                          ? 'bg-purple-50 text-purple-700'
+                          : milestoneIndex < 3
+                            ? 'bg-amber-50 text-amber-700'
+                            : 'bg-indigo-50 text-indigo-700'
+                    }`}>
+                    <Clock className="w-4 h-4" /> {trackingTask.status === 'cancelled' ? 'Cancelled' : milestoneIndex === 5 ? 'Completed' : milestoneIndex === 4 ? 'Waiting for Supervisor Quality Inspection' : milestoneIndex < 3 ? 'Supervisor Approval Pending' : 'In Progress'}
                   </div>
                 </div>
               </div>
@@ -5513,86 +5499,86 @@ export default function App() {
 
                     {/* Progress Bar UI */}
                     <div className="mt-10 mb-6">
-                       <h2 className="text-lg font-bold text-slate-900 mb-6">Job Flow</h2>
-                       
-                       <div className="relative">
-                          {/* Vertical Line */}
-                          <div className="absolute left-[19px] top-2 bottom-2 w-[2px] bg-slate-200 z-0"></div>
-                          
-                          <div className="space-y-8 relative z-10">
-                            {[
-                              { title: 'Task Booked', desc: 'Authorization and escrow reservation complete.' },
-                              { title: 'Supervisor Assigned', desc: 'Field supervisor is assessing requirements before authorizing work.' },
-                              { title: 'Site Visit Completed', desc: 'Supervisor has authorized work on site.' },
-                              { title: 'Work In Progress', desc: 'Provider is actively executing the requested job.' },
-                              { title: 'Quality Check', desc: 'Waiting for supervisor quality inspection to complete.' },
-                              { title: 'Task Completed', desc: 'Supervisor sign-off complete. Escrow finalized.' },
-                            ].map((milestone, idx) => {
-                              const completed = milestoneIndex > idx || (milestoneIndex === 5 && idx === 5);
-                              const current = milestoneIndex === idx && milestoneIndex !== 5;
-                              return (
-                               <div key={idx} className="flex gap-4 items-start">
-                                  <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 shadow-sm ${completed ? 'bg-indigo-600 border-indigo-600' : current ? 'bg-white border-indigo-600 shadow-indigo-100' : 'bg-white border-slate-200'}`}>
-                                     {completed ? (
-                                        <CheckCircle className="w-5 h-5 text-white" />
-                                     ) : current ? (
-                                        <div className="w-3 h-3 bg-indigo-600 rounded-full animate-pulse"></div>
-                                     ) : (
-                                        <div className="w-2 h-2 bg-slate-300 rounded-full"></div>
-                                     )}
-                                  </div>
-                                  <div className={`pt-2 ${completed || current ? 'opacity-100' : 'opacity-40'}`}>
-                                    <h3 className={`font-bold ${current ? 'text-indigo-900 text-lg' : 'text-slate-900'}`}>{milestone.title}</h3>
-                                    <p className="text-sm text-slate-500 mt-1">{milestone.desc}</p>
-                                    
-                                    {idx === 1 && (completed || current) && (
-                                      <div className="mt-4 p-4 bg-indigo-50/80 rounded-xl border border-indigo-100 flex items-center gap-4 max-w-sm">
-                                         <div className="w-12 h-12 rounded-full bg-slate-200 overflow-hidden shrink-0 border-2 border-white shadow-sm">
-                                            <img src={trackingTask.provider?.avatar || "https://api.dicebear.com/7.x/notionists/svg?seed=" + (trackingTask.provider?.name || 'Provider')} alt="Provider" />
-                                         </div>
-                                         <div className="flex-1">
-                                            <h4 className="font-bold text-slate-900 text-sm flex items-center gap-1"><Shield className="w-3.5 h-3.5 text-indigo-600" /> {trackingTask.provider?.name || 'Assigned Provider'}</h4>
-                                            <p className="text-xs text-indigo-600 font-medium pb-0.5">Service Provider</p>
-                                         </div>
-                                         <button className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center hover:bg-indigo-200 transition-colors cursor-pointer">
-                                            <Phone className="w-3.5 h-3.5" />
-                                         </button>
+                      <h2 className="text-lg font-bold text-slate-900 mb-6">Job Flow</h2>
+
+                      <div className="relative">
+                        {/* Vertical Line */}
+                        <div className="absolute left-[19px] top-2 bottom-2 w-[2px] bg-slate-200 z-0"></div>
+
+                        <div className="space-y-8 relative z-10">
+                          {[
+                            { title: 'Task Booked', desc: 'Authorization and escrow reservation complete.' },
+                            { title: 'Supervisor Assigned', desc: 'Field supervisor is assessing requirements before authorizing work.' },
+                            { title: 'Site Visit Completed', desc: 'Supervisor has authorized work on site.' },
+                            { title: 'Work In Progress', desc: 'Provider is actively executing the requested job.' },
+                            { title: 'Quality Check', desc: 'Waiting for supervisor quality inspection to complete.' },
+                            { title: 'Task Completed', desc: 'Supervisor sign-off complete. Escrow finalized.' },
+                          ].map((milestone, idx) => {
+                            const completed = milestoneIndex > idx || (milestoneIndex === 5 && idx === 5);
+                            const current = milestoneIndex === idx && milestoneIndex !== 5;
+                            return (
+                              <div key={idx} className="flex gap-4 items-start">
+                                <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 shadow-sm ${completed ? 'bg-indigo-600 border-indigo-600' : current ? 'bg-white border-indigo-600 shadow-indigo-100' : 'bg-white border-slate-200'}`}>
+                                  {completed ? (
+                                    <CheckCircle className="w-5 h-5 text-white" />
+                                  ) : current ? (
+                                    <div className="w-3 h-3 bg-indigo-600 rounded-full animate-pulse"></div>
+                                  ) : (
+                                    <div className="w-2 h-2 bg-slate-300 rounded-full"></div>
+                                  )}
+                                </div>
+                                <div className={`pt-2 ${completed || current ? 'opacity-100' : 'opacity-40'}`}>
+                                  <h3 className={`font-bold ${current ? 'text-indigo-900 text-lg' : 'text-slate-900'}`}>{milestone.title}</h3>
+                                  <p className="text-sm text-slate-500 mt-1">{milestone.desc}</p>
+
+                                  {idx === 1 && (completed || current) && (
+                                    <div className="mt-4 p-4 bg-indigo-50/80 rounded-xl border border-indigo-100 flex items-center gap-4 max-w-sm">
+                                      <div className="w-12 h-12 rounded-full bg-slate-200 overflow-hidden shrink-0 border-2 border-white shadow-sm">
+                                        <img src={trackingTask.provider?.avatar || "https://api.dicebear.com/7.x/notionists/svg?seed=" + (trackingTask.provider?.name || 'Provider')} alt="Provider" />
                                       </div>
-                                    )}
-                                    {idx === 5 && (completed || current) && (
-                                      <div className="mt-3">
-                                        {trackingTask.review ? (
-                                          <div className="p-3.5 bg-emerald-50/80 rounded-xl border border-emerald-200/60 max-w-sm">
-                                            <div className="flex items-center gap-1.5 text-amber-500 mb-1">
-                                              {[...Array(5)].map((_, i) => (
-                                                <Star key={i} className={`w-4 h-4 ${i < (trackingTask.review.rating || 5) ? 'fill-amber-400 text-amber-400' : 'text-slate-300'}`} />
-                                              ))}
-                                              <span className="text-xs font-bold text-slate-700 ml-1">Rated ({trackingTask.review.rating}/5)</span>
-                                            </div>
-                                            {trackingTask.review.comment && (
-                                              <p className="text-xs text-slate-600 italic">"{trackingTask.review.comment}"</p>
-                                            )}
-                                          </div>
-                                        ) : reviewedTaskIdsRef.current.has(trackingTask.rawId) ? (
-                                          <div className="p-2.5 bg-emerald-50 rounded-lg text-xs font-bold text-emerald-700 flex items-center gap-1.5 max-w-sm border border-emerald-200">
-                                            <CheckCircle2 className="w-4 h-4" /> Review Submitted
-                                          </div>
-                                        ) : (
-                                          <button 
-                                            onClick={() => setIsFeedbackModalOpen(true)}
-                                            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/20 transition-all cursor-pointer flex items-center gap-1.5"
-                                          >
-                                            <Star className="w-3.5 h-3.5 fill-current" /> Leave a Review
-                                          </button>
-                                        )}
+                                      <div className="flex-1">
+                                        <h4 className="font-bold text-slate-900 text-sm flex items-center gap-1"><Shield className="w-3.5 h-3.5 text-indigo-600" /> {trackingTask.provider?.name || 'Assigned Provider'}</h4>
+                                        <p className="text-xs text-indigo-600 font-medium pb-0.5">Service Provider</p>
                                       </div>
-                                    )}
-                                  </div>
-                               </div>
-                              );
-                            })}
-                          </div>
-                       </div>
+                                      <button className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center hover:bg-indigo-200 transition-colors cursor-pointer">
+                                        <Phone className="w-3.5 h-3.5" />
+                                      </button>
+                                    </div>
+                                  )}
+                                  {idx === 5 && (completed || current) && (
+                                    <div className="mt-3">
+                                      {trackingTask.review ? (
+                                        <div className="p-3.5 bg-emerald-50/80 rounded-xl border border-emerald-200/60 max-w-sm">
+                                          <div className="flex items-center gap-1.5 text-amber-500 mb-1">
+                                            {[...Array(5)].map((_, i) => (
+                                              <Star key={i} className={`w-4 h-4 ${i < (trackingTask.review.rating || 5) ? 'fill-amber-400 text-amber-400' : 'text-slate-300'}`} />
+                                            ))}
+                                            <span className="text-xs font-bold text-slate-700 ml-1">Rated ({trackingTask.review.rating}/5)</span>
+                                          </div>
+                                          {trackingTask.review.comment && (
+                                            <p className="text-xs text-slate-600 italic">"{trackingTask.review.comment}"</p>
+                                          )}
+                                        </div>
+                                      ) : reviewedTaskIdsRef.current.has(trackingTask.rawId) ? (
+                                        <div className="p-2.5 bg-emerald-50 rounded-lg text-xs font-bold text-emerald-700 flex items-center gap-1.5 max-w-sm border border-emerald-200">
+                                          <CheckCircle2 className="w-4 h-4" /> Review Submitted
+                                        </div>
+                                      ) : (
+                                        <button
+                                          onClick={() => setIsFeedbackModalOpen(true)}
+                                          className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-600/20 transition-all cursor-pointer flex items-center gap-1.5"
+                                        >
+                                          <Star className="w-3.5 h-3.5 fill-current" /> Leave a Review
+                                        </button>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
                     </div>
                   </GlassCard>
                 </div>
@@ -5600,26 +5586,26 @@ export default function App() {
                 {/* AI Support Chatbot Sidebar */}
                 <div className="lg:col-span-1">
                   <GlassCard className="h-[600px] flex flex-col p-0 overflow-hidden sticky top-24">
-                     <div className="bg-indigo-600 p-4 shrink-0">
-                       <h2 className="text-white font-bold flex items-center gap-2">
-                          <Zap className="w-5 h-5 fill-indigo-300 text-indigo-300" />
-                          AI Support Assistant
-                       </h2>
-                       <p className="text-indigo-200 text-xs mt-1">Available 24/7 for quick answers</p>
-                     </div>
-                     <div className="flex-1 bg-slate-50/50 p-4 overflow-y-auto flex flex-col gap-4">
-                        <div className="bg-white p-3 rounded-2xl rounded-tl-sm border border-slate-100 shadow-sm max-w-[85%] self-start">
-                           <p className="text-sm text-slate-700">Hi! I am monitoring your task <b>{trackingTask.id}</b>. Currently, a supervisor is being dispatched. Do you need any help?</p>
-                        </div>
-                     </div>
-                     <div className="p-3 bg-white border-t border-slate-100 shrink-0">
-                        <div className="relative">
-                           <input type="text" placeholder="Type a message..." className="w-full pl-4 pr-10 py-2 bg-slate-100 border-none rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50" />
-                           <button className="absolute right-2 top-1.5 p-1 text-slate-400 hover:text-indigo-600 transition-colors">
-                              <ArrowRight className="w-4 h-4" />
-                           </button>
-                        </div>
-                     </div>
+                    <div className="bg-indigo-600 p-4 shrink-0">
+                      <h2 className="text-white font-bold flex items-center gap-2">
+                        <Zap className="w-5 h-5 fill-indigo-300 text-indigo-300" />
+                        AI Support Assistant
+                      </h2>
+                      <p className="text-indigo-200 text-xs mt-1">Available 24/7 for quick answers</p>
+                    </div>
+                    <div className="flex-1 bg-slate-50/50 p-4 overflow-y-auto flex flex-col gap-4">
+                      <div className="bg-white p-3 rounded-2xl rounded-tl-sm border border-slate-100 shadow-sm max-w-[85%] self-start">
+                        <p className="text-sm text-slate-700">Hi! I am monitoring your task <b>{trackingTask.id}</b>. Currently, a supervisor is being dispatched. Do you need any help?</p>
+                      </div>
+                    </div>
+                    <div className="p-3 bg-white border-t border-slate-100 shrink-0">
+                      <div className="relative">
+                        <input type="text" placeholder="Type a message..." className="w-full pl-4 pr-10 py-2 bg-slate-100 border-none rounded-xl text-sm focus:ring-2 focus:ring-indigo-500/50" />
+                        <button className="absolute right-2 top-1.5 p-1 text-slate-400 hover:text-indigo-600 transition-colors">
+                          <ArrowRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
                   </GlassCard>
                 </div>
               </div>
@@ -5638,7 +5624,7 @@ export default function App() {
           >
             <div className="w-full">
               <div className="flex items-center justify-between mb-8">
-               <button 
+                <button
                   onClick={() => setCurrentPage('providerDashboard')}
                   className="flex items-center gap-2 text-slate-500 hover:text-slate-800 transition-colors font-semibold cursor-pointer"
                 >
@@ -5699,14 +5685,14 @@ export default function App() {
                 {/* 1. Header & Financial Summary Strip */}
                 <GlassCard className="p-6 md:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-l-4 border-l-indigo-600">
                   <div>
-                     <div className="flex flex-wrap items-center gap-3 mb-2">
-                       <span className="font-mono text-sm font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-md">Job ID: #{String(activeWorkspaceJob.id || '').toUpperCase().replace('JOB-', 'OL-24')}</span>
-                       <span className="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full border border-indigo-100 flex items-center gap-1.5">
-                         <div className={`w-2 h-2 rounded-full ${providerMilestoneIndex < 5 ? 'bg-indigo-500 animate-pulse' : 'bg-slate-400'}`}></div>
-                         Status: {providerMilestoneIndex === 3 ? 'Work In Progress' : providerMilestoneIndex === 4 ? 'Quality Check (Pending)' : providerMilestoneIndex === 5 ? 'Completed' : 'Supervisor Approval Pending'}
-                       </span>
-                     </div>
-                     <h1 className="text-2xl font-bold text-slate-900">{activeWorkspaceJob.title || 'Task Details'}</h1>
+                    <div className="flex flex-wrap items-center gap-3 mb-2">
+                      <span className="font-mono text-sm font-bold text-slate-500 bg-slate-100 px-2 py-1 rounded-md">Job ID: #{String(activeWorkspaceJob.id || '').toUpperCase().replace('JOB-', 'OL-24')}</span>
+                      <span className="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full border border-indigo-100 flex items-center gap-1.5">
+                        <div className={`w-2 h-2 rounded-full ${providerMilestoneIndex < 5 ? 'bg-indigo-500 animate-pulse' : 'bg-slate-400'}`}></div>
+                        Status: {providerMilestoneIndex === 3 ? 'Work In Progress' : providerMilestoneIndex === 4 ? 'Quality Check (Pending)' : providerMilestoneIndex === 5 ? 'Completed' : 'Supervisor Approval Pending'}
+                      </span>
+                    </div>
+                    <h1 className="text-2xl font-bold text-slate-900">{activeWorkspaceJob.title || 'Task Details'}</h1>
                   </div>
                   <div className="flex flex-col items-start md:items-end w-full md:w-auto bg-slate-50 md:bg-transparent p-4 md:p-0 rounded-xl md:rounded-none">
                     <p className="text-sm font-medium text-slate-500 mb-1">Total Payout</p>
@@ -5722,36 +5708,36 @@ export default function App() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* 2. Customer Contact & Communication Panel */}
                   <GlassCard className="p-6">
-                     <h2 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
-                       <User className="w-4 h-4 text-slate-400" /> Customer Details
-                     </h2>
-                     <div className="flex flex-col mb-6">
-                        <span className="text-lg font-bold text-slate-900">{activeWorkspaceJob.customerName || activeWorkspaceJob.customer?.name || 'Customer'}</span>
-                        <span className="text-sm font-medium text-slate-500">{activeWorkspaceJob.customerPhone || activeWorkspaceJob.customer?.phone || 'Available via app'}</span>
-                     </div>
-                     <div className="grid grid-cols-1 gap-3">
-                       <a href={`tel:${activeWorkspaceJob.customerPhone || activeWorkspaceJob.customer?.phone || ''}`} className="w-full py-3 px-4 font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 text-center text-sm">
-                         <Phone className="w-4 h-4" /> Call Customer
-                       </a>
-                       <button onClick={() => showToast('Support Center', 'Connected to 24/7 Priority Support Desk.', 'info')} className="w-full py-3 px-4 font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 text-sm">
-                         <MessageSquare className="w-4 h-4" /> Chat with Support
-                       </button>
-                     </div>
+                    <h2 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
+                      <User className="w-4 h-4 text-slate-400" /> Customer Details
+                    </h2>
+                    <div className="flex flex-col mb-6">
+                      <span className="text-lg font-bold text-slate-900">{activeWorkspaceJob.customerName || activeWorkspaceJob.customer?.name || 'Customer'}</span>
+                      <span className="text-sm font-medium text-slate-500">{activeWorkspaceJob.customerPhone || activeWorkspaceJob.customer?.phone || 'Available via app'}</span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3">
+                      <a href={`tel:${activeWorkspaceJob.customerPhone || activeWorkspaceJob.customer?.phone || ''}`} className="w-full py-3 px-4 font-bold text-white bg-slate-900 hover:bg-slate-800 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 text-center text-sm">
+                        <Phone className="w-4 h-4" /> Call Customer
+                      </a>
+                      <button onClick={() => showToast('Support Center', 'Connected to 24/7 Priority Support Desk.', 'info')} className="w-full py-3 px-4 font-bold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 text-sm">
+                        <MessageSquare className="w-4 h-4" /> Chat with Support
+                      </button>
+                    </div>
                   </GlassCard>
 
                   {/* 3. Navigation & Precise Location Card */}
                   <GlassCard className="p-6">
-                     <h2 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
-                       <MapPin className="w-4 h-4 text-indigo-500" /> Worksite Location
-                     </h2>
-                     <div className="flex flex-col mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100 min-h-20 justify-center">
-                        <span className="text-base font-medium text-slate-800 leading-snug">{activeWorkspaceJob.exactAddress || activeWorkspaceJob.location || 'Colombo, Sri Lanka'}</span>
-                     </div>
-                     <div className="grid grid-cols-1 gap-3">
-                       <a href={activeWorkspaceJob.lat && activeWorkspaceJob.lng ? `https://www.google.com/maps/search/?api=1&query=${activeWorkspaceJob.lat},${activeWorkspaceJob.lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activeWorkspaceJob.exactAddress || activeWorkspaceJob.location || 'Colombo, Sri Lanka')}`} target="_blank" rel="noopener noreferrer" className="w-full py-3 px-4 font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 text-center text-sm">
-                         <Navigation className="w-4 h-4" /> Open in Google Maps
-                       </a>
-                     </div>
+                    <h2 className="text-sm font-bold text-slate-900 mb-4 uppercase tracking-wider flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-indigo-500" /> Worksite Location
+                    </h2>
+                    <div className="flex flex-col mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100 min-h-20 justify-center">
+                      <span className="text-base font-medium text-slate-800 leading-snug">{activeWorkspaceJob.exactAddress || activeWorkspaceJob.location || 'Colombo, Sri Lanka'}</span>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3">
+                      <a href={activeWorkspaceJob.lat && activeWorkspaceJob.lng ? `https://www.google.com/maps/search/?api=1&query=${activeWorkspaceJob.lat},${activeWorkspaceJob.lng}` : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(activeWorkspaceJob.exactAddress || activeWorkspaceJob.location || 'Colombo, Sri Lanka')}`} target="_blank" rel="noopener noreferrer" className="w-full py-3 px-4 font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2 text-center text-sm">
+                        <Navigation className="w-4 h-4" /> Open in Google Maps
+                      </a>
+                    </div>
                   </GlassCard>
                 </div>
 
@@ -5759,80 +5745,80 @@ export default function App() {
                   {/* 4. Read-Only Job Scope Box */}
                   <div className="lg:col-span-2 space-y-6">
                     <GlassCard className="p-6 md:p-8">
-                       <div className="flex items-center justify-between mb-6">
-                         <h2 className="text-lg font-bold text-slate-900">Job Scope</h2>
-                         <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md uppercase tracking-wide">{activeWorkspaceJob.category}</span>
-                       </div>
-                       
-                       <div className="prose prose-slate prose-sm max-w-none text-slate-600 mb-8">
-                          <p>{activeWorkspaceJob.description}</p>
-                       </div>
+                      <div className="flex items-center justify-between mb-6">
+                        <h2 className="text-lg font-bold text-slate-900">Job Scope</h2>
+                        <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-600 rounded-md uppercase tracking-wide">{activeWorkspaceJob.category}</span>
+                      </div>
 
-                       {activeWorkspaceJob.voiceNote && (
-                         <div className="mb-8">
-                           <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-                              <Mic className="w-3.5 h-3.5 text-indigo-500" /> AI Transcript (Voice Note)
-                           </h3>
-                           <div className="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
-                             <p className="text-sm text-indigo-900 font-medium italic">"{activeWorkspaceJob.voiceNote}"</p>
-                           </div>
-                         </div>
-                       )}
+                      <div className="prose prose-slate prose-sm max-w-none text-slate-600 mb-8">
+                        <p>{activeWorkspaceJob.description}</p>
+                      </div>
 
-                       {activeWorkspaceJob.photos && activeWorkspaceJob.photos.length > 0 && (
-                         <div>
-                            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
-                               <Camera className="w-3.5 h-3.5 text-slate-400" /> Attached Photos
-                            </h3>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                              {activeWorkspaceJob.photos.map((photo: string, index: number) => (
-                                <div key={index} className="aspect-square rounded-xl border border-slate-200 overflow-hidden bg-slate-100 cursor-pointer hover:opacity-90 transition-opacity">
-                                  <img src={photo} alt={`Task detail ${index + 1}`} className="w-full h-full object-cover" />
-                                </div>
-                              ))}
-                            </div>
-                         </div>
-                       )}
+                      {activeWorkspaceJob.voiceNote && (
+                        <div className="mb-8">
+                          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <Mic className="w-3.5 h-3.5 text-indigo-500" /> AI Transcript (Voice Note)
+                          </h3>
+                          <div className="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
+                            <p className="text-sm text-indigo-900 font-medium italic">"{activeWorkspaceJob.voiceNote}"</p>
+                          </div>
+                        </div>
+                      )}
+
+                      {activeWorkspaceJob.photos && activeWorkspaceJob.photos.length > 0 && (
+                        <div>
+                          <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3 flex items-center gap-2">
+                            <Camera className="w-3.5 h-3.5 text-slate-400" /> Attached Photos
+                          </h3>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                            {activeWorkspaceJob.photos.map((photo: string, index: number) => (
+                              <div key={index} className="aspect-square rounded-xl border border-slate-200 overflow-hidden bg-slate-100 cursor-pointer hover:opacity-90 transition-opacity">
+                                <img src={photo} alt={`Task detail ${index + 1}`} className="w-full h-full object-cover" />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </GlassCard>
                   </div>
 
                   {/* 5. Real-Time Milestone Tracker */}
                   <div className="lg:col-span-1">
                     <GlassCard className="p-6 md:p-8 h-full">
-                       <h2 className="text-lg font-bold text-slate-900 mb-8">Tracker</h2>
-                       <div className="relative">
-                          <div className="absolute left-[15px] top-2 bottom-2 w-[2px] bg-slate-100 z-0"></div>
-                          <div className="space-y-6 relative z-10">
-                            {[
-                              { title: 'Booked', isSupervisor: false },
-                              { title: 'Supervisor Assigned', subtitle: activeWorkspaceJob.supervisorName, isSupervisor: true },
-                              { title: 'Site Visit Completed', isSupervisor: true },
-                              { title: 'Work In Progress', isSupervisor: false },
-                              { title: 'Quality Check', subtitle: 'Supervisor Sign-off', isSupervisor: true },
-                              { title: 'Completed', isSupervisor: false }
-                            ].map((step, idx) => {
-                              const completed = providerMilestoneIndex > idx || (providerMilestoneIndex === 5 && idx === 5);
-                              const current = providerMilestoneIndex === idx && providerMilestoneIndex !== 5;
-                              return (
-                               <div key={idx} className="flex gap-4 items-start">
-                                  <div className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center border-2 shadow-sm bg-white ${completed ? 'border-green-500' : current ? 'border-indigo-600' : 'border-slate-200'}`}>
-                                     {completed ? (
-                                        <CheckCircle2 className="w-4 h-4 text-green-500" />
-                                     ) : current ? (
-                                        <div className="w-2.5 h-2.5 bg-indigo-600 rounded-full animate-pulse"></div>
-                                     ) : (
-                                        <div className="w-1.5 h-1.5 bg-slate-200 rounded-full"></div>
-                                     )}
-                                  </div>
-                                  <div className={`pt-1.5 ${completed || current ? 'opacity-100' : 'opacity-40'}`}>
-                                    <h3 className={`text-sm font-bold ${current ? 'text-indigo-900' : completed ? 'text-slate-900' : 'text-slate-500'}`}>{step.title}</h3>
-                                    {step.subtitle && <p className="text-xs text-slate-500 mt-0.5">{step.subtitle}</p>}
-                                  </div>
-                               </div>
-                              )
-                            })}
-                          </div>
-                       </div>
+                      <h2 className="text-lg font-bold text-slate-900 mb-8">Tracker</h2>
+                      <div className="relative">
+                        <div className="absolute left-[15px] top-2 bottom-2 w-[2px] bg-slate-100 z-0"></div>
+                        <div className="space-y-6 relative z-10">
+                          {[
+                            { title: 'Booked', isSupervisor: false },
+                            { title: 'Supervisor Assigned', subtitle: activeWorkspaceJob.supervisorName, isSupervisor: true },
+                            { title: 'Site Visit Completed', isSupervisor: true },
+                            { title: 'Work In Progress', isSupervisor: false },
+                            { title: 'Quality Check', subtitle: 'Supervisor Sign-off', isSupervisor: true },
+                            { title: 'Completed', isSupervisor: false }
+                          ].map((step, idx) => {
+                            const completed = providerMilestoneIndex > idx || (providerMilestoneIndex === 5 && idx === 5);
+                            const current = providerMilestoneIndex === idx && providerMilestoneIndex !== 5;
+                            return (
+                              <div key={idx} className="flex gap-4 items-start">
+                                <div className={`w-8 h-8 shrink-0 rounded-full flex items-center justify-center border-2 shadow-sm bg-white ${completed ? 'border-green-500' : current ? 'border-indigo-600' : 'border-slate-200'}`}>
+                                  {completed ? (
+                                    <CheckCircle2 className="w-4 h-4 text-green-500" />
+                                  ) : current ? (
+                                    <div className="w-2.5 h-2.5 bg-indigo-600 rounded-full animate-pulse"></div>
+                                  ) : (
+                                    <div className="w-1.5 h-1.5 bg-slate-200 rounded-full"></div>
+                                  )}
+                                </div>
+                                <div className={`pt-1.5 ${completed || current ? 'opacity-100' : 'opacity-40'}`}>
+                                  <h3 className={`text-sm font-bold ${current ? 'text-indigo-900' : completed ? 'text-slate-900' : 'text-slate-500'}`}>{step.title}</h3>
+                                  {step.subtitle && <p className="text-xs text-slate-500 mt-0.5">{step.subtitle}</p>}
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
                     </GlassCard>
                   </div>
                 </div>
@@ -5840,7 +5826,7 @@ export default function App() {
                 {/* 6. Bottom Action Command Bar */}
                 <div className="fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-md border-t border-slate-200 p-4 px-6 z-50 flex justify-center shadow-lg">
                   <div className="w-full max-w-4xl flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <button 
+                    <button
                       onClick={() => setIsReportIssueModalOpen(true)}
                       className="w-full sm:w-auto py-3 px-6 text-sm font-bold text-red-600 bg-white border-2 border-red-200 hover:bg-red-50 hover:border-red-300 rounded-xl transition-colors cursor-pointer"
                     >
@@ -5848,7 +5834,7 @@ export default function App() {
                     </button>
                     <div className="flex items-center gap-3 w-full sm:w-auto">
                       {providerMilestoneIndex < 3 && (
-                        <button 
+                        <button
                           onClick={() => showToast('Supervisor Approval Pending', 'Please wait for the Field Supervisor to conduct the site visit and authorize work.', 'warning')}
                           className="w-full sm:w-auto py-3.5 px-8 text-sm font-bold text-amber-800 bg-amber-100 border border-amber-300 rounded-xl transition-all cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
                         >
@@ -5857,7 +5843,7 @@ export default function App() {
                       )}
 
                       {providerMilestoneIndex === 3 && (
-                        <button 
+                        <button
                           onClick={() => handleCompleteTask(Number(activeWorkspaceJob?.id))}
                           className="w-full sm:w-auto py-3.5 px-8 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl shadow-lg shadow-emerald-600/30 transition-all cursor-pointer flex items-center justify-center gap-2"
                         >
@@ -5866,7 +5852,7 @@ export default function App() {
                       )}
 
                       {providerMilestoneIndex === 4 && (
-                        <button 
+                        <button
                           onClick={() => showToast('Quality Inspection In Progress', 'Waiting for supervisor quality inspection to complete.', 'info')}
                           className="w-full sm:w-auto py-3.5 px-8 text-sm font-bold text-purple-800 bg-purple-100 border border-purple-300 rounded-xl transition-all cursor-not-allowed flex items-center justify-center gap-2 shadow-sm"
                         >
@@ -5875,7 +5861,7 @@ export default function App() {
                       )}
 
                       {providerMilestoneIndex === 5 && (
-                        <button 
+                        <button
                           disabled
                           className="w-full sm:w-auto py-3.5 px-8 text-sm font-bold text-emerald-800 bg-emerald-100 border border-emerald-200 rounded-xl transition-all cursor-not-allowed flex items-center justify-center gap-2 shadow-none"
                         >
@@ -5911,33 +5897,33 @@ export default function App() {
               <p className="text-slate-600 mb-8 leading-relaxed max-w-md">
                 Thank you for applying to be a TaskLink provider. An HR Officer will conduct a verification call with you shortly. Please keep your mobile phone nearby.
               </p>
-              
+
               <div className="w-full bg-slate-50 p-4 rounded-xl text-left border border-slate-200">
-                 <h3 className="text-sm font-bold text-slate-900 mb-2 uppercase tracking-wide">Next Steps</h3>
-                 <ul className="space-y-3 text-sm text-slate-600">
-                   <li className="flex items-start gap-2">
-                     <CheckCircle className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                     <span>Application submitted successfully</span>
-                   </li>
-                   <li className="flex items-start gap-2">
-                     <div className="w-4 h-4 rounded-full border-2 border-indigo-400 shrink-0 mt-0.5 relative">
-                       <div className="absolute inset-1 rounded-full bg-indigo-600 animate-pulse"></div>
-                     </div>
-                     <span className="font-semibold text-indigo-900">Document Verification by HR</span>
-                   </li>
-                   <li className="flex items-start gap-2 opacity-50">
-                     <div className="w-4 h-4 rounded-full border-2 border-slate-300 shrink-0 mt-0.5"></div>
-                     <span>Phone Interview</span>
-                   </li>
-                   <li className="flex items-start gap-2 opacity-50">
-                     <div className="w-4 h-4 rounded-full border-2 border-slate-300 shrink-0 mt-0.5"></div>
-                     <span>Profile Activated</span>
-                   </li>
-                 </ul>
+                <h3 className="text-sm font-bold text-slate-900 mb-2 uppercase tracking-wide">Next Steps</h3>
+                <ul className="space-y-3 text-sm text-slate-600">
+                  <li className="flex items-start gap-2">
+                    <CheckCircle className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                    <span>Application submitted successfully</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <div className="w-4 h-4 rounded-full border-2 border-indigo-400 shrink-0 mt-0.5 relative">
+                      <div className="absolute inset-1 rounded-full bg-indigo-600 animate-pulse"></div>
+                    </div>
+                    <span className="font-semibold text-indigo-900">Document Verification by HR</span>
+                  </li>
+                  <li className="flex items-start gap-2 opacity-50">
+                    <div className="w-4 h-4 rounded-full border-2 border-slate-300 shrink-0 mt-0.5"></div>
+                    <span>Phone Interview</span>
+                  </li>
+                  <li className="flex items-start gap-2 opacity-50">
+                    <div className="w-4 h-4 rounded-full border-2 border-slate-300 shrink-0 mt-0.5"></div>
+                    <span>Profile Activated</span>
+                  </li>
+                </ul>
               </div>
 
               <div className="mt-8 pt-6 border-t border-slate-200/60 w-full">
-                <button 
+                <button
                   onClick={() => setCurrentPage('home')}
                   className="w-full text-base font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 py-3.5 rounded-2xl transition-all duration-300 shadow-sm flex flex-col items-center justify-center max-w-md mx-auto"
                 >
@@ -5982,7 +5968,7 @@ export default function App() {
                         </div>
                         <h3 className="font-bold text-slate-900 text-lg mb-2 line-clamp-1">{job.title}</h3>
                         <p className="text-xs text-slate-600 mb-4 line-clamp-2 leading-relaxed">{job.description}</p>
-                        
+
                         <div className="space-y-2 mb-4 bg-slate-50/80 p-3.5 rounded-2xl border border-slate-100">
                           <div className="flex items-center gap-2 text-slate-700 text-xs font-medium">
                             <Calendar className="w-3.5 h-3.5 text-slate-400 shrink-0" /> <span>{job.date}</span>
@@ -6002,7 +5988,7 @@ export default function App() {
                         </div>
                       </div>
 
-                      <button 
+                      <button
                         onClick={() => {
                           setSupervisorSelectedJob(job);
                           setCurrentPage('supervisorActiveWorkspace');
@@ -6038,7 +6024,7 @@ export default function App() {
             <div className="max-w-7xl mx-auto px-6 mb-6">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                 <div className="flex items-center gap-4">
-                  <button 
+                  <button
                     onClick={() => setCurrentPage('supervisorDashboard')}
                     className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer shrink-0"
                   >
@@ -6092,8 +6078,8 @@ export default function App() {
                         <h3 className="text-base font-bold text-slate-900 mb-1">{supervisorSelectedJob.customerName}</h3>
                         <p className="text-xs text-slate-500 mb-4 line-clamp-1">{supervisorSelectedJob.neighborhood}</p>
                       </div>
-                      <a 
-                        href={`tel:${supervisorSelectedJob.customerPhone}`} 
+                      <a
+                        href={`tel:${supervisorSelectedJob.customerPhone}`}
                         className="w-full py-2.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold rounded-xl flex justify-center items-center gap-2 text-xs border border-indigo-200 transition-colors"
                       >
                         <Phone className="w-3.5 h-3.5" /> Call Customer ({supervisorSelectedJob.customerPhone || 'N/A'})
@@ -6110,8 +6096,8 @@ export default function App() {
                         <h3 className="text-base font-bold text-slate-900 mb-1">{supervisorSelectedJob.providerName}</h3>
                         <p className="text-xs font-medium text-emerald-600 bg-emerald-50 w-max px-2 py-0.5 rounded mb-4">{supervisorSelectedJob.providerSkill}</p>
                       </div>
-                      <a 
-                        href={`tel:${supervisorSelectedJob.providerPhone}`} 
+                      <a
+                        href={`tel:${supervisorSelectedJob.providerPhone}`}
                         className="w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl flex justify-center items-center gap-2 text-xs shadow-sm transition-colors"
                       >
                         <Phone className="w-3.5 h-3.5" /> Call Laborer ({supervisorSelectedJob.providerPhone || 'N/A'})
@@ -6161,25 +6147,25 @@ export default function App() {
                     <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 flex items-center gap-2">
                       <Edit2 className="w-4 h-4 text-emerald-500" /> Field Assessment & Inspection Report
                     </h3>
-                    <textarea 
+                    <textarea
                       value={supervisorAssessmentNotes}
                       onChange={(e) => setSupervisorAssessmentNotes(e.target.value)}
                       placeholder="Enter official scope assessment, material needs, compliance findings, or quality check results..."
                       className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none h-28 mb-4 transition-all"
                     />
-                    
+
                     <div className="border-2 border-dashed border-slate-200 rounded-xl p-5 flex flex-col items-center justify-center bg-slate-50 text-center relative overflow-hidden group cursor-pointer hover:bg-slate-100 transition-colors">
-                      <input 
-                        type="file" 
-                        multiple 
-                        accept="image/*" 
-                        capture="environment" 
-                        className="absolute inset-0 opacity-0 cursor-pointer z-10" 
+                      <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        capture="environment"
+                        className="absolute inset-0 opacity-0 cursor-pointer z-10"
                         onChange={(e) => {
                           if (e.target.files) {
                             setSupervisorEvidences(Array.from(e.target.files).map(f => URL.createObjectURL(f as File)));
                           }
-                        }} 
+                        }}
                       />
                       <Camera className="w-6 h-6 text-slate-400 mb-1.5 group-hover:-translate-y-1 transition-transform" />
                       <p className="text-sm font-bold text-slate-700">Upload On-Site Photographic Evidence</p>
@@ -6248,7 +6234,7 @@ export default function App() {
                       <Navigation className="w-4 h-4 text-blue-500" /> Worksite Geolocation Map
                     </h3>
                     <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
-                      <GoogleMapView 
+                      <GoogleMapView
                         center={{ lat: supervisorSelectedJob.lat || 6.9271, lng: supervisorSelectedJob.lng || 79.8612 }}
                         addressName={supervisorSelectedJob.neighborhood || 'Job Worksite'}
                       />
@@ -6257,10 +6243,10 @@ export default function App() {
                       <MapPin className="w-4 h-4 text-indigo-500 shrink-0" />
                       <span className="truncate">{supervisorSelectedJob.neighborhood || 'Colombo, Sri Lanka'}</span>
                     </div>
-                    <a 
-                      href={`https://www.google.com/maps/search/?api=1&query=${supervisorSelectedJob.lat || 6.9271},${supervisorSelectedJob.lng || 79.8612}`} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${supervisorSelectedJob.lat || 6.9271},${supervisorSelectedJob.lng || 79.8612}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl flex justify-center items-center gap-2 text-xs shadow-md shadow-blue-600/20 transition-all"
                     >
                       <Navigation className="w-4 h-4" /> Open in Google Maps Navigation
@@ -6281,7 +6267,7 @@ export default function App() {
                       <CheckCircle2 className="w-5 h-5 text-emerald-600" />
                       <span>Quality Audit Approved & Escrow Finalized</span>
                     </div>
-                    <button 
+                    <button
                       onClick={() => setCurrentPage('supervisorDashboard')}
                       className="py-2.5 px-6 bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm rounded-xl transition-all cursor-pointer"
                     >
@@ -6290,7 +6276,7 @@ export default function App() {
                   </div>
                 ) : (
                   <>
-                    <button 
+                    <button
                       onClick={() => setIsSupervisorEscalateModalOpen(true)}
                       className="w-full sm:w-auto py-3 px-6 bg-white text-red-600 border-2 border-red-200 hover:bg-red-50 hover:border-red-300 font-bold text-sm rounded-xl transition-colors cursor-pointer"
                     >
@@ -6298,16 +6284,16 @@ export default function App() {
                     </button>
                     <div className="flex items-center gap-3 w-full sm:w-auto">
                       {(supervisorSelectedJob.providerMilestoneIndex === 1 || supervisorSelectedJob.rawStatus === 'assigned') && (
-                        <button 
+                        <button
                           onClick={() => handleSupervisorSiteVisit(supervisorSelectedJob.id)}
                           className="w-full sm:w-auto py-3 px-8 bg-emerald-600 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-600/30 hover:bg-emerald-700 transition-colors cursor-pointer"
                         >
                           Confirm Site Visit & Authorize Work
                         </button>
                       )}
-                      
+
                       {(supervisorSelectedJob.providerMilestoneIndex === 4 || supervisorSelectedJob.rawStatus === 'in_review' || supervisorSelectedJob.rawStatus === 'in_progress') && (
-                        <button 
+                        <button
                           onClick={() => handleSupervisorQualityCheck(supervisorSelectedJob.id)}
                           className="w-full sm:w-auto py-3 px-8 bg-indigo-600 text-white font-bold text-sm rounded-xl shadow-lg shadow-indigo-600/30 hover:bg-indigo-700 transition-colors cursor-pointer"
                         >
@@ -6341,28 +6327,25 @@ export default function App() {
                 <span className="font-bold text-lg tracking-tight text-white">TaskLink HR</span>
               </div>
               <div className="flex-1 py-6 px-4 space-y-2 overflow-y-auto">
-                <button 
+                <button
                   onClick={() => setHrActiveTab('onboarding')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    hrActiveTab === 'onboarding' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${hrActiveTab === 'onboarding' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    }`}
                 >
                   <UserPlus className="w-5 h-5" /> Onboarding Queue
                   <span className="ml-auto bg-red-500 text-white text-xs px-2 py-0.5 rounded-full">5</span>
                 </button>
-                <button 
+                <button
                   onClick={() => setHrActiveTab('directory')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    hrActiveTab === 'directory' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${hrActiveTab === 'directory' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    }`}
                 >
                   <Users className="w-5 h-5" /> Verified Directory
                 </button>
-                <button 
+                <button
                   onClick={() => setHrActiveTab('analytics')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    hrActiveTab === 'analytics' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${hrActiveTab === 'analytics' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    }`}
                 >
                   <BarChart2 className="w-5 h-5" /> Performance Analytics
                 </button>
@@ -6378,7 +6361,7 @@ export default function App() {
                 <div className="flex items-center gap-4">
                   <h1 className="text-xl font-bold text-slate-800">HR Administration Terminal</h1>
                   {currentUserRole === 'admin' && (
-                    <button 
+                    <button
                       onClick={() => setCurrentPage('adminDashboard')}
                       className="px-3.5 py-1.5 bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
                     >
@@ -6392,7 +6375,7 @@ export default function App() {
                     <p className="text-sm font-bold text-slate-900">{profileData.firstName} {profileData.lastName}</p>
                     <p className="text-xs font-semibold text-indigo-600">{currentUserRole === 'admin' ? 'Super Administrator' : 'HR Officer'}</p>
                   </div>
-                  <div 
+                  <div
                     onClick={() => setIsHrProfileMenuOpen(!isHrProfileMenuOpen)}
                     className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border border-slate-300 cursor-pointer hover:ring-2 hover:ring-indigo-500/50 transition-all"
                   >
@@ -6410,7 +6393,7 @@ export default function App() {
                           transition={{ duration: 0.2 }}
                           className="absolute top-14 right-0 w-64 z-50 shadow-2xl"
                         >
-                          <div 
+                          <div
                             className="p-4 flex flex-col items-center shadow-2xl border border-slate-200 rounded-3xl relative z-50"
                             style={{ backgroundColor: '#ffffff', opacity: 1 }}
                           >
@@ -6420,10 +6403,10 @@ export default function App() {
                             <h2 className="text-base font-bold text-slate-900 mx-auto text-center">{profileData.firstName} {profileData.lastName}</h2>
                             <p className="text-xs text-indigo-600 font-semibold mb-1">{currentUserRole === 'admin' ? 'Super Administrator' : 'HR Administration Officer'}</p>
                             <p className="text-xs text-slate-500 mb-3 mx-auto text-center">{profileData.email}</p>
-                            
+
                             {currentUserRole === 'admin' && (
                               <div className="w-full border-t border-slate-100 pt-2 mb-1">
-                                <button 
+                                <button
                                   onClick={() => {
                                     setCurrentPage('adminDashboard');
                                     setIsHrProfileMenuOpen(false);
@@ -6437,7 +6420,7 @@ export default function App() {
                             )}
 
                             <div className="mt-2 pt-2 border-t border-slate-100 w-full">
-                              <button 
+                              <button
                                 onClick={() => handleUserLogout()}
                                 className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-xl font-semibold transition-colors cursor-pointer"
                               >
@@ -6461,15 +6444,15 @@ export default function App() {
                     <div className="flex flex-col md:flex-row gap-4">
                       <div className="relative flex-1 max-w-sm">
                         <Search className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           placeholder="Search by applicant name or ID..."
                           value={hrSearchQuery}
                           onChange={(e) => setHrSearchQuery(e.target.value)}
                           className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
                         />
                       </div>
-                      <select 
+                      <select
                         value={hrTradeFilter}
                         onChange={(e) => setHrTradeFilter(e.target.value)}
                         className="w-full md:w-auto px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none"
@@ -6483,7 +6466,7 @@ export default function App() {
                         <option>Cleaners</option>
                         <option>Allied Trades</option>
                       </select>
-                      <select 
+                      <select
                         value={hrExperienceFilter}
                         onChange={(e) => setHrExperienceFilter(e.target.value)}
                         className="w-full md:w-auto px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none"
@@ -6551,7 +6534,7 @@ export default function App() {
                                       </span>
                                     </td>
                                     <td className="px-6 py-4 text-right">
-                                      <button 
+                                      <button
                                         onClick={() => {
                                           setHrSelectedApplicant(applicant);
                                           setIsHrApplicationDrawerOpen(true);
@@ -6628,7 +6611,7 @@ export default function App() {
                                   </td>
                                   <td className="px-6 py-4 text-slate-600">Avg: {laborer.response || '10 mins'}</td>
                                   <td className="px-6 py-4 flex justify-end gap-2 text-right">
-                                    <button 
+                                    <button
                                       onClick={() => {
                                         setHrSelectedLaborerLog(laborer);
                                         setIsHrLogModalOpen(true);
@@ -6647,7 +6630,7 @@ export default function App() {
                     </div>
                   </div>
                 )}
-                
+
                 {hrActiveTab === 'analytics' && (
                   <div className="flex flex-col items-center justify-center py-20 text-slate-400">
                     <BarChart2 className="w-16 h-16 mb-4 opacity-50" />
@@ -6655,19 +6638,19 @@ export default function App() {
                   </div>
                 )}
               </div>
-              
+
               {/* Slide-Over Drawer */}
               <AnimatePresence>
                 {isHrApplicationDrawerOpen && hrSelectedApplicant && (
                   <>
-                    <motion.div 
+                    <motion.div
                       className="absolute inset-0 bg-slate-900/20 backdrop-blur-sm z-[110]"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       onClick={() => setIsHrApplicationDrawerOpen(false)}
                     />
-                    <motion.div 
+                    <motion.div
                       className="absolute top-0 right-0 h-full w-[800px] max-w-full bg-white shadow-2xl z-[120] flex flex-col border-l border-slate-200"
                       initial={{ x: '100%' }}
                       animate={{ x: 0 }}
@@ -6680,13 +6663,13 @@ export default function App() {
                           <X className="w-5 h-5" />
                         </button>
                       </div>
-                      
+
                       <div className="flex-1 overflow-y-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-50 border-b border-slate-200">
                         {/* Panel Left: Personal & Contact Profiles */}
                         <div className="space-y-6">
                           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 border-b border-slate-100 pb-2">Personal & Contact Profiles</h3>
-                            
+
                             <div className="space-y-4">
                               <div>
                                 <span className="block text-xs font-medium text-slate-500 mb-1">Full Legal Name</span>
@@ -6704,7 +6687,7 @@ export default function App() {
                                 <span className="block text-xs font-medium text-slate-500 mb-1">Verified Mobile Number</span>
                                 <span className="block text-sm font-bold text-slate-800">{hrSelectedApplicant.phone}</span>
                               </div>
-                              
+
                               <a href={`tel:${hrSelectedApplicant.phone}`} className="mt-4 w-full py-3 bg-slate-800 text-white font-bold rounded-xl flex justify-center items-center gap-2 text-sm shadow-sm hover:bg-slate-900 transition-colors">
                                 <Phone className="w-4 h-4" /> Call Applicant
                               </a>
@@ -6716,7 +6699,7 @@ export default function App() {
                         <div className="space-y-6 flex flex-col h-full">
                           <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex-1 flex flex-col">
                             <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4 border-b border-slate-100 pb-2">Professional Document Viewer</h3>
-                            
+
                             <div className="flex gap-4 mb-4">
                               <div className="flex-1 bg-slate-50 p-3 rounded-lg border border-slate-100 w-1/2">
                                 <span className="block text-xs font-medium text-slate-500 mb-1">Declared Trade Base</span>
@@ -6727,13 +6710,13 @@ export default function App() {
                                 <span className="block text-sm font-bold text-slate-800">{hrSelectedApplicant.experience}</span>
                               </div>
                             </div>
-                            
+
                             <div className="flex-1 border-2 border-slate-200 rounded-xl bg-slate-50 flex flex-col items-center justify-center min-h-[250px] p-6 text-center">
-                               <FileText className="w-12 h-12 text-slate-300 mb-3" />
-                               <p className="text-sm font-medium text-slate-500 mb-4 px-2">Inline preview unavailable for this document type.</p>
-                               <button className="px-4 py-2 bg-white border border-slate-200 shadow-sm text-slate-700 font-bold rounded-lg text-sm flex items-center gap-2 hover:bg-slate-50 transition-colors">
-                                 <Download className="w-4 h-4 text-slate-500" /> Download CV Document
-                               </button>
+                              <FileText className="w-12 h-12 text-slate-300 mb-3" />
+                              <p className="text-sm font-medium text-slate-500 mb-4 px-2">Inline preview unavailable for this document type.</p>
+                              <button className="px-4 py-2 bg-white border border-slate-200 shadow-sm text-slate-700 font-bold rounded-lg text-sm flex items-center gap-2 hover:bg-slate-50 transition-colors">
+                                <Download className="w-4 h-4 text-slate-500" /> Download CV Document
+                              </button>
                             </div>
                           </div>
                         </div>
@@ -6741,13 +6724,13 @@ export default function App() {
 
                       {/* Drawer Footer: Decision Action Panel */}
                       <div className="p-6 bg-white shrink-0 flex gap-4">
-                        <button 
+                        <button
                           onClick={() => { setIsHrRejectModalOpen(true); }}
                           className="flex-1 py-3.5 bg-white border-2 border-red-500 text-red-600 font-bold rounded-xl text-sm hover:bg-red-50 transition-colors cursor-pointer"
                         >
                           Reject Application
                         </button>
-                        <button 
+                        <button
                           onClick={() => {
                             if (hrSelectedApplicant?.id) {
                               handleApproveApplicant(hrSelectedApplicant.id);
@@ -6780,13 +6763,13 @@ export default function App() {
                       </select>
                       <div className="flex gap-3">
                         <button onClick={() => setIsHrRejectModalOpen(false)} className="flex-1 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl text-sm hover:bg-slate-200 transition-colors cursor-pointer">Cancel</button>
-                        <button 
+                        <button
                           onClick={() => {
                             if (hrSelectedApplicant?.id) {
                               handleRejectApplicant(hrSelectedApplicant.id);
                             }
-                          }} 
-                          className="flex-1 py-2.5 bg-red-600 text-white font-bold rounded-xl text-sm hover:bg-red-700 transition-colors disabled:opacity-50 cursor-pointer" 
+                          }}
+                          className="flex-1 py-2.5 bg-red-600 text-white font-bold rounded-xl text-sm hover:bg-red-700 transition-colors disabled:opacity-50 cursor-pointer"
                           disabled={!hrRejectReason}
                         >
                           Confirm Rejection
@@ -6804,13 +6787,13 @@ export default function App() {
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsHrLogModalOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
                     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="relative bg-white rounded-2xl shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden">
                       <div className="p-5 border-b border-slate-200 flex items-center justify-between bg-slate-50 shrink-0">
-                         <div>
-                            <h3 className="text-lg font-bold text-slate-900">Performance Log: {hrSelectedLaborerLog.name}</h3>
-                            <span className="text-xs font-mono text-slate-500">#{hrSelectedLaborerLog.id}</span>
-                         </div>
-                         <button onClick={() => setIsHrLogModalOpen(false)} className="text-slate-400 hover:text-slate-600"><X className="w-5 h-5"/></button>
+                        <div>
+                          <h3 className="text-lg font-bold text-slate-900">Performance Log: {hrSelectedLaborerLog.name}</h3>
+                          <span className="text-xs font-mono text-slate-500">#{hrSelectedLaborerLog.id}</span>
+                        </div>
+                        <button onClick={() => setIsHrLogModalOpen(false)} className="text-slate-400 hover:text-slate-600"><X className="w-5 h-5" /></button>
                       </div>
-                      
+
                       <div className="flex-1 overflow-y-auto p-6 bg-white space-y-6">
                         {/* Metrics Snapshot */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -6837,17 +6820,17 @@ export default function App() {
                               { customer: 'Mr. Fernando', score: 4, comment: 'Good job overall, arrived a bit late but finished quickly.' },
                               { customer: 'Anonymous', score: 5, comment: 'Fixed the leak immediately. Highly recommended.' }
                             ].map((review, i) => (
-                               <div key={i} className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
-                                 <div className="flex items-center justify-between mb-2">
-                                    <span className="font-bold text-sm text-slate-800">{review.customer}</span>
-                                    <div className="flex gap-0.5">
-                                      {[...Array(5)].map((_, j) => (
-                                        <Star key={j} className={`w-3.5 h-3.5 ${j < review.score ? 'text-amber-400 fill-amber-400' : 'text-slate-200'}`} />
-                                      ))}
-                                    </div>
-                                 </div>
-                                 <p className="text-sm text-slate-600 leading-relaxed">"{review.comment}"</p>
-                               </div>
+                              <div key={i} className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                                <div className="flex items-center justify-between mb-2">
+                                  <span className="font-bold text-sm text-slate-800">{review.customer}</span>
+                                  <div className="flex gap-0.5">
+                                    {[...Array(5)].map((_, j) => (
+                                      <Star key={j} className={`w-3.5 h-3.5 ${j < review.score ? 'text-amber-400 fill-amber-400' : 'text-slate-200'}`} />
+                                    ))}
+                                  </div>
+                                </div>
+                                <p className="text-sm text-slate-600 leading-relaxed">"{review.comment}"</p>
+                              </div>
                             ))}
                           </div>
                         </div>
@@ -6879,27 +6862,24 @@ export default function App() {
                 <span className="font-bold text-lg tracking-tight text-white">TaskLink Finance</span>
               </div>
               <div className="flex-1 py-6 px-4 space-y-2 overflow-y-auto">
-                <button 
+                <button
                   onClick={() => setFinanceActiveTab('ledger')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    financeActiveTab === 'ledger' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${financeActiveTab === 'ledger' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    }`}
                 >
                   <Receipt className="w-5 h-5" /> Transaction Ledger
                 </button>
-                <button 
+                <button
                   onClick={() => setFinanceActiveTab('reconciliation')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    financeActiveTab === 'reconciliation' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${financeActiveTab === 'reconciliation' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    }`}
                 >
                   <FileWarning className="w-5 h-5" /> Reconciliation Desk
                 </button>
-                <button 
+                <button
                   onClick={() => setFinanceActiveTab('analytics')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    financeActiveTab === 'analytics' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${financeActiveTab === 'analytics' ? 'bg-indigo-600 text-white' : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                    }`}
                 >
                   <BarChart2 className="w-5 h-5" /> Revenue Analytics
                 </button>
@@ -6915,7 +6895,7 @@ export default function App() {
                 <div className="flex items-center gap-4">
                   <h1 className="text-xl font-bold text-slate-800">Finance Control Terminal</h1>
                   {currentUserRole === 'admin' && (
-                    <button 
+                    <button
                       onClick={() => setCurrentPage('adminDashboard')}
                       className="px-3.5 py-1.5 bg-slate-900 hover:bg-indigo-600 text-white text-xs font-bold rounded-xl flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
                     >
@@ -6929,7 +6909,7 @@ export default function App() {
                     <p className="text-sm font-bold text-slate-900">{profileData.firstName} {profileData.lastName}</p>
                     <p className="text-xs font-semibold text-indigo-600">{currentUserRole === 'admin' ? 'Super Administrator' : 'Financial Controller'}</p>
                   </div>
-                  <div 
+                  <div
                     onClick={() => setIsFinanceProfileMenuOpen(!isFinanceProfileMenuOpen)}
                     className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border border-slate-300 cursor-pointer hover:ring-2 hover:ring-indigo-500/50 transition-all"
                   >
@@ -6947,7 +6927,7 @@ export default function App() {
                           transition={{ duration: 0.2 }}
                           className="absolute top-14 right-0 w-64 z-50 shadow-2xl"
                         >
-                          <div 
+                          <div
                             className="p-4 flex flex-col items-center shadow-2xl border border-slate-200 rounded-3xl relative z-50"
                             style={{ backgroundColor: '#ffffff', opacity: 1 }}
                           >
@@ -6957,10 +6937,10 @@ export default function App() {
                             <h2 className="text-base font-bold text-slate-900 mx-auto text-center">{profileData.firstName} {profileData.lastName}</h2>
                             <p className="text-xs text-indigo-600 font-semibold mb-1">{currentUserRole === 'admin' ? 'Super Administrator' : 'Financial Controller'}</p>
                             <p className="text-xs text-slate-500 mb-3 mx-auto text-center">{profileData.email}</p>
-                            
+
                             {currentUserRole === 'admin' && (
                               <div className="w-full border-t border-slate-100 pt-2 mb-1">
-                                <button 
+                                <button
                                   onClick={() => {
                                     setCurrentPage('adminDashboard');
                                     setIsFinanceProfileMenuOpen(false);
@@ -6974,7 +6954,7 @@ export default function App() {
                             )}
 
                             <div className="mt-2 pt-2 border-t border-slate-100 w-full">
-                              <button 
+                              <button
                                 onClick={() => handleUserLogout()}
                                 className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-xl font-semibold transition-colors cursor-pointer"
                               >
@@ -7005,7 +6985,7 @@ export default function App() {
                           <p className="text-3xl font-bold text-slate-900">LKR 24,500.00</p>
                         </div>
                       </div>
-                      
+
                       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-center">
                         <div className="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
                           <div className="flex items-center gap-2">
@@ -7065,7 +7045,7 @@ export default function App() {
                                   </span>
                                 </td>
                                 <td className="px-6 py-4 text-right">
-                                  <button 
+                                  <button
                                     onClick={() => { setFinanceSelectedTransaction(tx); setIsInvoiceModalOpen(true); }}
                                     className="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-md text-xs font-bold transition-colors border border-slate-200"
                                   >
@@ -7087,7 +7067,7 @@ export default function App() {
                       <div className="px-6 py-5 border-b border-slate-200 bg-red-50/50 flex flex-col md:flex-row md:items-center justify-between gap-4">
                         <div>
                           <h3 className="font-bold text-slate-800 text-lg flex items-center gap-2">
-                            <AlertTriangle className="w-5 h-5 text-amber-500"/> Gateway Discrepancy Queue
+                            <AlertTriangle className="w-5 h-5 text-amber-500" /> Gateway Discrepancy Queue
                           </h3>
                           <p className="text-sm text-slate-500 mt-1">Transactions flagged with a synchronization error or mismatched signature.</p>
                         </div>
@@ -7121,7 +7101,7 @@ export default function App() {
                                     Verify Gateway Signature
                                   </button>
                                   <button onClick={() => showToast('Manual Override', 'Moving job status manually to BOOKED.', 'info')} className="px-4 py-2 bg-white text-amber-600 border border-amber-600 hover:bg-amber-50 rounded-lg text-sm font-bold transition-colors flex items-center gap-1.5">
-                                    <AlertTriangle className="w-3.5 h-3.5"/> Force Manual Approval
+                                    <AlertTriangle className="w-3.5 h-3.5" /> Force Manual Approval
                                   </button>
                                 </td>
                               </tr>
@@ -7137,136 +7117,136 @@ export default function App() {
                   <div className="space-y-6">
                     {/* A. Interactive Filters Row */}
                     <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
-                       <div className="flex items-center gap-4 w-full sm:w-auto">
-                         <div className="relative">
-                            <select 
-                              value={financeSelectedDateRange}
-                              onChange={(e) => setFinanceSelectedDateRange(e.target.value)}
-                              className="pl-4 pr-10 py-2 rounded-lg border border-slate-200 bg-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none shadow-sm"
-                            >
-                              <option>Today</option>
-                              <option>This Week</option>
-                              <option>This Month</option>
-                              <option>Last Quarter</option>
-                              <option>Year to Date</option>
-                            </select>
-                            <Calendar className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                         </div>
-                       </div>
-                       <button className="flex items-center justify-center gap-2 px-5 py-2 w-full sm:w-auto bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-md shadow-indigo-600/20 hover:bg-indigo-700 transition-colors">
-                         <Download className="w-4 h-4" /> Export Financial Report
-                       </button>
+                      <div className="flex items-center gap-4 w-full sm:w-auto">
+                        <div className="relative">
+                          <select
+                            value={financeSelectedDateRange}
+                            onChange={(e) => setFinanceSelectedDateRange(e.target.value)}
+                            className="pl-4 pr-10 py-2 rounded-lg border border-slate-200 bg-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500/50 appearance-none shadow-sm"
+                          >
+                            <option>Today</option>
+                            <option>This Week</option>
+                            <option>This Month</option>
+                            <option>Last Quarter</option>
+                            <option>Year to Date</option>
+                          </select>
+                          <Calendar className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        </div>
+                      </div>
+                      <button className="flex items-center justify-center gap-2 px-5 py-2 w-full sm:w-auto bg-indigo-600 text-white rounded-lg text-sm font-bold shadow-md shadow-indigo-600/20 hover:bg-indigo-700 transition-colors">
+                        <Download className="w-4 h-4" /> Export Financial Report
+                      </button>
                     </div>
 
                     {/* B. Core Data Charts Components */}
                     <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 pt-4">
-                       {/* Component 1: Revenue Velocity Graph */}
-                       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                         <h3 className="font-bold text-slate-800 text-lg mb-6 flex items-center gap-2">
-                           Revenue Velocity
-                           <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">(LKR)</span>
-                         </h3>
-                         <div className="h-72 w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                              <LineChart
-                                data={[
-                                  { name: 'Mon', revenue: 1200 },
-                                  { name: 'Tue', revenue: 1800 },
-                                  { name: 'Wed', revenue: 2400 },
-                                  { name: 'Thu', revenue: 1600 },
-                                  { name: 'Fri', revenue: 3100 },
-                                  { name: 'Sat', revenue: 4200 },
-                                  { name: 'Sun', revenue: 3800 },
-                                ]}
-                                margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
-                              >
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-                                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} dy={10} />
-                                <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-                                <Tooltip 
-                                  contentStyle={{borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
-                                  formatter={(value: number) => [`LKR ${value}`, 'Revenue']}
-                                />
-                                <Line type="monotone" dataKey="revenue" stroke="#6366f1" strokeWidth={3} dot={{r: 4, strokeWidth: 2, fill: '#fff'}} activeDot={{r: 6}} />
-                              </LineChart>
-                            </ResponsiveContainer>
-                         </div>
-                       </div>
+                      {/* Component 1: Revenue Velocity Graph */}
+                      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 className="font-bold text-slate-800 text-lg mb-6 flex items-center gap-2">
+                          Revenue Velocity
+                          <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-full">(LKR)</span>
+                        </h3>
+                        <div className="h-72 w-full">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <LineChart
+                              data={[
+                                { name: 'Mon', revenue: 1200 },
+                                { name: 'Tue', revenue: 1800 },
+                                { name: 'Wed', revenue: 2400 },
+                                { name: 'Thu', revenue: 1600 },
+                                { name: 'Fri', revenue: 3100 },
+                                { name: 'Sat', revenue: 4200 },
+                                { name: 'Sun', revenue: 3800 },
+                              ]}
+                              margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+                            >
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                              <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} dy={10} />
+                              <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
+                              <Tooltip
+                                contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                                formatter={(value: number) => [`LKR ${value}`, 'Revenue']}
+                              />
+                              <Line type="monotone" dataKey="revenue" stroke="#6366f1" strokeWidth={3} dot={{ r: 4, strokeWidth: 2, fill: '#fff' }} activeDot={{ r: 6 }} />
+                            </LineChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </div>
 
-                       {/* Component 2: Category Profitability Index */}
-                       <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                         <h3 className="font-bold text-slate-800 text-lg mb-6">Category Profitability Index</h3>
-                         <div className="h-72 w-full">
-                            <ResponsiveContainer width="100%" height="100%">
-                              <BarChart
-                                data={[
-                                  { name: 'Plumbing', volume: 145 },
-                                  { name: 'Electrical', volume: 180 },
-                                  { name: 'Masonry', volume: 85 },
-                                  { name: 'Carpentry', volume: 110 },
-                                  { name: 'Cleaning', volume: 220 },
-                                ]}
-                                margin={{ top: 5, right: 5, left: -20, bottom: 5 }}
-                                layout="vertical"
-                              >
-                                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
-                                <XAxis type="number" axisLine={false} tickLine={false} tick={{fill: '#64748b', fontSize: 12}} />
-                                <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{fill: '#475569', fontSize: 13, fontWeight: 500}} width={90} />
-                                <Tooltip 
-                                  contentStyle={{borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'}}
-                                  cursor={{fill: '#f1f5f9'}}
-                                  formatter={(value: number) => [`${value} Bookings`, 'Volume']}
-                                />
-                                <Bar dataKey="volume" fill="#10b981" radius={[0, 4, 4, 0]} barSize={24} />
-                              </BarChart>
-                            </ResponsiveContainer>
-                         </div>
-                       </div>
+                      {/* Component 2: Category Profitability Index */}
+                      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h3 className="font-bold text-slate-800 text-lg mb-6">Category Profitability Index</h3>
+                        <div className="h-72 w-full">
+                          <ResponsiveContainer width="100%" height="100%">
+                            <BarChart
+                              data={[
+                                { name: 'Plumbing', volume: 145 },
+                                { name: 'Electrical', volume: 180 },
+                                { name: 'Masonry', volume: 85 },
+                                { name: 'Carpentry', volume: 110 },
+                                { name: 'Cleaning', volume: 220 },
+                              ]}
+                              margin={{ top: 5, right: 5, left: -20, bottom: 5 }}
+                              layout="vertical"
+                            >
+                              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="#e2e8f0" />
+                              <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
+                              <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: '#475569', fontSize: 13, fontWeight: 500 }} width={90} />
+                              <Tooltip
+                                contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                                cursor={{ fill: '#f1f5f9' }}
+                                formatter={(value: number) => [`${value} Bookings`, 'Volume']}
+                              />
+                              <Bar dataKey="volume" fill="#10b981" radius={[0, 4, 4, 0]} barSize={24} />
+                            </BarChart>
+                          </ResponsiveContainer>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
               </div>
             </div>
-            
+
             {/* Invoice Modal Summary */}
             <AnimatePresence>
               {isInvoiceModalOpen && financeSelectedTransaction && (
                 <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsInvoiceModalOpen(false)} className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" />
                   <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} className="relative bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden flex flex-col">
-                     <div className="p-6 text-center border-b border-indigo-100 bg-indigo-50/50">
-                        <div className="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-4 border border-indigo-100 text-indigo-600">
-                          <Receipt className="w-8 h-8" />
-                        </div>
-                        <h3 className="text-xl font-black text-slate-900 mb-1">{financeSelectedTransaction.amount}</h3>
-                        <p className="text-sm font-semibold text-slate-500 uppercase tracking-widest">Platform Fee</p>
-                     </div>
-                     <div className="p-6 space-y-4">
-                        <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                          <span className="text-sm text-slate-500">Status</span>
-                          <span className="font-bold text-green-600 flex items-center gap-1.5"><CheckCircle className="w-4 h-4"/> Paid</span>
-                        </div>
-                        <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                          <span className="text-sm text-slate-500">Date</span>
-                          <span className="font-medium text-slate-800 text-sm">{financeSelectedTransaction.date}</span>
-                        </div>
-                        <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                          <span className="text-sm text-slate-500">Customer</span>
-                          <span className="font-medium text-slate-800 text-sm text-right">{financeSelectedTransaction.customerName}<br/><span className="text-xs text-slate-400 font-mono">{financeSelectedTransaction.customerId}</span></span>
-                        </div>
-                        <div className="flex justify-between items-center pb-3 border-b border-slate-100">
-                          <span className="text-sm text-slate-500">Reference ID</span>
-                          <span className="font-mono text-slate-600 text-xs bg-slate-100 px-2 py-1 rounded">{financeSelectedTransaction.ref}</span>
-                        </div>
-                        <div className="pt-2">
-                          <button onClick={() => setIsInvoiceModalOpen(false)} className="w-full py-3 bg-slate-900 hover:bg-indigo-600 text-white font-bold rounded-xl text-sm transition-all shadow-md shadow-slate-900/10">Close Receipt</button>
-                        </div>
-                     </div>
+                    <div className="p-6 text-center border-b border-indigo-100 bg-indigo-50/50">
+                      <div className="w-16 h-16 mx-auto bg-white rounded-full flex items-center justify-center shadow-sm mb-4 border border-indigo-100 text-indigo-600">
+                        <Receipt className="w-8 h-8" />
+                      </div>
+                      <h3 className="text-xl font-black text-slate-900 mb-1">{financeSelectedTransaction.amount}</h3>
+                      <p className="text-sm font-semibold text-slate-500 uppercase tracking-widest">Platform Fee</p>
+                    </div>
+                    <div className="p-6 space-y-4">
+                      <div className="flex justify-between items-center pb-3 border-b border-slate-100">
+                        <span className="text-sm text-slate-500">Status</span>
+                        <span className="font-bold text-green-600 flex items-center gap-1.5"><CheckCircle className="w-4 h-4" /> Paid</span>
+                      </div>
+                      <div className="flex justify-between items-center pb-3 border-b border-slate-100">
+                        <span className="text-sm text-slate-500">Date</span>
+                        <span className="font-medium text-slate-800 text-sm">{financeSelectedTransaction.date}</span>
+                      </div>
+                      <div className="flex justify-between items-center pb-3 border-b border-slate-100">
+                        <span className="text-sm text-slate-500">Customer</span>
+                        <span className="font-medium text-slate-800 text-sm text-right">{financeSelectedTransaction.customerName}<br /><span className="text-xs text-slate-400 font-mono">{financeSelectedTransaction.customerId}</span></span>
+                      </div>
+                      <div className="flex justify-between items-center pb-3 border-b border-slate-100">
+                        <span className="text-sm text-slate-500">Reference ID</span>
+                        <span className="font-mono text-slate-600 text-xs bg-slate-100 px-2 py-1 rounded">{financeSelectedTransaction.ref}</span>
+                      </div>
+                      <div className="pt-2">
+                        <button onClick={() => setIsInvoiceModalOpen(false)} className="w-full py-3 bg-slate-900 hover:bg-indigo-600 text-white font-bold rounded-xl text-sm transition-all shadow-md shadow-slate-900/10">Close Receipt</button>
+                      </div>
+                    </div>
                   </motion.div>
                 </div>
               )}
             </AnimatePresence>
-            
+
           </motion.main>
         )}
 
@@ -7296,35 +7276,31 @@ export default function App() {
               <div className="flex-1 py-6 px-4 space-y-1.5 overflow-y-auto">
                 <button
                   onClick={() => setAdminActiveTab('overview')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    adminActiveTab === 'overview' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:bg-slate-900 hover:text-white'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${adminActiveTab === 'overview' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:bg-slate-900 hover:text-white'
+                    }`}
                 >
                   <BarChart2 className="w-5 h-5" /> Executive Overview
                 </button>
                 <button
                   onClick={() => setAdminActiveTab('users')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    adminActiveTab === 'users' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:bg-slate-900 hover:text-white'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${adminActiveTab === 'users' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:bg-slate-900 hover:text-white'
+                    }`}
                 >
                   <Users className="w-5 h-5" /> User & Role Control
                   <span className="ml-auto bg-slate-800 text-slate-300 text-xs px-2 py-0.5 rounded-full">{adminUsersList.length}</span>
                 </button>
                 <button
                   onClick={() => setAdminActiveTab('disputes')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    adminActiveTab === 'disputes' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:bg-slate-900 hover:text-white'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${adminActiveTab === 'disputes' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:bg-slate-900 hover:text-white'
+                    }`}
                 >
                   <AlertTriangle className="w-5 h-5" /> Escalated Disputes
                   <span className="ml-auto bg-amber-500/20 text-amber-300 text-xs px-2 py-0.5 rounded-full border border-amber-500/30">{adminDisputesList.length}</span>
                 </button>
                 <button
                   onClick={() => setAdminActiveTab('logs')}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                    adminActiveTab === 'logs' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:bg-slate-900 hover:text-white'
-                  }`}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${adminActiveTab === 'logs' ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' : 'text-slate-400 hover:bg-slate-900 hover:text-white'
+                    }`}
                 >
                   <Shield className="w-5 h-5" /> Security & Audit Logs
                   {adminContactMessages.filter(m => m.status === 'unread').length > 0 && (
@@ -7339,19 +7315,19 @@ export default function App() {
               <div className="p-4 border-t border-slate-800 bg-slate-950/50">
                 <p className="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Switch Terminal</p>
                 <div className="grid grid-cols-3 gap-1">
-                  <button 
+                  <button
                     onClick={() => setCurrentPage('hrDashboard')}
                     className="px-2 py-1.5 bg-slate-900 hover:bg-indigo-950 text-slate-300 hover:text-indigo-300 text-xs font-semibold rounded-lg border border-slate-800 transition-colors"
                   >
                     HR
                   </button>
-                  <button 
+                  <button
                     onClick={() => setCurrentPage('financeDashboard')}
                     className="px-2 py-1.5 bg-slate-900 hover:bg-indigo-950 text-slate-300 hover:text-indigo-300 text-xs font-semibold rounded-lg border border-slate-800 transition-colors"
                   >
                     Finance
                   </button>
-                  <button 
+                  <button
                     onClick={() => setCurrentPage('supervisorDashboard')}
                     className="px-2 py-1.5 bg-slate-900 hover:bg-indigo-950 text-slate-300 hover:text-indigo-300 text-xs font-semibold rounded-lg border border-slate-800 transition-colors"
                   >
@@ -7378,7 +7354,7 @@ export default function App() {
                     <p className="text-sm font-bold text-white">{profileData.firstName} {profileData.lastName}</p>
                     <p className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Super Administrator</p>
                   </div>
-                  <div 
+                  <div
                     onClick={() => setIsAdminProfileMenuOpen(!isAdminProfileMenuOpen)}
                     className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 overflow-hidden border-2 border-indigo-400 shadow-md flex items-center justify-center cursor-pointer hover:ring-2 hover:ring-indigo-400/50 transition-all"
                   >
@@ -7396,7 +7372,7 @@ export default function App() {
                           transition={{ duration: 0.2 }}
                           className="absolute top-14 right-0 w-64 z-50 shadow-[0_20px_50px_rgba(0,0,0,0.8)]"
                         >
-                          <div 
+                          <div
                             className="p-4 flex flex-col items-center shadow-2xl border border-slate-700 rounded-3xl text-white relative z-50"
                             style={{ backgroundColor: '#090d16', opacity: 1 }}
                           >
@@ -7408,14 +7384,14 @@ export default function App() {
                             <p className="text-xs text-slate-400 mb-3">{profileData.email}</p>
 
                             <div className="flex flex-col gap-1 w-full border-t border-slate-800 pt-2">
-                              <button 
+                              <button
                                 onClick={() => { setCurrentPage('home'); setIsAdminProfileMenuOpen(false); }}
                                 className="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white font-medium text-sm text-left transition-colors"
                               >
                                 <Zap className="w-4 h-4 text-indigo-400" />
                                 View Public Homepage
                               </button>
-                              <button 
+                              <button
                                 onClick={() => { setCurrentPage('userProfile'); setIsAdminProfileMenuOpen(false); }}
                                 className="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white font-medium text-sm text-left transition-colors"
                               >
@@ -7425,7 +7401,7 @@ export default function App() {
                             </div>
 
                             <div className="mt-2 pt-2 border-t border-slate-800 w-full">
-                              <button 
+                              <button
                                 onClick={() => handleUserLogout()}
                                 className="flex items-center justify-center gap-2 w-full px-4 py-2.5 text-sm text-red-400 hover:bg-red-950/50 hover:text-red-300 rounded-xl font-semibold transition-colors cursor-pointer"
                               >
@@ -7529,7 +7505,7 @@ export default function App() {
                             >
                               <RefreshCw className={`w-3.5 h-3.5 ${adminIsLoading ? 'animate-spin' : ''}`} />
                             </button>
-                            <button 
+                            <button
                               onClick={() => setAdminActiveTab('users')}
                               className="px-3 py-1.5 bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 hover:bg-indigo-600 hover:text-white rounded-lg text-xs font-semibold transition-all cursor-pointer"
                             >
@@ -7614,7 +7590,7 @@ export default function App() {
                     <div className="flex flex-col sm:flex-row gap-4 justify-between items-center bg-slate-950/60 p-4 border border-slate-800 rounded-2xl">
                       <div className="relative w-full sm:w-80">
                         <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                        <input 
+                        <input
                           type="text"
                           placeholder="Search users by name, email, or role..."
                           value={adminSearchQuery}
@@ -7624,7 +7600,7 @@ export default function App() {
                       </div>
 
                       <div className="flex gap-2 w-full sm:w-auto">
-                        <select 
+                        <select
                           value={adminRoleFilter}
                           onChange={(e) => setAdminRoleFilter(e.target.value)}
                           className="bg-slate-900 border border-slate-700 text-slate-200 text-sm px-3 py-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 cursor-pointer"
@@ -7676,40 +7652,36 @@ export default function App() {
                                   </div>
                                 </td>
                                 <td className="px-6 py-4">
-                                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${
-                                    user.role === 'admin' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' :
-                                    user.role === 'hr' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
-                                    user.role === 'supervisor' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
-                                    user.role === 'finance' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
-                                    user.role === 'provider' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' :
-                                    'bg-slate-700/50 text-slate-300 border border-slate-600/50'
-                                  }`}>
+                                  <span className={`inline-block px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider ${user.role === 'admin' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' :
+                                      user.role === 'hr' ? 'bg-blue-500/20 text-blue-300 border border-blue-500/30' :
+                                        user.role === 'supervisor' ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+                                          user.role === 'finance' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                                            user.role === 'provider' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' :
+                                              'bg-slate-700/50 text-slate-300 border border-slate-600/50'
+                                    }`}>
                                     {user.role}
                                   </span>
                                 </td>
                                 <td className="px-6 py-4 text-slate-400 font-mono text-xs">{user.phone}</td>
                                 <td className="px-6 py-4">
-                                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                                    user.status === 'active' || user.status === 'approved' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 
-                                    user.status === 'suspended' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
-                                    'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                                  }`}>
-                                    <span className={`w-1.5 h-1.5 rounded-full ${
-                                      user.status === 'active' || user.status === 'approved' ? 'bg-emerald-400' : 
-                                      user.status === 'suspended' ? 'bg-red-400' :
-                                      'bg-amber-400'
-                                    }`}></span>
+                                  <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold ${user.status === 'active' || user.status === 'approved' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                                      user.status === 'suspended' ? 'bg-red-500/10 text-red-400 border border-red-500/20' :
+                                        'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                                    }`}>
+                                    <span className={`w-1.5 h-1.5 rounded-full ${user.status === 'active' || user.status === 'approved' ? 'bg-emerald-400' :
+                                        user.status === 'suspended' ? 'bg-red-400' :
+                                          'bg-amber-400'
+                                      }`}></span>
                                     {user.status}
                                   </span>
                                 </td>
                                 <td className="px-6 py-4 text-slate-400 text-xs">{user.joined}</td>
                                 <td className="px-6 py-4 text-right space-x-2">
                                   {user.role !== 'admin' && (
-                                    <button 
+                                    <button
                                       onClick={() => handleAdminToggleUserStatus(user.id)}
-                                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                                        user.status === 'active' || user.status === 'approved' ? 'bg-red-950/40 text-red-400 border border-red-800/40 hover:bg-red-900/50' : 'bg-emerald-950/40 text-emerald-400 border border-emerald-800/40 hover:bg-emerald-900/50'
-                                      }`}
+                                      className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${user.status === 'active' || user.status === 'approved' ? 'bg-red-950/40 text-red-400 border border-red-800/40 hover:bg-red-900/50' : 'bg-emerald-950/40 text-emerald-400 border border-emerald-800/40 hover:bg-emerald-900/50'
+                                        }`}
                                     >
                                       {user.status === 'active' || user.status === 'approved' ? 'Suspend' : 'Activate'}
                                     </button>
@@ -7735,7 +7707,7 @@ export default function App() {
                           {adminDisputesList.length} Active Escalations
                         </span>
                       </div>
-                      
+
                       {adminDisputesList.length > 0 ? (
                         <div className="space-y-4">
                           {adminDisputesList.map(dispute => (
@@ -7744,9 +7716,8 @@ export default function App() {
                                 <div className="flex items-center gap-3">
                                   <span className="font-mono text-xs font-black text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">{dispute.id}</span>
                                   <h4 className="font-bold text-white text-base">{dispute.task}</h4>
-                                  <span className={`px-2 py-0.5 text-xs font-bold rounded ${
-                                    dispute.priority === 'High' ? 'bg-red-500/20 text-red-300 border border-red-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                                  }`}>
+                                  <span className={`px-2 py-0.5 text-xs font-bold rounded ${dispute.priority === 'High' ? 'bg-red-500/20 text-red-300 border border-red-500/30' : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                                    }`}>
                                     {dispute.priority} Priority
                                   </span>
                                 </div>
@@ -7760,13 +7731,13 @@ export default function App() {
                               </div>
 
                               <div className="flex md:flex-col justify-end gap-2 shrink-0">
-                                <button 
+                                <button
                                   onClick={() => handleResolveDispute(dispute.task_id || Number(dispute.id.replace('DIS-', '')), 'release')}
                                   className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-indigo-600/30 cursor-pointer"
                                 >
                                   Release Escrow
                                 </button>
-                                <button 
+                                <button
                                   onClick={() => handleResolveDispute(dispute.task_id || Number(dispute.id.replace('DIS-', '')), 'refund')}
                                   className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition-all cursor-pointer"
                                 >
@@ -7802,11 +7773,10 @@ export default function App() {
                       <div className="flex items-center gap-2 bg-slate-900 p-1 rounded-xl border border-slate-800 shrink-0">
                         <button
                           onClick={() => setAdminLogsSubTab('messages')}
-                          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                            adminLogsSubTab === 'messages' 
-                              ? 'bg-indigo-600 text-white shadow-md' 
+                          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${adminLogsSubTab === 'messages'
+                              ? 'bg-indigo-600 text-white shadow-md'
                               : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                          }`}
+                            }`}
                         >
                           <Inbox className="w-3.5 h-3.5" />
                           Inbound Messages
@@ -7816,11 +7786,10 @@ export default function App() {
                         </button>
                         <button
                           onClick={() => setAdminLogsSubTab('audit')}
-                          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                            adminLogsSubTab === 'audit' 
-                              ? 'bg-indigo-600 text-white shadow-md' 
+                          className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${adminLogsSubTab === 'audit'
+                              ? 'bg-indigo-600 text-white shadow-md'
                               : 'text-slate-400 hover:text-white hover:bg-slate-800'
-                          }`}
+                            }`}
                         >
                           <ShieldCheck className="w-3.5 h-3.5" />
                           System Audit Trail
@@ -7858,11 +7827,10 @@ export default function App() {
                               <button
                                 key={filter}
                                 onClick={() => setAdminMessageFilter(filter)}
-                                className={`px-3 py-1 rounded-xl text-xs font-semibold capitalize transition-all cursor-pointer ${
-                                  adminMessageFilter === filter
+                                className={`px-3 py-1 rounded-xl text-xs font-semibold capitalize transition-all cursor-pointer ${adminMessageFilter === filter
                                     ? 'bg-indigo-600/30 text-indigo-300 border border-indigo-500/40'
                                     : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-slate-200'
-                                }`}
+                                  }`}
                               >
                                 {filter} {filter === 'unread' ? `(${adminContactMessages.filter(m => m.status === 'unread').length})` : ''}
                               </button>
@@ -7875,10 +7843,10 @@ export default function App() {
                           const filtered = adminContactMessages.filter(msg => {
                             const matchFilter = adminMessageFilter === 'all' || msg.status === adminMessageFilter;
                             const query = adminMessageSearch.toLowerCase();
-                            const matchSearch = !query || 
-                              msg.name?.toLowerCase().includes(query) || 
-                              msg.email?.toLowerCase().includes(query) || 
-                              msg.subject?.toLowerCase().includes(query) || 
+                            const matchSearch = !query ||
+                              msg.name?.toLowerCase().includes(query) ||
+                              msg.email?.toLowerCase().includes(query) ||
+                              msg.subject?.toLowerCase().includes(query) ||
                               msg.message?.toLowerCase().includes(query);
                             return matchFilter && matchSearch;
                           });
@@ -7891,7 +7859,7 @@ export default function App() {
                                 </div>
                                 <h4 className="text-sm font-bold text-white">No Contact Messages</h4>
                                 <p className="text-xs text-slate-400 max-w-sm mx-auto">
-                                  {adminContactMessages.length === 0 
+                                  {adminContactMessages.length === 0
                                     ? "Any message submitted via the public Contact Us page will be recorded in the database and appear here automatically."
                                     : "No messages match your selected search or filter criteria."}
                                 </p>
@@ -7902,13 +7870,12 @@ export default function App() {
                           return (
                             <div className="space-y-3">
                               {filtered.map((msg) => (
-                                <div 
+                                <div
                                   key={msg.id}
-                                  className={`p-5 rounded-2xl border transition-all ${
-                                    msg.status === 'unread'
+                                  className={`p-5 rounded-2xl border transition-all ${msg.status === 'unread'
                                       ? 'bg-slate-950/80 border-indigo-500/40 shadow-lg shadow-indigo-950/20'
                                       : 'bg-slate-950/50 border-slate-800'
-                                  }`}
+                                    }`}
                                 >
                                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
                                     <div className="flex items-center gap-3">
@@ -8074,22 +8041,22 @@ export default function App() {
                 </button>
               </div>
               <p className="text-sm text-slate-600 mb-4">Describe the issue (e.g., safety hazards, pricing arguments, severe connectivity drops) to alert Admin and Finance officers immediately.</p>
-              
-              <textarea 
+
+              <textarea
                 value={supervisorEscalateDescription}
                 onChange={(e) => setSupervisorEscalateDescription(e.target.value)}
                 placeholder="Enter details..."
                 className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-red-500/50 resize-none h-32 mb-4"
               />
-              
+
               <div className="grid grid-cols-2 gap-3">
-                <button 
+                <button
                   onClick={() => setIsSupervisorEscalateModalOpen(false)}
                   className="py-3 px-4 font-bold text-slate-600 bg-slate-100 rounded-xl hover:bg-slate-200 transition-colors text-sm"
                 >
                   Cancel
                 </button>
-                <button 
+                <button
                   onClick={() => {
                     if (supervisorSelectedJob) {
                       handleSupervisorEscalate(supervisorSelectedJob.id);
@@ -8125,11 +8092,11 @@ export default function App() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-md mx-4 bg-white border border-slate-200/60 rounded-3xl p-6 shadow-2xl"
             >
-              <button 
+              <button
                 onClick={() => setIsPostTaskOptionsOpen(false)}
                 className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors"
-               >
-                 <X className="w-5 h-5" />
+              >
+                <X className="w-5 h-5" />
               </button>
 
               <h2 className="text-xl font-bold text-slate-900 mb-2 mt-2">How would you like to hire?</h2>
@@ -8200,67 +8167,67 @@ export default function App() {
                   <p className="text-indigo-100 text-sm font-medium">Accept quickly before another provider takes it.</p>
                 </div>
               </div>
-              
+
               <div className="p-6 bg-slate-50 border-b border-slate-100 flex items-center gap-4 justify-between">
-                 <div className="flex items-center gap-3">
-                   <Clock className="w-5 h-5 text-amber-500" />
-                   <div>
-                     <p className="text-sm font-bold text-slate-900">Time Remaining</p>
-                     <p className="text-xs text-slate-500 text-left">Reserving slot for</p>
-                   </div>
-                 </div>
-                 <div className="text-4xl font-black tabular-nums text-amber-500 tracking-tighter">
-                   00:{jobAlertCountdown.toString().padStart(2, '0')}
-                 </div>
+                <div className="flex items-center gap-3">
+                  <Clock className="w-5 h-5 text-amber-500" />
+                  <div>
+                    <p className="text-sm font-bold text-slate-900">Time Remaining</p>
+                    <p className="text-xs text-slate-500 text-left">Reserving slot for</p>
+                  </div>
+                </div>
+                <div className="text-4xl font-black tabular-nums text-amber-500 tracking-tighter">
+                  00:{jobAlertCountdown.toString().padStart(2, '0')}
+                </div>
               </div>
 
               <div className="p-6 flex flex-col gap-4">
-                 <div className="flex justify-between items-start">
-                   <div>
-                     <h3 className="text-xl font-bold text-slate-900">{incomingJobAlert.title}</h3>
-                     <span className="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-600 rounded-md mt-2 inline-block">{incomingJobAlert.category}</span>
-                   </div>
-                   <div className="flex flex-col items-end">
-                     <span className="font-bold text-indigo-700 text-xl">LKR {incomingJobAlert.budget.toLocaleString()}</span>
-                     <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm mt-1 ${incomingJobAlert.isNegotiable ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600'}`}>
-                       {incomingJobAlert.isNegotiable ? 'Negotiable' : 'Fixed'}
-                     </span>
-                   </div>
-                 </div>
-                 
-                 <div className="flex items-center gap-2 text-sm text-slate-600 font-medium bg-slate-50 p-3 rounded-xl border border-slate-100">
-                    <MapPin className="w-4 h-4 text-indigo-500" /> {incomingJobAlert.location || incomingJobAlert.neighborhood || 'Your Area'}
-                 </div>
-                 
-                 <div>
-                    <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">Scope</h4>
-                    <p className="text-sm text-slate-600 leading-relaxed border-l-2 border-indigo-200 pl-3">{incomingJobAlert.description}</p>
-                 </div>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-900">{incomingJobAlert.title}</h3>
+                    <span className="text-xs font-semibold px-2 py-1 bg-slate-100 text-slate-600 rounded-md mt-2 inline-block">{incomingJobAlert.category}</span>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="font-bold text-indigo-700 text-xl">LKR {incomingJobAlert.budget.toLocaleString()}</span>
+                    <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-sm mt-1 ${incomingJobAlert.isNegotiable ? 'bg-amber-100 text-amber-700' : 'bg-slate-100 text-slate-600'}`}>
+                      {incomingJobAlert.isNegotiable ? 'Negotiable' : 'Fixed'}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm text-slate-600 font-medium bg-slate-50 p-3 rounded-xl border border-slate-100">
+                  <MapPin className="w-4 h-4 text-indigo-500" /> {incomingJobAlert.location || incomingJobAlert.neighborhood || 'Your Area'}
+                </div>
+
+                <div>
+                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-2">Scope</h4>
+                  <p className="text-sm text-slate-600 leading-relaxed border-l-2 border-indigo-200 pl-3">{incomingJobAlert.description}</p>
+                </div>
               </div>
-              
+
               <div className="p-6 pt-0 mt-auto grid grid-cols-2 gap-3">
-                 <button 
-                   onClick={() => {
-                     if (incomingJobAlert?.id) {
-                       handleDeclineTask(Number(incomingJobAlert.id));
-                     }
-                     setIncomingJobAlert(null);
-                   }}
-                   className="py-3.5 px-4 text-sm font-bold text-slate-600 border-2 border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-colors cursor-pointer"
-                 >
-                   Pass Job
-                 </button>
-                 <button 
-                   onClick={async () => {
-                     if (incomingJobAlert?.id) {
-                       await handleAcceptTask(Number(incomingJobAlert.id));
-                     }
-                     setIncomingJobAlert(null);
-                   }}
-                   className="py-3.5 px-4 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-xl transition-all cursor-pointer"
-                 >
-                   Accept Request
-                 </button>
+                <button
+                  onClick={() => {
+                    if (incomingJobAlert?.id) {
+                      handleDeclineTask(Number(incomingJobAlert.id));
+                    }
+                    setIncomingJobAlert(null);
+                  }}
+                  className="py-3.5 px-4 text-sm font-bold text-slate-600 border-2 border-slate-200 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-colors cursor-pointer"
+                >
+                  Pass Job
+                </button>
+                <button
+                  onClick={async () => {
+                    if (incomingJobAlert?.id) {
+                      await handleAcceptTask(Number(incomingJobAlert.id));
+                    }
+                    setIncomingJobAlert(null);
+                  }}
+                  className="py-3.5 px-4 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl shadow-lg shadow-indigo-600/30 hover:shadow-xl transition-all cursor-pointer"
+                >
+                  Accept Request
+                </button>
               </div>
             </motion.div>
           </div>
@@ -8287,10 +8254,10 @@ export default function App() {
             >
               <div className="flex justify-center mb-6">
                 <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center">
-                   <CheckCircle className="w-8 h-8" />
+                  <CheckCircle className="w-8 h-8" />
                 </div>
               </div>
-              
+
               <h2 className="text-2xl font-bold text-slate-900 mb-2 text-center">Job Completed!</h2>
               <p className="text-sm text-slate-500 mb-8 text-center px-4">Your task has been successfully completed. Please leave a review for your provider to help others.</p>
 
@@ -8311,7 +8278,7 @@ export default function App() {
 
               <div className="mb-8">
                 <label className="block text-sm font-semibold text-slate-700 mb-2">Write a Review</label>
-                <textarea 
+                <textarea
                   value={feedbackText}
                   onChange={(e) => setFeedbackText(e.target.value)}
                   rows={4}
@@ -8390,7 +8357,7 @@ export default function App() {
               </div>
               <p className="text-sm text-slate-600 mb-6">Please describe the issue you are facing on-site. This alert will be sent immediately to the administrative dashboard and your assigned Field Supervisor.</p>
 
-              <textarea 
+              <textarea
                 value={issueDescription}
                 onChange={(e) => setIssueDescription(e.target.value)}
                 placeholder="e.g., Additional plumbing materials needed, or Customer requested extra work outside original scope..."
@@ -8398,13 +8365,13 @@ export default function App() {
               ></textarea>
 
               <div className="flex gap-3">
-                <button 
+                <button
                   onClick={() => setIsReportIssueModalOpen(false)}
                   className="w-full py-3 text-sm font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-2xl transition-colors"
                 >
                   Cancel
                 </button>
-                <button 
+                <button
                   onClick={() => {
                     setIsReportIssueModalOpen(false);
                     setIssueDescription('');
@@ -8431,24 +8398,22 @@ export default function App() {
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
             className="fixed top-6 left-1/2 -translate-x-1/2 z-[250] max-w-md w-full px-4 pointer-events-auto"
           >
-            <div className={`p-4 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] border backdrop-blur-2xl flex items-start gap-3.5 transition-all ${
-              activeToast.type === 'success'
+            <div className={`p-4 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] border backdrop-blur-2xl flex items-start gap-3.5 transition-all ${activeToast.type === 'success'
                 ? 'bg-slate-900/95 text-white border-emerald-500/40 shadow-emerald-950/20'
                 : activeToast.type === 'error'
-                ? 'bg-slate-900/95 text-white border-red-500/40 shadow-red-950/20'
-                : activeToast.type === 'warning'
-                ? 'bg-slate-900/95 text-white border-amber-500/40 shadow-amber-950/20'
-                : 'bg-slate-900/95 text-white border-indigo-500/40 shadow-indigo-950/20'
-            }`}>
-              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
-                activeToast.type === 'success'
+                  ? 'bg-slate-900/95 text-white border-red-500/40 shadow-red-950/20'
+                  : activeToast.type === 'warning'
+                    ? 'bg-slate-900/95 text-white border-amber-500/40 shadow-amber-950/20'
+                    : 'bg-slate-900/95 text-white border-indigo-500/40 shadow-indigo-950/20'
+              }`}>
+              <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${activeToast.type === 'success'
                   ? 'bg-emerald-500/20 text-emerald-400'
                   : activeToast.type === 'error'
-                  ? 'bg-red-500/20 text-red-400'
-                  : activeToast.type === 'warning'
-                  ? 'bg-amber-500/20 text-amber-400'
-                  : 'bg-indigo-500/20 text-indigo-400'
-              }`}>
+                    ? 'bg-red-500/20 text-red-400'
+                    : activeToast.type === 'warning'
+                      ? 'bg-amber-500/20 text-amber-400'
+                      : 'bg-indigo-500/20 text-indigo-400'
+                }`}>
                 {activeToast.type === 'success' && <CheckCircle2 className="w-5 h-5" />}
                 {activeToast.type === 'error' && <XCircle className="w-5 h-5" />}
                 {activeToast.type === 'warning' && <AlertTriangle className="w-5 h-5" />}
@@ -8475,42 +8440,42 @@ export default function App() {
 
       {/* Footer */}
       {(currentUserRole !== 'supervisor' && currentUserRole !== 'hr' && currentUserRole !== 'finance' && currentUserRole !== 'admin') && (
-      <footer className="relative z-10 border-t border-slate-200/60 bg-white/30 backdrop-blur-md mt-auto">
-        <div className="max-w-7xl mx-auto px-6 py-4 md:py-6">
-          <div className="flex flex-col items-center text-center gap-4">
-            <div 
-              className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
-              onClick={() => setCurrentPage('home')}
-            >
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm">
-                <Zap className="w-4 h-4 text-white" />
+        <footer className="relative z-10 border-t border-slate-200/60 bg-white/30 backdrop-blur-md mt-auto">
+          <div className="max-w-7xl mx-auto px-6 py-4 md:py-6">
+            <div className="flex flex-col items-center text-center gap-4">
+              <div
+                className="flex items-center gap-2 opacity-80 hover:opacity-100 transition-opacity cursor-pointer"
+                onClick={() => setCurrentPage('home')}
+              >
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-sm">
+                  <Zap className="w-4 h-4 text-white" />
+                </div>
+                <span className="font-semibold text-xl text-slate-800 tracking-tight">TaskLink</span>
               </div>
-              <span className="font-semibold text-xl text-slate-800 tracking-tight">TaskLink</span>
-            </div>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm font-medium text-slate-600">
-              <button 
-                onClick={(e) => { e.preventDefault(); setCurrentPage('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} 
-                className="hover:text-indigo-600 hover:bg-white/50 px-4 py-2 rounded-xl transition-all cursor-pointer"
-              >
-                About
-              </button>
-              <button 
-                onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} 
-                className="hover:text-indigo-600 hover:bg-white/50 px-4 py-2 rounded-xl transition-all cursor-pointer"
-              >
-                Contact Us
-              </button>
-              <a href="https://www.termsfeed.com/live/25fdcf14-89f3-4873-9c8f-bbacfa91592b" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600 hover:bg-white/50 px-4 py-2 rounded-xl transition-all">Terms & Conditions</a>
-              <a href="https://www.termsfeed.com/live/25fdcf14-89f3-4873-9c8f-bbacfa91592b" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600 hover:bg-white/50 px-4 py-2 rounded-xl transition-all">Privacy Policy</a>
-            </div>
-            
-            <div className="text-sm text-slate-500 font-medium">
-              &copy; {new Date().getFullYear()} TaskLink Inc. All rights reserved.
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm font-medium text-slate-600">
+                <button
+                  onClick={(e) => { e.preventDefault(); setCurrentPage('about'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  className="hover:text-indigo-600 hover:bg-white/50 px-4 py-2 rounded-xl transition-all cursor-pointer"
+                >
+                  About
+                </button>
+                <button
+                  onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                  className="hover:text-indigo-600 hover:bg-white/50 px-4 py-2 rounded-xl transition-all cursor-pointer"
+                >
+                  Contact Us
+                </button>
+                <a href="https://www.termsfeed.com/live/25fdcf14-89f3-4873-9c8f-bbacfa91592b" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600 hover:bg-white/50 px-4 py-2 rounded-xl transition-all">Terms & Conditions</a>
+                <a href="https://www.termsfeed.com/live/25fdcf14-89f3-4873-9c8f-bbacfa91592b" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-600 hover:bg-white/50 px-4 py-2 rounded-xl transition-all">Privacy Policy</a>
+              </div>
+
+              <div className="text-sm text-slate-500 font-medium">
+                &copy; {new Date().getFullYear()} TaskLink Inc. All rights reserved.
+              </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </footer>
       )}
     </div>
   );
