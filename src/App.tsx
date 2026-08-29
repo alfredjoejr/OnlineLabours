@@ -182,7 +182,7 @@ export default function App() {
         const token = localStorage.getItem('tasklink_token');
         if (!token) return;
         try {
-          const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/tasks`, {
+          const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/tasks`, {
             headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
           });
           if (res.ok) {
@@ -257,7 +257,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/tasks`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/tasks`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -276,7 +276,7 @@ export default function App() {
 
   const fetchTopProviders = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/providers/top`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/providers/top`, {
         headers: {
           'Accept': 'application/json',
         },
@@ -294,7 +294,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/dashboard`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/provider/dashboard`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -339,7 +339,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/notifications`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/provider/notifications`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -360,7 +360,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/tasks/${taskId}/accept`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/provider/tasks/${taskId}/accept`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
       });
@@ -381,7 +381,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/tasks/${taskId}/decline`, {
+      await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/provider/tasks/${taskId}/decline`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
       });
@@ -396,7 +396,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/tasks/${taskId}/start`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/provider/tasks/${taskId}/start`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
       });
@@ -420,7 +420,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/tasks/${taskId}/complete`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/provider/tasks/${taskId}/complete`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
       });
@@ -447,7 +447,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/tasks/${taskId}/cancel`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/tasks/${taskId}/cancel`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` },
       });
@@ -470,7 +470,7 @@ export default function App() {
     if (!token) return;
     try {
       setSupervisorIsLoading(true);
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/supervisor/tasks`, {
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
       });
       if (res.ok) {
@@ -488,7 +488,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks/${taskId}/site-visit`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/supervisor/tasks/${taskId}/site-visit`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -515,7 +515,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks/${taskId}/quality-check`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/supervisor/tasks/${taskId}/quality-check`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -542,7 +542,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/supervisor/tasks/${taskId}/escalate`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/supervisor/tasks/${taskId}/escalate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -603,10 +603,10 @@ export default function App() {
     try {
       setHrIsLoading(true);
       const [appRes, labRes] = await Promise.all([
-        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/hr/applicants`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/hr/applicants`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         }),
-        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/hr/laborers`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/hr/laborers`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         })
       ]);
@@ -629,7 +629,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/hr/applicants/${applicantId}/approve`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/hr/applicants/${applicantId}/approve`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
       });
@@ -647,7 +647,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/hr/applicants/${applicantId}/reject`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/hr/applicants/${applicantId}/reject`, {
         method: 'POST',
         headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
       });
@@ -667,16 +667,16 @@ export default function App() {
     try {
       setAdminIsLoading(true);
       const [overviewRes, usersRes, disputesRes, messagesRes] = await Promise.all([
-        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/overview`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/admin/overview`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         }),
-        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/users`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/admin/users`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         }),
-        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/disputes`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/admin/disputes`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         }),
-        fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/contact-messages`, {
+        fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/admin/contact-messages`, {
           headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
         })
       ]);
@@ -708,7 +708,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/contact-messages/${id}/status`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/admin/contact-messages/${id}/status`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -730,7 +730,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/contact-messages/${id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/admin/contact-messages/${id}`, {
         method: 'DELETE',
         headers: {
           'Accept': 'application/json',
@@ -750,7 +750,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/disputes/${taskId}/resolve`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/admin/disputes/${taskId}/resolve`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -776,7 +776,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (!token) return;
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/admin/users/${userId}/suspend`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/admin/users/${userId}/suspend`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -801,7 +801,7 @@ export default function App() {
     fetchTopProviders();
     const token = localStorage.getItem('tasklink_token');
     if (token) {
-      fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user`, {
+      fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/user`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -857,7 +857,7 @@ export default function App() {
               location: user.address || '',
               bio: user.bio || '',
               hourlyRate: user.provider_profile?.hourly_rate || 1500,
-              avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
+              avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
             });
             setIs2FAActive(!!user.two_factor_enabled);
             setSettingsEmail(user.email || '');
@@ -887,7 +887,7 @@ export default function App() {
       // Heartbeat ping every 40 seconds to keep last_seen_at active
       const interval = setInterval(async () => {
         try {
-          await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/heartbeat`, {
+          await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/provider/heartbeat`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -902,7 +902,7 @@ export default function App() {
       // Take provider offline if browser window/tab is closed
       const handleBeforeUnload = () => {
         try {
-          fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/offline`, {
+          fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/provider/offline`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -928,7 +928,7 @@ export default function App() {
     const token = localStorage.getItem('tasklink_token');
     if (token) {
       try {
-        await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/logout`, {
+        await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/logout`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -1033,7 +1033,7 @@ export default function App() {
         const token = localStorage.getItem('tasklink_token');
         if (!token) return;
         try {
-          const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/dashboard`, {
+          const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/provider/dashboard`, {
             headers: { 'Accept': 'application/json', 'Authorization': `Bearer ${token}` }
           });
           if (res.ok) {
@@ -1113,7 +1113,7 @@ export default function App() {
       let response: Response;
 
       if (role === 'client') {
-        response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/register`, {
+        response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -1140,7 +1140,7 @@ export default function App() {
         if (signupCvFile) formData.append('cv_file', signupCvFile);
         if (signupAvatarFile) formData.append('avatar', signupAvatarFile);
 
-        response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/register`, {
+        response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/register`, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -1183,7 +1183,7 @@ export default function App() {
         location: user.address || signupAddress || '',
         bio: user.bio || '',
         hourlyRate: user.provider_profile?.hourly_rate || 1500,
-        avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
+        avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
       });
 
       // Clear fields
@@ -1227,7 +1227,7 @@ export default function App() {
         payload.two_factor_code = login2FaCode;
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/login`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1293,7 +1293,7 @@ export default function App() {
         location: user.address || '',
         bio: user.bio || '',
         hourlyRate: user.provider_profile?.hourly_rate || 1500,
-        avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
+        avatar: user.avatar_url || (user.avatar ? (user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api').replace('/api', '')}/storage/${user.avatar}`) : ''),
       });
       setIs2FAActive(!!user.two_factor_enabled);
       setSettingsEmail(user.email || '');
@@ -1364,7 +1364,7 @@ export default function App() {
           const formData = new FormData();
           formData.append('avatar', file);
 
-          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/avatar`, {
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/user/avatar`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -1376,7 +1376,7 @@ export default function App() {
           if (response.ok) {
             const data = await response.json();
             const updatedUser = data.user;
-            const newAvatar = data.avatar_url || (updatedUser.avatar ? (updatedUser.avatar.startsWith('http') ? updatedUser.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${updatedUser.avatar}`) : preview);
+            const newAvatar = data.avatar_url || (updatedUser.avatar ? (updatedUser.avatar.startsWith('http') ? updatedUser.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api').replace('/api', '')}/storage/${updatedUser.avatar}`) : preview);
             setProfileData(prev => ({
               ...prev,
               avatar: newAvatar,
@@ -1416,7 +1416,7 @@ export default function App() {
             formData.append('avatar', profileAvatarFile);
           }
 
-          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/profile`, {
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/user/profile`, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -1428,7 +1428,7 @@ export default function App() {
           if (response.ok) {
             const data = await response.json();
             const updatedUser = data.user;
-            const avatarUrl = data.avatar_url || updatedUser.avatar_url || (updatedUser.avatar ? (updatedUser.avatar.startsWith('http') ? updatedUser.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'your backend URL/api').replace('/api', '')}/storage/${updatedUser.avatar}`) : profileData.avatar);
+            const avatarUrl = data.avatar_url || updatedUser.avatar_url || (updatedUser.avatar ? (updatedUser.avatar.startsWith('http') ? updatedUser.avatar : `${(import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api').replace('/api', '')}/storage/${updatedUser.avatar}`) : profileData.avatar);
             setProfileData({
               firstName: updatedUser.name ? updatedUser.name.split(' ')[0] : '',
               lastName: updatedUser.name ? updatedUser.name.split(' ').slice(1).join(' ') : '',
@@ -1491,7 +1491,7 @@ export default function App() {
     setTwoFaErrorMessage('');
     setTwoFaCode('');
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/2fa/setup`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/user/2fa/setup`, {
         headers: {
           'Accept': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -1534,7 +1534,7 @@ export default function App() {
     setTwoFaErrorMessage('');
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/2fa/activate`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/user/2fa/activate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -1587,7 +1587,7 @@ export default function App() {
 
     setIsDisabling2FA(true);
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/2fa/disable`, {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/user/2fa/disable`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -1633,7 +1633,7 @@ export default function App() {
         payload.two_factor_code = deactivate2FaCode;
       }
 
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/user/account`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/user/account`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -1947,7 +1947,7 @@ export default function App() {
                         const token = localStorage.getItem('tasklink_token');
                         if (token) {
                           try {
-                            await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/provider/status`, {
+                            await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/provider/status`, {
                               method: 'POST',
                               headers: {
                                 'Content-Type': 'application/json',
@@ -2619,7 +2619,7 @@ export default function App() {
                         }
                         setIsSubmittingContact(true);
                         try {
-                          const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/contact`, {
+                          const res = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/contact`, {
                             method: 'POST',
                             headers: {
                               'Content-Type': 'application/json',
@@ -5359,7 +5359,7 @@ export default function App() {
                   payload.provider_id = paymentContext.provider.id;
                 }
 
-                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || `${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}`}/tasks`, {
+                const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}`}/tasks`, {
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json',
@@ -8294,7 +8294,7 @@ export default function App() {
                   const taskId = trackingTask?.rawId || (typeof trackingTask?.id === 'string' ? parseInt(trackingTask.id.replace('TASK-', '')) : trackingTask?.id);
                   if (token && taskId) {
                     try {
-                      await fetch(`${import.meta.env.VITE_API_BASE_URL || 'your backend URL/api'}/tasks/${taskId}/review`, {
+                      await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'}/tasks/${taskId}/review`, {
                         method: 'POST',
                         headers: {
                           'Content-Type': 'application/json',
