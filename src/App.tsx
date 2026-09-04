@@ -6,6 +6,7 @@ import { GoogleLocationPicker } from './components/GoogleLocationPicker';
 import { GoogleMapView } from './components/GoogleMapView';
 import { StripePaymentForm } from './components/StripePaymentForm';
 import { requestNotificationPermission, onForegroundMessage, saveFcmTokenToBackend, isFirebaseConfigured } from './services/firebase';
+import { Analytics } from '@vercel/analytics/react';
 
 // Reusable Glass Card Component
 function GlassCard({ children, className = "", ...props }: { children: ReactNode; className?: string } & React.HTMLAttributes<HTMLDivElement>) {
@@ -8477,6 +8478,7 @@ export default function App() {
           </div>
         </footer>
       )}
+      <Analytics />
     </div>
   );
 }
